@@ -9,3 +9,37 @@ aptでインストールしたパッケージのヘッダーファイルは「/u
 <pre>
 /usr/include
 </pre>
+
+<h3>ヘッダーファイルの読み込みパスを調べる</h3>
+
+ヘッダーファイルの読み込みパスは、C言語のプリプロセッサに書き込まれています。
+
+まず、gccが使っているプリプロセッサのパスを調べます。
+
+<pre>
+gcc -print-prog-name=cc1
+</pre>
+
+以下のように出力されます。
+
+<pre>
+/usr/lib/gcc/x86_64-linux-gnu/7/cc1
+</pre>
+
+プリプロセッサのバージョンを表示すると、インクルードパスをが表示されます。
+
+<pre>
+/usr/lib/gcc/x86_64-linux-gnu/7/cc1 -v
+</pre>
+
+デフォルトのヘッダーファイルの読み込みパスが表示されます。
+
+<pre>
+ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/7/../../../../x86_64-linux-gnu/include"
+#include "..." search starts here:
+#include <...> search starts here:
+ /usr/lib/gcc/x86_64-linux-gnu/7/include
+ /usr/local/include
+ /usr/lib/gcc/x86_64-linux-gnu/7/include-fixed
+ /usr/include
+</pre>
