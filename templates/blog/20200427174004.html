@@ -1,0 +1,24 @@
+<h2>パッケージの依存関係を調べる</h2>
+
+パッケージの依存関係を調べるには「apt-cache depends」コマンドを使用します。
+
+<pre>
+apt-cache depends libpng-dev
+</pre>
+
+上記は「libpng-dev」がどのようのパッケージに依存しているかを調べるものです。出力結果は以下のようになります。
+
+<pre>
+libpng-dev
+  Depends: libpng16-16
+  Depends: zlib1g-dev
+  Conflicts: <libpng12-0-dev>
+  Conflicts: <libpng12-dev>
+  Conflicts: <libpng2-dev>
+  Conflicts: <libpng3-dev>
+  Breaks: <libpng16-dev>
+  Breaks: <libpng16-devtools>
+  Recommends: libpng-tools
+  Replaces: <libpng16-dev>
+  Replaces: <libpng16-devtools>
+</pre>
