@@ -1,0 +1,15 @@
+<h2>libio-socket-ssl-perlパッケージのインストール - PerlのIO::Socket::SSL</h2>
+
+PerlでHTTPSアクセスが行えるようにlibio-socket-ssl-perlパッケージをaptコマンドを使って、インストールします。sudoを使って管理者権限で実行します。
+
+<pre>
+sudo apt install libio-socket-ssl-perl
+</pre>
+
+PerlのIO::Socket::SSLモジュールがインストールされます。Net::SSLeayも、IO::Socket::SSLに依存しているので、インストールされます。
+
+<h4>HTTP::Tinyを使ってHTTPSにアクセス</h4>
+
+(以下は2020年5月16日段階で、まだ試していません)
+
+PerlのコアモジュールであるHTTP::TinyはIO::Socket::SSLを使ったHTTPSアクセスを透過的にサポートしています。
