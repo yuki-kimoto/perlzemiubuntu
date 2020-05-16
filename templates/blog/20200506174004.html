@@ -21,18 +21,21 @@ Perl Webシステム開発を行う場合に、必要・便利なソフトウェ
   <li>libxml</li>
   <li>vim</li>
   <li>sudo</li>
+  <li>cron</li>
 </ul>
 
 <h3>デフォルトでインストールされていないもの</h3>
 
-デフォルトでインストールされていないものは以下でした。
+Perl Webシステム開発で必要だが、デフォルトでインストールされていないものは以下でした。
 
 <ul>
   <li>make</li>
   <li>gcc</li>
   <li>apache2</li>
-  <li>libjpeg</li>
-  <li>giflib</li>
+  <li>postfix</li>
+  <li>libpng-dev</li>
+  <li>libgif-dev</li>
+  <li>libjpeg-dev</li>
 </ul>
 
 <h3>インストールされていたりされていなかったりしたもの</h3>
@@ -984,6 +987,8 @@ ii  xz-utils
 ii  zlib1g:amd64                                         
 </pre>
 
+以下、Azureとの違い。
+
 以下がAzureに比べて少ない。
 
 <ul>
@@ -991,3 +996,5 @@ ii  zlib1g:amd64
   <li>net-tools</li>
   <li>libreadline</li>
 </ul>
+
+cronとanacronの両方がインストールされている。どういう動きをするのかは、まだ未チェック(2020年5月16日)。

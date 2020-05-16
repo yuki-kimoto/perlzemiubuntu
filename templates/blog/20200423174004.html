@@ -1,0 +1,37 @@
+<h2>postfixのインストール - メール送信 sendmailコマンド</h2>
+
+メールを送信するためのsendmailコマンドを使うためにpostfixをインストールしましょう。
+
+<pre>
+sudo apt install postfix
+</pre>
+
+Webシステム開発では、postfixは受信メールサーバーになる必要はないです。postfixのインストールは、送信メールを配送するサーバーとして機能することと、sendmailコマンドが使えるようにすることが、主な目的です。
+
+メール送信は、お問い合わせフォームにおけるメール送信や、アカウント登録機能のメール認証で利用します。
+
+インストールコマンドを実行すると、GUIの画面が立ち上がってびっくりします。
+
+(CUIで行う方法知っておられましたら「kimoto.yuki@gmail.com」まで、お願いします。)
+
+キーボードの右を押すと、Okが光ります。Enterを押します。
+
+上下キーで「No configuration」を選択します。右キーを押すとOkに勧めるので、Enterを押します。
+
+インストールが始まります。
+
+<h4>sendmailコマンドが使えることの確認</h4>
+
+sendmailがインストールされたことを確認しましょう。
+
+<pre>
+sendmail
+</pre>
+
+postfixの設定ファイル「mail.cf」がないよと怒られます。
+
+<pre>
+sendmail: fatal: open /etc/postfix/main.cf: No such file or directory
+</pre>
+
+postfixの設定については、後程解説します。この記事では、postfixのインストールまで。
