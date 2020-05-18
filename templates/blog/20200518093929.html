@@ -1,0 +1,30 @@
+<h2>nfs-kernel-serverのインストール - NFSサーバー ネットワークファイル共有</h2>
+
+複数サーバー間で、ネットワークファイル共有をするにはNFSサーバーをである「nfs-kernel-server」を、インストールしましょう。
+
+<pre>
+sudo apt install nfs-kernel-server
+</pre>
+
+NFSは、ネットワークファイルシステムの略です。
+
+NFSクライアントとしてNFSサーバーにマウントする機能を提供する<a href="/blog/20200517093929.html">nfs-common</a>も一緒にインストールされます。
+
+<h4>NFSサーバーがインストールできたことの確認</h4>
+
+NFSサーバーがインストールできたことをsystemctlコマンドのstatusを使って確認しましょう。
+
+<pre>
+systemctl status nfs-kernel-server
+</pre>
+
+以下のように表示されればインストールされています。
+
+<pre>
+● nfs-server.service - NFS server and services
+   Loaded: loaded (/lib/systemd/system/nfs-server.service; enabled; vendor prese
+   Active: active (exited) since Mon 2020-05-18 09:51:35 JST; 2min 47s ago
+ Main PID: 20222 (code=exited, status=0/SUCCESS)
+    Tasks: 0 (limit: 9479)
+   CGroup: /system.slice/nfs-server.service
+</pre>
