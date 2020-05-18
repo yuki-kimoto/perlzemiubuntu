@@ -1,0 +1,30 @@
+<h2>mariadb-serverのインストール - MariaDBデータベースサーバー</h2>
+
+MariaDBデータベースサーバーを使えるように「mariadb-server」をインストールしましょう。<a href="https://mariadb.perlzemi.com/">MariaDB</a>は、オープンソースでMySQLと互換性の高いMySQLからフォークされたプロジェクトです。
+
+<pre>
+sudo apt install mariadb-server
+</pre>
+
+<h4>MariaDBデータベースサーバーがインストールされたことの確認</h4>
+
+MariaDBデータベースサーバーがインストールされたことをsystemctlコマンドのstatusを使って、確認しましょう。
+
+<pre>
+systemctl status mariadb
+</pre>
+
+次のように状態が表示されます。
+
+<pre>
+● mariadb.service - MariaDB 10.1.44 database server
+   Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset:
+   Active: active (running) since Mon 2020-05-18 12:38:49 JST; 58s ago
+     Docs: man:mysqld(8)
+           https://mariadb.com/kb/en/library/systemd/
+ Main PID: 33941 (mysqld)
+   Status: "Taking your SQL requests now..."
+    Tasks: 27 (limit: 9479)
+   CGroup: /system.slice/mariadb.service
+           mq33941 /usr/sbin/mysqld
+</pre>
