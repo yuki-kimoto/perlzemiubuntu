@@ -1,10 +1,10 @@
-<h2>Aapacheの起動・停止・再起動・状態確認</h2>
+<h2>Apacheの起動・停止・再起動・状態確認</h2>
 
-Aapacheの起動・停止・再起動・状態確認について解説します。
+Apacheの起動・停止・再起動・状態確認について解説します。
 
-<h4>Aapacheの状態確認</h4>
+<h4>Apacheの状態確認</h4>
 
-Aapacheの状態確認は、systemctlコマンドの「status」を使って行います。
+Apacheの状態確認は、systemctlコマンドの「status」を使って行います。
 
 <pre>
 sudo systemctl status apache2
@@ -44,9 +44,9 @@ sudo systemctl status apache2
  Main PID: 104579 (code=exited, status=0/SUCCESS)
 </pre>
 
-<h4>Aapacheの起動</h4>
+<h4>Apacheの起動</h4>
 
-Aapacheの起動は、systemctlコマンドの「start」を使って行います。sudoコマンドを使って、root権限で実行します。
+Apacheの起動は、systemctlコマンドの「start」を使って行います。sudoコマンドを使って、root権限で実行します。
 
 <pre>
 sudo systemctl start apache2
@@ -54,9 +54,9 @@ sudo systemctl start apache2
 
 起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
 
-<h4>Aapacheの停止</h4>
+<h4>Apacheの停止</h4>
 
-Aapacheの停止は、systemctlコマンドの「stop」を使って行います。sudoコマンドを使って、root権限で実行します。
+Apacheの停止は、systemctlコマンドの「stop」を使って行います。sudoコマンドを使って、root権限で実行します。
 
 <pre>
 sudo systemctl stop apache2
@@ -64,9 +64,9 @@ sudo systemctl stop apache2
 
 停止が成功しても、成功したというメッセージは何も返ってきません。状態確認を行ってください。
 
-<h4>Aapacheの再起動</h4>
+<h4>Apacheの再起動</h4>
 
-Aapacheの再起動は、systemctlコマンドの「restart」を使って行います。sudoコマンドを使って、root権限で実行します。
+Apacheの再起動は、systemctlコマンドの「restart」を使って行います。sudoコマンドを使って、root権限で実行します。
 
 <pre>
 sudo systemctl restart apache2
@@ -76,15 +76,15 @@ restartは単に、stopコマンドを実行して、startコマンドを実行�
 
 再起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
 
-<h4>Aapacheのグレースフル(graceful)再起動</h4>
+<h4>Apacheのグレースフル(graceful)再起動</h4>
 
-Aapacheのグレースフル(graceful)再起動は、systemctlコマンドの「reload」を使って行います。sudoコマンドを使って、root権限で実行します。
+Apacheのグレースフル(graceful)再起動は、systemctlコマンドの「reload」を使って行います。sudoコマンドを使って、root権限で実行します。
 
 <pre>
 sudo systemctl reload apache2
 </pre>
 
-グレイスフル(graceful, 優美な)再起動と呼ばれている再起動は、Apacheに接続しているHTTPクライアントに対して、正しくHTTPレスポンスを返しつつ、Aapacheを再起動できる技術を使った再起動です。すべてのHTTPクライアントの処理を正しく処理できるので、通常はこちらの再起動を使いましょう。
+グレイスフル(graceful, 優美な)再起動と呼ばれている再起動は、Apacheに接続しているHTTPクライアントに対して、正しくHTTPレスポンスを返しつつ、Apacheを再起動できる技術を使った再起動です。すべてのHTTPクライアントの処理を正しく処理できるので、通常はこちらの再起動を使いましょう。
 
 再起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
 

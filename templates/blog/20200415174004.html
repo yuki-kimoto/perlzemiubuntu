@@ -1,0 +1,150 @@
+<h2>vsftpd FTPサーバーの起動・停止・再起動・状態確認</h2>
+
+vsftpd FTPサーバーの起動・停止・再起動・状態確認について解説します。
+
+<h4>vsftpd FTPサーバーの状態確認</h4>
+
+vsftpd FTPサーバーの状態確認は、systemctlコマンドの「status」を使って行います。
+
+<pre>
+sudo systemctl status vsftpd
+</pre>
+
+<h5>起動している場合</h5>
+
+起動している場合は、以下のように表示されます。
+
+<pre>
+● vsftpd.service - vsftpd FTP server
+   Loaded: loaded (/lib/systemd/system/vsftpd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2020-05-19 12:55:57 JST; 18min ago
+ Main PID: 8044 (vsftpd)
+    Tasks: 1 (limit: 9479)
+   CGroup: /system.slice/vsftpd.service
+           mq8044 /usr/sbin/vsftpd /etc/vsftpd.conf
+</pre>
+
+<h5>停止している場合</h5>
+
+停止している場合は、以下のように表示されます。
+
+<pre>
+● vsftpd.service - vsftpd FTP server
+   Loaded: loaded (/lib/systemd/system/vsftpd.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Tue 2020-05-19 13:15:39 JST; 5s ago
+  Process: 8044 ExecStart=/usr/sbin/vsftpd /etc/vsftpd.conf (code=killed, signal=TERM)
+ Main PID: 8044 (code=killed, signal=TERM)
+
+May 19 12:55:57 development-batch systemd[1]: Starting vsftpd FTP server...
+May 19 12:55:57 development-batch systemd[1]: Started vsftpd FTP server.
+May 19 13:15:39 development-batch systemd[1]: Stopping vsftpd FTP server...
+May 19 13:15:39 development-batch systemd[1]: Stopped vsftpd FTP server.
+</pre>
+
+<h4>vsftpd FTPサーバーの起動</h4>
+
+vsftpd FTPサーバーの起動は、systemctlコマンドの「start」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl start vsftpd
+</pre>
+
+起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
+
+<h4>vsftpd FTPサーバーの停止</h4>
+
+vsftpd FTPサーバーの停止は、systemctlコマンドの「stop」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl stop vsftpd
+</pre>
+
+停止が成功しても、成功したというメッセージは何も返ってきません。状態確認を行ってください。
+
+<h4>vsftpd FTPサーバーの再起動</h4>
+
+vsftpd FTPサーバーの再起動は、systemctlコマンドの「restart」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl restart vsftpd
+</pre>
+
+restartは単に、stopコマンドを実行して、startコマンドを実行します。HTTPクライアントからの処理を切断してしまうので、通常はreloadコマンドを使用しましょう
+
+再起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
+
+<h3>vsftpd FTPサーバーの起動・停止のログを見るには</h3>
+
+vsftpd FTPサーバーなどのサーバーは、systemdというプログラムによって集中的に管理されています。
+
+systemdのログにvsftpd FTPサーバーの起動・停止ログが出力されています。
+
+systemdのログを見るにはjournalctlコマンドを使ます。grepコマンドで「vsftpd」を絞り込みます。大文字・小文字を区別しない「-i」オプションを使うと「vsftpd FTPサーバー」「vsftpd」の両方が拾えます。sudoで実行しないとvsftpdのログが見れないので注意してください。
+
+<pre>
+sudo journalctl | grep -i vsftpd
+</pre>
+
+ログの最後の部分だけ見たい場合は<a href="https://linux.perlzemi.com/blog/20200203124238.html">tailコマンド</a>を組み合わせましょう。
+
+<pre>
+sudo journalctl | grep -i vsftpd | tail -20;
+</pre>
+
+ログのサンプルです。
+
+<pre>
+May 16 23:34:08 development-batch sshd[21934]: Invalid user vsftpd from 41.203.76.251 port 51680
+May 16 23:34:11 development-batch sshd[21934]: Failed password for invalid user vsftpd from 41.203.76.251 port 51680 ssh2
+May 16 23:34:13 development-batch sshd[21934]: Disconnected from invalid user vsftpd 41.203.76.251 port 51680 [preauth]
+May 19 12:55:50 development-batch sudo[7814]:   admins : TTY=pts/0 ; PWD=/home/admins ; USER=root ; COMMAND=/usr/bin/apt install vsftpd
+May 19 12:55:57 development-batch systemd[1]: Starting vsftpd FTP server...
+May 19 12:55:57 development-batch systemd[1]: Started vsftpd FTP server.
+May 19 13:14:50 development-batch sudo[9424]:   admins : TTY=pts/0 ; PWD=/home/admins ; USER=root ; COMMAND=/bin/systemctl status vsftpd
+May 19 13:15:39 development-batch sudo[9489]:   admins : TTY=pts/0 ; PWD=/home/admins ; USER=root ; COMMAND=/bin/systemctl stop vsftpd
+May 19 13:15:39 development-batch systemd[1]: Stopping vsftpd FTP server...
+May 19 13:15:39 development-batch systemd[1]: Stopped vsftpd FTP server.
+May 19 13:15:44 development-batch sudo[9507]:   admins : TTY=pts/0 ; PWD=/home/admins ; USER=root ; COMMAND=/bin/systemctl status vsftpd
+May 19 13:18:49 development-batch sudo[9726]:   admins : TTY=pts/0 ; PWD=/home/admins ; USER=root ; COMMAND=/bin/systemctl start vsftpd
+May 19 13:18:49 development-batch systemd[1]: Starting vsftpd FTP server...
+May 19 13:18:49 development-batch systemd[1]: Started vsftpd FTP server.
+</pre>
+
+<h3>vsftpd FTPサーバーのsystemdの設定ファイルを見るには</h3>
+
+vsftpd FTPサーバーのsystemdの設定ファイルは「systemctl status vsftpd」で見れます。
+
+設定ファイルを<a href="https://linux.perlzemi.com/blog/20200113083613.html">catコマンド</a>で見てみましょう。
+
+<pre>
+cat /lib/systemd/system/vsftpd.service
+</pre>
+
+start、stop、reloadのコマンド定義などが確認できます。
+
+<pre>
+[Unit]
+Description=vsftpd FTP server
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/sbin/vsftpd /etc/vsftpd.conf
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStartPre=-/bin/mkdir -p /var/run/vsftpd/empty
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<h3>vsftpd FTPサーバーの他の情報</h3>
+
+<h4>vsftpd FTPサーバーをインストールするには</h4>
+
+vsftpd FTPサーバーのインストールについては、以下の記事で解説しています。
+
+<a href="/blog/20200416174004.html">vsftpdのインストール - FTPサーバー</a>
+
+<h4>vsftpd FTPサーバーの設定ファイル</h4>
+
+vsftpd FTPサーバーの設定ファイルについては、別の記事で解説します。
