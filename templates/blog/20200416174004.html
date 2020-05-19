@@ -1,0 +1,19 @@
+<h2>vsftpdのインストール - FTPサーバー</h2>
+
+FTPサーバーを使える用にするにはvsftpdをインストールします。
+
+<pre>
+sudo apt install vsftpd
+</pre>
+
+FTPは、ファイル転送プロトコルの略です。クライアント・サーバーで、ファイルを交換するためのプロトコルです。
+
+FTPは、暗号化はされません。暗号化が必要な機密な情報は、SSH上に構築されたSFTPを使って、ファイル転送を行いましょう。
+
+<h3>vsftpdがインストールされたことの確認</h3>
+
+vsftpdがインストールされたことを確認するためにsystemctlコマンドのstatusを使いましょう。
+
+<pre>
+systemctl status vsftpd
+</pre>
