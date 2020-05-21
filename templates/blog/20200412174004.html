@@ -1,0 +1,13 @@
+<h2>libssl-devのインストール - OpenSSLのヘッダファイルとライブラリ</h2>
+
+OpenSSLのヘッダとライブラリが利用できるように「libssl-dev」をインストールします。sudoを使って、root権限でインストールします。
+
+<pre>
+sudo apt install libssl-dev
+</pre>
+
+Webシステム開発では、ユーザーPerlを使いますが、HTTP通信をサポートするためには、IO::Socket::SSLをインストールする必要があります。
+
+IO::Socket::SSLは、Net::SSLeayに依存していますが、Net::SSLeayは、OpenSSLのヘッダとライブラリに依存しています。
+
+インストールされた、OpenSSLのヘッダファイルとライブラリの場所については、<a href="/blog/20200429174004.html">ヘッダーファイルの読み込みパス</a>と<a href="/blog/20200428174004.html">ライブラリの読み込みパス</a>を参考にしてください。
