@@ -1,9 +1,13 @@
-<h2>libmariadb-devのインストール - MariaDBデータベースのヘッダとライブラリ</h2>
+<h2>libmariadb-devのインストール - MariaDBサーバーのヘッダとライブラリ</h2>
 
-PerlのDBD::MySQLのインストールに成功するために、MariaDBクライアントのヘッダやライブラリを含む「libmariadb-dev」をインストールしましょう。
+MariaDBサーバーのヘッダやライブラリを含む「libmariadb-dev」をインストールしましょう。
 
 <pre>
 sudo apt install -y libmariadb-dev
 </pre>
 
 インストールされた、MariaDBデータベースのヘッダファイルとライブラリの場所については、<a href="/blog/20200429174004.html">ヘッダーファイルの読み込みパス</a>と<a href="/blog/20200428174004.html">ライブラリの読み込みパス</a>を参考にしてください。
+
+<h4>注</h4>
+
+この手順はPerlのDBD::MySQLをインストールするために、実施した手順でしたが、PerlのDBD::MySQLをインストールするためには、「libmariadb-dev」ではなく、MariaDBクライアントのヘッダとライブラリ「<a href="/blog/20200411174004.html">libmariadbclient-dev</a>」が必要であることが判明しました。
