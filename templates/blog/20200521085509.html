@@ -1,6 +1,6 @@
-<h2>SendGridを使う理由、SendGridの価格と申し込み方法</h2>
+<h2>クラウドメール配信SendGridとPostfixとの連携</h2>
 
-SendGridは、メール配信のためのクラウドサービスです。
+SendGridは、メール配信のためのクラウドメール配信サービスです。
 
 <h3>SendGridを使う理由</h3>
 
@@ -50,5 +50,101 @@ SendGridを使うと、そのようなことが、もしSendGrid内で起こっ�
 
 <a href="https://sendgrid.kke.co.jp"><img src="/images/sendgrid/sendgrid-top.png" width="100%"></a>
 
+審査の後、本承認のメールが届きます。
+
 <h3>Web APIやリレーメールを送るために必要なSendGridの情報</h3>
 
+Web APIやリレーメールを送るために必要なSendGridの情報は、ユーザー名とパスワードです。
+
+ユーザー名は、登録メールアドレスとは異なるので注意しましょう。
+
+<h3>SendGridとPostfixを連携する</h3>
+
+SendGridはWeb APIを持っていますが、Postfixと連携して、sendmailコマンドからのメール送信をSendGridに接続することもできます。
+
+この方法の利点は、SendGridを使う使わないの選択で、メールを送信するアプリケーションに変更を加える必要がないことです。アプリケーションを抽象化できます。
+
+デメリットは、Postfixのインストールと設定が必要なことです。
+
+(UbuntuのPostfixのインストールは、GUI画面が登場するので、インストール自動化が可能なのかは、今の僕にはまだわからない。)
+
+<h4>SendGridの公式ドキュメント</h4>
+
+手順の詳細についてはSendGridのドキュメントが詳しいです。
+
+基本的なドキュメント。新規に始める場合は「SendGridドキュメント - Postfix」の手順を実行しましょう。
+
+<a href="https://sendgrid.kke.co.jp/docs/Integrate/Mail_Servers/postfix.html">SendGridドキュメント - Postfix</a>
+
+以下では、メール配信に当たって、応用的な情報が記載されています。
+
+<a href="https://sendgrid.kke.co.jp/blog/?p=8192">PostfixからSendGridへのリレーをカスタマイズする - SendGridブログ</a>
+
+<h4>SendGridとPostfixを連携する手順</h4>
+
+Postfixの設定ファイルを編集します。
+
+<pre>
+sudo vi /etc/postfix/main.cf
+</pre>
+
+以下の設定を追加します。SMTP-Authプロトコルを使って、Postfixは、SendGridにメールの配信を依頼します。
+
+上記の公式ドキュメントから引用して、手順をここに書き出してみます。(以下引用、2020年6月2日現在)
+
+Postfixの設定ファイルを開いてください。通常、 /etc/postfix/main.cf です。そして、以下を追加してください:
+
+<pre>
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_sasl_tls_security_options = noanonymous
+smtp_tls_security_level = encrypt
+header_size_limit = 4096000
+relayhost = [smtp.sendgrid.net]:587
+</pre>
+
+(relayhostをすでに設定している場合は、元のrelayhostをコメントアウト)
+
+ここで上で設定した別のファイル /etc/postfix/sasl_passwd （新たに作成が必要）にて認証情報を指定します（ユーザ名としてapikeyを、パスワードとしてAPIキーを指定できます）:
+
+<pre>
+[smtp.sendgrid.net]:587 yourSendGridUsername:yourSendGridPassword
+</pre>
+
+次に、このファイルがrootアカウントでのみ読み書きができるよう制限されていることを確認して、postmap コマンドを使用してPostfixがこの新しいファイルを使用するようハッシュテーブルを更新します:
+
+<pre>
+$ sudo chmod 600 /etc/postfix/sasl_passwd
+$ sudo postmap /etc/postfix/sasl_passwd
+</pre>
+
+最後にPostfixを再起動してください:
+
+<pre>
+$ sudo systemctl restart postfix
+</pre>
+
+<h3>sendmailコマンドでメール送信</h3>
+
+sendmailコマンドでメール送信してみましょう。送信元がなかった場合は、メールをはじかれる経験があるので、「-f」で送信元メールアドレスを指定しています。
+
+<pre>
+echo Hello | sendmail -f kimoto.example@foo.com kimoto.example@foo.com
+</pre>
+
+メール送信できれば、正しく設定できています。
+
+送信できていなければ、mailqコマンドで、まずメールのキューを見てみましょう。
+
+<pre>
+mailq
+</pre>
+
+キューに送信失敗と書かれていれば失敗しています。
+
+journalctlでpostfixのログを見るのもやりましょう。<a href="https://linux.perlzemi.com/blog/20200602093211.html">grep</a>で絞り込み、<a href="https://linux.perlzemi.com/blog/20200203124238.html">tail</a>で末尾50行を表示しています。
+
+<pre>
+sudo journalctl | grep -i postfix | tail -50
+</pre>
