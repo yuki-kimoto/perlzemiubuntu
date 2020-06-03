@@ -1,0 +1,26 @@
+<h2>postgresqlのインストール - PostgreSQLサーバー</h2>
+
+PostgreSQLデータベースサーバーを使えるように「postgresql」をインストールしましょう。PostgreSQLは、利便性の高いリレーショナルデータベースシステムです。
+
+<pre>
+sudo apt install -y postgresql
+</pre>
+
+<h4>PostgreSQLデータベースサーバーがインストールされたことの確認</h4>
+
+PostgreSQLデータベースサーバーがインストールされたことをsystemctlコマンドのstatusを使って、確認しましょう。
+
+<pre>
+systemctl status postgresql
+</pre>
+
+次のように状態が表示されます。
+
+<pre>
+● postgresql.service - PostgreSQL RDBMS
+   Loaded: loaded (/lib/systemd/system/postgresql.service; enabled; vendor preset: enabled)
+   Active: active (exited) since Wed 2020-06-03 08:56:27 JST; 11s ago
+ Main PID: 26352 (code=exited, status=0/SUCCESS)
+    Tasks: 0 (limit: 9479)
+   CGroup: /system.slice/postgresql.service
+</pre>
