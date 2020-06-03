@@ -1,0 +1,21 @@
+<h2>sqlite3のインストール - SQLiteユーティリティ</h2>
+
+SQLiteクライアントである「sqlite3」をインストールしましょう。
+
+<pre>
+sudo apt install -y sqlite3 
+</pre>
+
+sqlite3コマンドが使えるようになっているか確認しましょう。
+
+<pre>
+sqlite3
+</pre>
+
+<h3>SQLiteの特徴</h3>
+
+SQLiteは、クライアント・サーバー型のデータベースではなく、データベースファイル作成・テーブル作成、select, insert, update, deleteなどの行の処理を行うためのライブラリです。
+
+PerlのDBD::SQLiteは、SQLiteを操作するライブラリを含んでおり、DBD::MySQLやDBD::Pgのように、「*-dev」のようなヘッダーファイルや共有ライブラリをインストールするためのパッケージ必要としません。
+
+sqlite3というコマンドラインユーティリティを使えるようにするために、必要な手順になります。
