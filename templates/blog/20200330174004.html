@@ -1,0 +1,13 @@
+<h2>ユーザーをグループに追加する - gpasswd -a</h2>
+
+ユーザーをグループに追加するには「gpasswd -a」を使用します。<a href="/blog/20200406174004.html">sudo</a>でroot権限で実行します。
+
+<pre>
+sudo gpasswd -a ユーザー名 グループ名
+</pre>
+
+kimotoをmyappグループに追加するサンプルです。
+
+<pre>
+sudo gpasswd -a kimoto myapp
+</pre>

@@ -1,0 +1,13 @@
+<h2>ユーザーをグループから削除する - gpasswd -d</h2>
+
+ユーザーをグループから削除するには「gpasswd -d」を使用します。<a href="/blog/20200406174004.html">sudo</a>でroot権限で実行します。
+
+<pre>
+sudo gpasswd -d ユーザー名 グループ名
+</pre>
+
+kimotoをmyappグループから削除するサンプルです。
+
+<pre>
+sudo gpasswd -d kimoto myapp
+</pre>

@@ -1,9 +1,29 @@
-<h2>グループの一覧を表示する 「/etc/group」ファイル</h2>
+<h2>すべてのグループとグループに所属するユーザーを表示する 「/etc/group」ファイル</h2>
 
 <b>グループの一覧</b>は、「/etc/group」ファイルに記述されています。<a href="/blog/20200113083613.html">cat</a>コマンドで、「/etc/group」ファイルを表示しましょう。<a href="/blog/20200118092236.html">sudoコマンド</a>を使ってroot権限で実行します。
 
+グループに所属しているユーザーを調べるのにも「/etc/group」は利用できます。
+
 <pre>
 sudo cat /etc/group
+</pre>
+
+出力結果のサンプルです。
+
+<pre>
+chrony:x:993:
+tcpdump:x:72:
+admins:x:1000:
+batch:x:1001:
+gitprep:x:1002:
+webdbviewer:x:1003:
+apache:x:48:
+mysql:x:27:
+okamoto:x:1004:
+izawa:x:1005:
+kimoto2:x:1006:
+cgred:x:992:
+myapp:x:1007:kimoto,yamada,tanaka
 </pre>
 
 <h3>グループに対するその他の操作</h3>
