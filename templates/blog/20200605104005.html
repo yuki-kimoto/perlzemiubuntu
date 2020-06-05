@@ -1,0 +1,45 @@
+<h2>systemctl - systemdで管理されているサーバーアプリケーションの管理</h2>
+
+<b>systemctl</b>コマンドを使うと、systemdで管理されているサーバーアプリケーションの管理を行うことができます。
+
+ここでは、apache2を使って、各種コマンドについて解説します。
+
+<h4>アプリケーションの開始</h3>
+
+アプリケーションを開始するには、startコマンドを使用します。
+
+<pre>
+systemctl start apache2
+</pre>
+
+<h4>アプリケーションの停止</h3>
+
+アプリケーションを停止するには、stopコマンドを使用します。
+
+<pre>
+systemctl stop apache2
+</pre>
+
+<h4>アプリケーションの再起動</h3>
+
+アプリケーションを再起動するには、restartコマンドを使用します。
+
+<pre>
+systemctl restart apache2
+</pre>
+
+stopの後に、startが実行されます。
+
+<h4>アプリケーションの状態</h3>
+
+アプリケーションの状態を見るには、statusコマンドを使用します。
+
+<pre>
+systemctl status apache2
+</pre>
+
+<h4>アプリケーションのリロード</h3>
+
+アプリケーションには、reloadが定義されている場合は、reloadを使うことができます。
+
+<a href="/blog/20200526151435.html">apache2</a>の場合は、グレースフルスタート、postfixの場合は、設定ファイルの再読み込みを意味します。
