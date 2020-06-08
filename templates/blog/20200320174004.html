@@ -1,0 +1,41 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Apacheにmod_phpをインストールする</h2>
+
+Apacheにmod_phpをインストールします。Apacheで、PHPアプリケーション動かす必要がある場合に、必要です。
+
+<pre>
+sudo apt install libapache2-mod-php
+</pre>
+
+mod_phpをインストールしたら、次は、mod_phpを有効にしましょう。(2020年6月8日記載。Ubuntu 18。PHPバージョンは7.2)
+
+<pre>
+sudo a2enmod php7.2
+</pre>
+
+最後にApacheを再起動して完了です。
+
+<pre>
+sudo systemctl reload apache2
+</pre>
+
+これで、PHPアプリケーションがApache上で動くようになりました。
