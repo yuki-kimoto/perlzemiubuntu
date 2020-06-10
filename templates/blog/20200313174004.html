@@ -1,0 +1,25 @@
+<h2>Apacheのアクセスログとエラーログの場所</h2>
+
+UbuntuにおけるApacheのアクセスログとエラーログの場所は、環境変数「APACHE_LOG_DIR」で定義されています。
+
+<a href="/blog/20200317174004.html">Apacheの設定ファイルがあるディレクトリ</a>の中の「envvars」ファイルの中で定義されています。
+
+<pre>
+export APACHE_LOG_DIR=/var/log/apache2$SUFFIX
+</pre>
+
+$SUFFIXは、Apacheが一台しか動いていない場合は空文字ですので、Apacheのログのディレクトリは「/var/log/apache2」になります。
+
+<pre>
+sudo ls /var/log/apache2
+</pre>
+
+<pre>
+access.log        access.log.13.gz  access.log.5.gz  error.log        error.log.13.gz  error.log.5.gz  other_vhosts_access.log        other_vhosts_access.log.13.gz  other_vhosts_access.log.5.gz
+access.log.1      access.log.14.gz  access.log.6.gz  error.log.1      error.log.14.gz  error.log.6.gz  other_vhosts_access.log.1      other_vhosts_access.log.14.gz  other_vhosts_access.log.6.gz
+access.log.10.gz  access.log.2.gz   access.log.7.gz  error.log.10.gz  error.log.2.gz   error.log.7.gz  other_vhosts_access.log.10.gz  other_vhosts_access.log.2.gz   other_vhosts_access.log.7.gz
+access.log.11.gz  access.log.3.gz   access.log.8.gz  error.log.11.gz  error.log.3.gz   error.log.8.gz  other_vhosts_access.log.11.gz  other_vhosts_access.log.3.gz   other_vhosts_access.log.8.gz
+access.log.12.gz  access.log.4.gz   access.log.9.gz  error.log.12.gz  error.log.4.gz   error.log.9.gz  other_vhosts_access.log.12.gz  other_vhosts_access.log.4.gz   other_vhosts_access.log.9.gz
+</pre>
+
+最新と1つ前のアクセスログ以外は, <a href="https://linux.perlzemi.com/blog/20200608103245.html">GZIP形式</a>に圧縮されているようです。
