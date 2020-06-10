@@ -1,0 +1,23 @@
+<h2>CGIプログラムを利用するためにmod_cgidを有効化する</h2>
+
+CGIプログラムを利用する場合はmod_cgidを有効化しましょう。
+
+CGIのプログラムが存在して、CGIプログラムを実行する必要がある場合に、この手順を実行してください。
+
+新規に<a href="https://web.perlzemi.com/">Webシステム開発</a>を行う場合は、リアルタイムWeb・クラウドサーバー対応できる開発手法をお勧めしています。
+
+<h4>mod_cgidを有効化</h4>
+
+mod_cgidはApacheモジュールですが、<a href="/blog/20200610082714.html">Apacheモジュールを有効化</a>するにはa2enmodコマンドを使用します。
+
+<pre>
+sudo a2enmod cgid
+</pre>
+
+有効化した後は、<a href="/blog/20200519084454.html">Apacheの再起動</a>が必要です。
+
+<h3>mod_cgiとmod_cgidの違い</h3>
+
+ユーザーから見た場合、ひとつの例外を除いて、mod_cgidはmod_cgidと同じ動作をするようです。コストが小さいmod_cgidを選んでおくとよいようです。
+
+<a href="https://httpd.apache.org/docs/2.4/ja/mod/mod_cgid.html">Apache モジュール mod_cgid</a>
