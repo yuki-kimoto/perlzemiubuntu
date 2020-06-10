@@ -1,0 +1,20 @@
+<h2>デフォルトのバーチャルホストの設定</h2>
+
+他のバーチャルホストで設定されていないドメイン名とIPアドレスの組み合わせに対して、デフォルトのバーチャルホストを設定できます。
+
+この設定は、Apache上のCGIやPHPで運用されているWebアプリケーションがあり、さらにバーチャルホストの設定で、リバースプロキシを使って、別サイトを運用するために必要です。
+
+<a href="https://linux.perlzemi.com/blog/20191012191854.html">cd</a>コマンドで、<a href="/blog/20200317174004.html">Apache2の設定ファイルのディレクトリ</a>に移動して、<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>コマンドで、デフォルトのバーチャルホストの設定ファイルを新規作成します。
+
+<pre>
+cd /etc/apache2
+vi sites-available/default.conf
+</pre>
+
+デフォルトのバーチャルホストの設定は以下に記述しましょう。この部分にCGIの設定やPHPの設定を記述します。
+
+<pre>
+<VirtualHost _default_:*>
+  DocumentRoot /var/www/html
+</VirtualHost>
+</pre>
