@@ -16,8 +16,29 @@ sudo a2enmod cgid
 
 有効化した後は、<a href="/blog/20200519084454.html">Apacheの再起動</a>が必要です。
 
+<h3>CGIが実行できるディレクトリ</h3>
+
+CGIが実行できるディレクトリは以下のディレクトリです。
+
+<pre>
+/usr/lib/cgi-bin/
+</pre>
+
+この中にCGIプログラムを配置して実行権限を与えれば、WebブラウザからCGIプログラムを呼び出すことができます。
+
+ただし、一般的には、/var/www/htmlの中に、画像などの静的ファイルやCGIプログラムなどのまとめて配置することのほうが多いでしょう。
+
+この場合は、追加の設定を行う必要があります。
+
+これを設定する場所は、デフォルトのバーチャルホストの設定ファイルです。
+
+<ul>
+  <li><a href="/blog/20200314174004.html">Apacheのデフォルトのバーチャルホストの設定</a></li>
+</ul>
+
 <h3>mod_cgiとmod_cgidの違い</h3>
 
 ユーザーから見た場合、ひとつの例外を除いて、mod_cgidはmod_cgidと同じ動作をするようです。コストが小さいmod_cgidを選んでおくとよいようです。
 
 <a href="https://httpd.apache.org/docs/2.4/ja/mod/mod_cgid.html">Apache モジュール mod_cgid</a>
+
