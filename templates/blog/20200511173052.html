@@ -6,12 +6,21 @@
 
 ユーザーを追加するには<b>useradd</b>コマンドを使用します。ユーザーディレクトリを作りたい場合は「-m」オプションを使用します。
 
+最初にWebアプリケーション実行用のユーザーも「myapp」という名前で作成しておきます。これは、本番環境で、Webアプリケーションを実行し、バッチプログラムを実行するユーザーを想定しています。
+
+<pre>
+# ユーザーの追加(ホームディレクトリあり)
+sudo useradd -m myapp
+
+# ユーザーの追加(ホームディレクトリなし)
+sudo useradd myapp
+</pre>
+
+開発者ユーザーがいる場合は、そのユーザーも作成しておくとよいです。パスワードの設定などの手順は、myappユーザーと同じです。
+
 <pre>
 # ユーザーの追加(ホームディレクトリあり)
 sudo useradd -m kimoto
-
-# ユーザーの追加(ホームディレクトリなし)
-sudo useradd kimoto
 </pre>
 
 <h4>パスワードの設定</h4>
@@ -19,7 +28,7 @@ sudo useradd kimoto
 ユーザーを追加したらパスワードも設定します。<a href="/blog/20200510173052.html">passwdコマンド</a>を使用します。
 
 <pre>
-sudo passwd kimoto
+sudo passwd myapp
 </pre>
 
 パスワードの入力と確認のための再入力を求められるので設定します。
@@ -29,7 +38,7 @@ sudo passwd kimoto
 このユーザーをroot権限を持つsudoユーザーとして登録したい場合はgpasswdコマンドを使って、sudoグループに追加します。
 
 <pre>
-sudo gpasswd -a kimoto sudo
+sudo gpasswd -a myapp sudo
 </pre>
 
 <h4>ユーザーを間違って追加したので削除したい</h4>
@@ -37,7 +46,7 @@ sudo gpasswd -a kimoto sudo
 ユーザーを間違って追加したので削除したい場合は「userdel」を使います。
 
 <pre>
-sudo userdel kimoto
+sudo userdel myapp
 </pre>
 
 ホームディレクトリの内容やメールは、削除されないので安心してください。
@@ -64,4 +73,3 @@ ps -ef
 <ul>
   <li><a href="/blog/20200401174004.html">ユーザーの一覧を表示する 「/etc/passwd」ファイル</a></li>
 </ul>
-
