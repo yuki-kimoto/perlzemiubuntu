@@ -6,10 +6,10 @@
 sudo groupadd グループ名
 </pre>
 
-以下は、アプリケーション用のグループ「myapp」を作成するサンプルです。
+以下は、アプリケーション用のグループ「myapp-group」を作成するサンプルです。
 
 <pre>
-sudo groupadd myapp
+sudo groupadd myapp-group
 </pre>
 
 グループの一覧を確認するには「/etc/group」ファイルを<a href="/blog/20200113083613.html">cat</a>コマンドで出力します。
@@ -18,10 +18,10 @@ sudo groupadd myapp
 sudo cat /etc/group
 </pre>
 
-myappが存在するのを確認しましょう。
+myapp-groupが存在するのを確認しましょう。
 
 <pre>
-myapp:x:1003:
+myapp-group:x:1003:
 </pre>
 
 <h3>なんのためにグループが必要になるの?</h3>
