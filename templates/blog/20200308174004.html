@@ -1,0 +1,43 @@
+<h2>ApacheのCGIプログラムでユーザーPerlを利用する方法</h2>
+
+ApacheのCGIプログラムでユーザーPerlを利用する方法を解説します。
+
+ApacheのCGIプログラムでは通常、システムにインストールされているPerlが利用されます。ですが、CPANモジュールの管理の手間を一元化するために、<a href="https://tutorial.perlzemi.com/blog/20110220130464.html">perlbrew</a>や<a href="https://tutorial.perlzemi.com/blog/20180816153437.html">plenv</a>でユーザー環境にインストールしたユーザーPerlを使いたいという場合があると思います。
+
+新しくPerlでWebアプリケーションを作る場合は、リアルタイムWebとクラウドサーバーに自然に対応できるリバースプロキシを使ったWebシステム開発手法をお勧めしますが、既存のCGIアプリケーションが存在するという場合も、まだまだあると思います。
+
+<h3>環境変数の設定</h3>
+
+UbuntuのApacheにおける環境変数の設定方法は、envvarsファイルに指定する方法と、SetEnvディレクティブを使う方法があります。グローバルに影響を与える、envvarsには手を加えないで、個別のサイトで、SetEnvディレクトリブを使うのがお勧めです。SetEnvでは、定数しか使えないことに注意してください。
+
+<h4>環境変数PATHの設定</h4>
+
+環境変数PATHの設定しましょう。まず、現在のPATHを調べます。envコマンドとgrepコマンドでPATHを表示します。PATHという名前を含む環境変数が複数あるので、<a href="https://tutorial.perlzemi.com/blog/20100827127859.html">Perlの正規表現</a>を使ってPATHだけに絞り込んでいます。
+
+<pre>
+env | grep -P '^PATH='
+</pre>
+
+表示されたPATHをメモします。
+
+<pre>
+PATH=/home/appuser/perl5/perlbrew/bin:/home/appuser/perl5/perlbrew/perls/perl-5.20.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+</pre>
+
+この値をSetEnvディレクトリを使用して設定します。
+
+<pre>
+SetEnv PATH /home/appuser/perl5/perlbrew/bin:/home/appuser/perl5/perlbrew/perls/perl-5.20.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+</pre>
+
+これで、ユーザーPerlが利用されるようになります。
+
+<h4>環境変数PERL5LIBの設定</h4>
+
+自分で作成したPerlのライブラリを読み込みたい場合は、PERL5LIB環境変数を設定します。
+
+<pre>
+SetEnv PERL5LIB /home/appuser/my-app/lib
+</pre>
+
+環境変数を設定した後は、<a href="/blog/20200519084454.html">Apacheの再起動</a>が必要です。
