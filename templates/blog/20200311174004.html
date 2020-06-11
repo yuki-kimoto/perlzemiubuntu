@@ -1,0 +1,24 @@
+<h2>Apacheでmod_rewriteモジュールを有効にする</h2>
+
+Apacheでは、URLの書き換えを行うmod_rewirteがデフォルトでは有効になっていないので、有効にします。
+
+<pre>
+sudo a2enmod rewrite
+</pre>
+
+設定を反映させるためには<a href="/blog/20200519084454.html">Apacheを再起動</a>してください。
+
+Apacheのモジュールを有効・無効にする方法については、以下の記事を参考にしてください。
+
+<ul>
+  <li><a href="/blog/20200610082714.html">Apache設定ファイルを有効・無効にする - 基本設定・モジュール設定・サイト設定</a></li>
+</ul>
+
+
+<h3>mod_rewirteが存在しない場合のApacheのエラーメッセージ</h3>
+
+mod_rewirteが存在しない場合にApacheのエラーメッセージ
+
+<pre>
+Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration
+</pre>
