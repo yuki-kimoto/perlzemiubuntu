@@ -1,0 +1,19 @@
+<h2>自己SSL証明書の場所</h2>
+
+本番環境では、本物のSSL証明書を使いますが、試験環境では、HTTPSの試験を行うためだけに、SSL証明書を取得するのは手間がかかかるので、自己SSL証明書を使いたい場合があります。
+
+Ubuntuにおける自己SSL証明書の場所は以下になります。自己SSL証明書と自己SSL証明書の秘密鍵です。
+
+<pre>
+自己SSL証明書      /etc/ssl/certs/ssl-cert-snakeoil.pem
+自己SSL証明書の秘密鍵 /etc/ssl/private/ssl-cert-snakeoil.key
+</pre>
+
+<h4>Apacheにおける自己SSL証明書と自己SSL証明書の秘密鍵の設定</h4>
+
+Apacheにおける自己SSL証明書と自己SSL証明書の秘密鍵の設定です。中間証明書ファイルは、指定する必要がありません。
+
+<pre>
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</pre>

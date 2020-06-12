@@ -1,10 +1,12 @@
-<h2>Apacheの設定ファイルが正しかテストする</h2>
+<h2>Apacheの設定ファイルが正しかテストする - apachectl -t</h2>
 
 Apacheの設定ファイルが正しかテストするにはapachectlコマンドの「-t」オプションを使用します。
 
 <pre>
-apachectl -t
+sudo apachectl -t
 </pre>
+
+自己SSL証明書を読み込む場合は、root権限が必要になるので、sudoでroot権限で実行する方がよいでしょう。
 
 Aapcheの設定ファイルを間違ったまま<a href="/blog/20200605104005.html">systemctl</a>コマンドで、<a href="/blog/20200519084454.html">Apacheを再起動</a>してしまうと、Apacheが停止します。Apacheが停止すると、Apache上で動いているすべてのWebサイト・Webサービスがダウンします。
 

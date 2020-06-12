@@ -1,0 +1,43 @@
+<h2>Apacheでドキュメントルート化でCGIを実行できるようにする設定</h2>
+
+UbuntuのApacheでドキュメントルート化でCGIを実行できるようにする設定の解説です。
+
+UbuntuのApacheの設定ではCGIを利用するための<a href="/blog/20200316174004.html">mod_cgidを有効にする</a>ことを行っても「/usr/lib/cgi-bin/」以下でしかCGIを実行することができません。
+
+これは、セキュアですが、すでに作成されているCGIアプリケーションの多くは、ドキュメントルート化で動くことが求められるでしょう。
+
+新規にPerlで<a href="https://web.perlzemi.com/">Webシステム開発</a>を行う場合は、セキュリティ、開発効率、リアルタイムWeb、クラウドサーバーなどを総合的に考慮して、リバースプロキシ運用をお勧めします。
+
+<h4>ドキュメントルート下でCGIを実行するためのApacheの設定ファイル</h3>
+
+ドキュメントルート下でCGIを実行のためのApacheの設定ファイルです。<a href="blog/20200314174004.html">デフォルトのバーチャルホスト</a>の中で運用することを想定しています。
+
+デフォルトのバーチャルホストは、最初に読み込まれる必要があるために「000-default.conf」のように、前に「000」を付けるなどして、最初に読み込まれるファイル名にする必要があることに注意してください。
+
+<VirtualHost *:80>
+  ServerName www.mydomain.example
+
+  AddHandler cgi-script .cgi
+
+  DocumentRoot "/var/www/html"
+
+  <Directory /var/www/html>
+    Options +ExecCGI
+  </Directory>
+</VirtualHost>
+
+<h3>HTTPSで運用する</h3>
+
+CGIプログラムをHTTPSで運用したい場合は以下の記事でSSL証明書の設定方法を解説しています。
+
+<ul>
+  <li><a href="/blog/20200611082716.html">SSL証明書の設定をApacheの設定ファイルに記述する</a></li>
+</ul>
+
+<h3>ユーザーPerlでCGIプログラムを実行する</h3>
+
+システムPerlではなく、ユーザーPerlでプログラムを実行したい場合は、以下の記事を参考にしてください。
+
+<ul>
+  <li><a href="/blog/20200308174004.html">ApacheのCGIプログラムでユーザーPerlを利用する方法</a></li>
+</ul>
