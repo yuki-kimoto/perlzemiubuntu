@@ -17,9 +17,9 @@ UbuntuのApacheの設定ではCGIを利用するための<a href="/blog/20200316
 <VirtualHost *:80>
   ServerName www.mydomain.example
 
-  AddHandler cgi-script .cgi
-
   DocumentRoot "/var/www/html"
+
+  AddHandler cgi-script .cgi
 
   <Directory /var/www/html>
     Options +ExecCGI
