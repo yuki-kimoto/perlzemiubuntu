@@ -6,7 +6,7 @@ Apacheの設定ファイルが正しかテストするにはapachectlコマン�
 sudo apachectl -t
 </pre>
 
-自己SSL証明書を読み込む場合は、root権限が必要になるので、sudoでroot権限で実行する方がよいでしょう。
+<a href="/blog/20200307174004.html">自己SSL証明書</a>を読み込んでいる場合に、root権限が必要になるので、sudoでroot権限で実行する方がよいでしょう。
 
 Aapcheの設定ファイルを間違ったまま<a href="/blog/20200605104005.html">systemctl</a>コマンドで、<a href="/blog/20200519084454.html">Apacheを再起動</a>してしまうと、Apacheが停止します。Apacheが停止すると、Apache上で動いているすべてのWebサイト・Webサービスがダウンします。
 
