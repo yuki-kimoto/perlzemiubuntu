@@ -10,10 +10,11 @@ UbuntuのApacheの設定ではCGIを利用するための<a href="/blog/20200316
 
 <h4>ドキュメントルート下でCGIを実行するためのApacheの設定ファイル</h3>
 
-ドキュメントルート下でCGIを実行のためのApacheの設定ファイルです。<a href="blog/20200314174004.html">デフォルトのバーチャルホスト</a>の中で運用することを想定しています。
+ドキュメントルート下でCGIを実行のためのApacheの設定ファイルです。<a href="/blog/20200314174004.html">デフォルトのバーチャルホスト</a>の中で運用することを想定しています。
 
 デフォルトのバーチャルホストは、最初に読み込まれる必要があるために「000-default.conf」のように、前に「000」を付けるなどして、最初に読み込まれるファイル名にする必要があることに注意してください。
 
+<pre>
 <VirtualHost *:80>
   ServerName www.mydomain.example
 
@@ -25,6 +26,7 @@ UbuntuのApacheの設定ではCGIを利用するための<a href="/blog/20200316
     Options +ExecCGI
   </Directory>
 </VirtualHost>
+</pre>
 
 <h3>HTTPSで運用する</h3>
 
