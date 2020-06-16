@@ -92,6 +92,12 @@ Perlのモジュールのインストールに必要なコンパイラ・リン�
   <li><a href="/blog/20200323174004.html">zipのインストール - ZIP形式のファイルの圧縮・解凍</a></li>
 </ul>
 
+<h3>ネットワーク</h3>
+
+<ul>
+  <li><a href="/blog/20200324174004.html">net-toolsのインストール - 非推奨だがとりあえずifconfig、arp、route、netstatを使いたい場合</a></li>
+</ul>
+
 <h4>Perl</h4>
 
 <ul>
@@ -143,25 +149,37 @@ Perlのモジュールのインストールに必要なコンパイラ・リン�
   <li><a href="/blog/20200525135533.html">redis-serverのインストールする - Redisサーバー 揮発性データの高速保存</a></li>
 </ul>
 
-ここまで完成。
+<h3>ユーザーPerlとcpanmのインストール</h3>
 
-<h3>Perl Webシステム開発環境</h3>
+安定性を求める場合は、CPANモジュールのインストールや警告表示などで不具合のない「perl-5.20.3」をインストール。
 
-<h4>ユーザーPerlとcpanmのインストール</h4>
+セキュアな最新版が良い場合は「perl-5.30.3」をインストール。
 
 <ul>
   <li><a href="/blog/20200413174004.html">ユーザーPerlとcpanmのインストール</a></li>
 </ul>
 
-<h3>Webサーバー Apache</h3>
+<h3>サーバーの起動確認</h3>
+
+インストールしたサーバーの起動確認をしましょう。postfixは、設定ファイルが存在しないので、postfix以外のサーバーの起動確認を行います。
+
+<h4>Apacheの起動確認</h4>
+
+WebサーバーであるApacheの起動確認を行います。
+
+以下の記事の「sudo systemctl status apache2」を実行してApacheが起動していることを確認してください。
 
 <ul>
   <li><a href="/blog/20200519084454.html">Aapacheの起動・停止・再起動・状態確認</a></li>
 </ul>
 
-<h3>データベースサーバー MariaDB</h3>
+<h4>MariaDBの起動確認</h4>
 
+WebサーバーであるMariaDBの起動確認を行います。
+
+以下の記事の「sudo systemctl status mariadb」を実行してMariaDBが起動していることを確認してください。
 <ul>
   <li><a href="/blog/20200417174004.html">MariaDBの起動・停止・再起動・状態確認</a></li>
 </ul>
 
+ここまで完成。
