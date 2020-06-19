@@ -115,9 +115,9 @@ Let's Encryptのcertbotが自動的にApacheのSSL証明書の設定してくれ
   RequestHeader set X-Forwarded-Proto "https"
 
   Include conf-available/ssl-basic.conf
-  SSLCertificateFile /etc/letsencrypt/live/www.sekayu.jp/cert.pem
-  SSLCertificateKeyFile /etc/letsencrypt/live/www.sekayu.jp/privkey.pem
-  SSLCertificateChainFile /etc/letsencrypt/live/www.sekayu.jp/chain.pem
+  SSLCertificateFile /etc/letsencrypt/live/www.mydomain.example/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/www.mydomain.example/privkey.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/www.mydomain.example/chain.pem
 </VirtualHost>
 </pre>
 
