@@ -1,9 +1,9 @@
-<h2>Apacheでmod_proxyモジュールを有効にする</h2>
+<h2>Apacheでmod_proxy_httpモジュールを有効にする</h2>
 
-UbuntuのApacheでは、プロキシ機能を提供するmod_proxyモジュールがデフォルトでは有効になっていないので、有効にします。
+UbuntuのApacheでは、HTTP・HTTPSでプロキシ機能を提供するmod_proxy_httpモジュールがデフォルトでは有効になっていないので、有効にします。
 
 <pre>
-sudo a2enmod proxy
+sudo a2enmod proxy_http
 </pre>
 
 設定を反映させるためには<a href="/blog/20200519084454.html">Apacheを再起動</a>してください。
@@ -14,11 +14,11 @@ Apacheのモジュールを有効・無効にする方法については、以�
   <li><a href="/blog/20200610082714.html">Apache設定ファイルを有効・無効にする - 基本設定・モジュール設定・サイト設定</a></li>
 </ul>
 
-HTTP・HTTPSをプロキシするには別途mod_proxy_httpが必要になるので注意してください。
+mod_proxy_httpはmod_proxyに依存していることに注意してください。
 
-<h3>mod_proxyが存在しない場合のApacheのエラーメッセージ</h3>
+<h3>mod_proxy_httpが存在しない場合のApacheのエラーメッセージ</h3>
 
-mod_proxyが存在しない場合にApacheのエラーメッセージの例。
+mod_proxy_httpが存在しない場合にApacheのエラーメッセージの例。
 
 <pre>
 Invalid command '<Proxy', perhaps misspelled or defined by a module not included in the server configuration
