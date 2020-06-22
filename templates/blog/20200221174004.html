@@ -1,0 +1,23 @@
+<h2>ユーザーPerlにcpanmでXML::LibXMLをインストールする</h2>
+
+ユーザーPerlにcpanmでXML::LibXMLをインストールする方法です。
+
+<h3>XML::LibXMLに必要なパッケージ</h3>
+
+XML::LibXMLのインストールにはlibxml2-devパッケージが必要です。
+
+<ul>
+  <li><a href="/blog/20200222174004.html">libxml2-devのインストール - Libxml2のヘッダとライブラリ</a></li>
+</ul>
+
+<h3>XML::LibXMLのインストール</h3>
+
+<pre>
+cpanm XML::LibXML
+</pre>
+
+XML::LibXMLが読み込めることが確認しましょう。
+
+<pre>
+perl -e 'use XML::LibXML'
+</pre>
