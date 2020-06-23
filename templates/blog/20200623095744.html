@@ -1,8 +1,8 @@
 <h2>ssh-keygenでSSH公開鍵認証のための秘密鍵と公開鍵のペアを作成する</h2>
 
-<b>ssh-keygen</b>コマンドを使うと、SSH公開鍵認証ための秘密鍵と公開鍵のペアを作成することができます。
+<b>ssh-keygen</b>コマンドを使うと、<a href="https://linux.perlzemi.com/blog/20200621103220.html">SSH</a>公開鍵認証ための秘密鍵と公開鍵のペアを作成することができます。
 
-まず、SSHの秘密鍵を保存しておくディレクトリに移動します。これは、本来は必要な作業ではないのですが、秘密鍵、あるいは、公開鍵のどちらかを「.ssh」ディレクトリに配置するだろうという推測に基づきます。
+まず、SSHの秘密鍵を保存しておくディレクトリに移動します。これは、本来は必要な作業ではないのですが、秘密鍵、あるいは、公開鍵のどちらかを「~/.ssh」ディレクトリに配置するだろうという推測に基づきます。
 
 <pre>
 cd ~/.ssh
@@ -22,19 +22,7 @@ ssh-keygen -t rsa
 
 パスフレーズとは、パスワードのことです。
 
-<h4>秘密鍵の内容</h4>
-
-<a href="https://linux.perlzemi.com/blog/20200113083613.html">cat</a>コマンドで「id_rsa_example」の中身を表示してみましょう。
-
-<pre>
-cat id_rsa_example
-</pre>
-
-以下のように表示されます。
-
-<pre>
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjSsucYA958wTIKUcPRXC2iZxb84FXkzm41/jzpfnUeBFsypS8xfTXpfDaSIYeMDyr9pIUfDuWWPykoofL4WZaJYDy5pQclFwby/KttDRAnm0XZQ2ZDUtnrUUdva55mxOcTJP0c1VWXpwrhBA+JSFLOGB8wxCV8UFh9XWXI4c5QKQ/Hyl8//nXT6suQf199VNf4Ru31rs+49FDW9FyvoX1GGEEBJCT2ROVD6qi1xY766PuhM/4OMQeIxZmZg8ysML307viqkKh/2mecwkdV1mxGQt8GbO3gvTOX5h9p7tGEwa3zSHhxudux1Kf6Pfcg4FwKuld8r77DKMXEszpRI11 myapp@myhost
-</pre>
+<h3>公開鍵</h3>
 
 <h4>公開鍵の内容</h4>
 
@@ -70,9 +58,39 @@ BxFxFujQ1PG44DZBGRWoUGht+Bu/ZBtf9faiS8yR6U5p9AKARGE2
 -----END RSA PRIVATE KEY-----
 </pre>
 
-<h3>秘密鍵に関する注意点</h3>
+<h4>SSH公開鍵認証における公開鍵の設定ファイル</h4>
 
-秘密鍵に関する注意点です。
+リモートサーバーの公開鍵は、リモートサーバーの「~/.ssh/authorized_keys」に設定します。ssh-keygenで作成した公開鍵ファイルをそのまま設置しておくわけではないので、注意してください。
+
+ssh-keygenで作成した公開鍵ファイルの内容を「~/.ssh/authorized_keys」ファイルの中に追記します。公開鍵の内容は、複数記述することができ、その場合は、1行以上空けてください。
+
+<pre>
+~/.ssh/authorized_keys
+</pre>
+
+パーミッションは600にします。
+
+<pre>
+chmod 600 ~/.ssh/authorized_keys
+</pre>
+
+この設定は、自身がリモートサーバーとして接続される場合の設定です。自身がリモートサーバーに接続する場合には、不要ですので注意してください。
+
+<h3>秘密鍵</h3>
+
+<h4>秘密鍵の内容</h4>
+
+<a href="https://linux.perlzemi.com/blog/20200113083613.html">cat</a>コマンドで「id_rsa_example」の中身を表示してみましょう。
+
+<pre>
+cat id_rsa_example
+</pre>
+
+以下のように表示されます。
+
+<pre>
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjSsucYA958wTIKUcPRXC2iZxb84FXkzm41/jzpfnUeBFsypS8xfTXpfDaSIYeMDyr9pIUfDuWWPykoofL4WZaJYDy5pQclFwby/KttDRAnm0XZQ2ZDUtnrUUdva55mxOcTJP0c1VWXpwrhBA+JSFLOGB8wxCV8UFh9XWXI4c5QKQ/Hyl8//nXT6suQf199VNf4Ru31rs+49FDW9FyvoX1GGEEBJCT2ROVD6qi1xY766PuhM/4OMQeIxZmZg8ysML307viqkKh/2mecwkdV1mxGQt8GbO3gvTOX5h9p7tGEwa3zSHhxudux1Kf6Pfcg4FwKuld8r77DKMXEszpRI11 myapp@myhost
+</pre>
 
 <h4>秘密鍵のパーミッションは600</h4>
 
@@ -82,27 +100,13 @@ BxFxFujQ1PG44DZBGRWoUGht+Bu/ZBtf9faiS8yR6U5p9AKARGE2
 chmod 600 id_rsa_example
 </pre>
 
-<h4>デフォルトで利用される秘密鍵はid_rsa</h4>
+<h4>sshコマンドのデフォルトで利用される秘密鍵はid_rsa</h4>
 
-デフォルトで利用される秘密鍵はid_rsaです。このことを知らないと、秘密鍵をつかってSSH公開鍵認証を行う場合に、とまどいます。
+デフォルトで利用される秘密鍵はid_rsaです。このことを知らないと、秘密鍵をつかってSSH公開鍵認証を行う場合に、とまどいます。秘密鍵ファイルを指定する方法や、特定のドメインへの秘密鍵ファイルのパスを設定ファイルに指定する方法は、sshコマンドの記事を参考にしてください。
 
-
-
-
-<h4>接続先ドメインによって、利用する秘密鍵を設定ファイルに</h4>
-
-接続先ドメインによって、利用する秘密鍵を設定できる。以下は、GithubにSSH接続する場合に作成した秘密鍵を使う設定です。
-
-<pre>
-echo '
-Host github github.com
-  HostName github.com
-  IdentityFile ~/.ssh/id_rsa_example
-  User git
-' | cat >> ~/.ssh/config
-chmod 600 ~/.ssh/config
-</pre>
-
+<ul>
+  <li><a href="/blog/20200621103220.html">sshコマンド - SSHサーバーへ接続する</a></li>
+</ul>
 
 <h3>SSHの秘密鍵と公開鍵のペアを必要とする場合の例</h3>
 
@@ -117,8 +121,6 @@ SSHのログインにユーザーパスワードではなく、SSHの鍵認証�
 <h4>Github</h4>
 
 Github上で、SSHを使って、Gitリポジトリを取得・更新するときは、Githubに公開鍵を登録必要する必要があります。
-
-<h4>Gitリポジトリ管理 - システム開発のソースコード管理</h4>
 
 <ul>
   <li><a href="/blog/20200613091136.html">Githubに公開鍵を登録する</a></li>
