@@ -1,0 +1,125 @@
+<h2>ssh-keygenでSSH公開鍵認証のための秘密鍵と公開鍵のペアを作成する</h2>
+
+<b>ssh-keygen</b>コマンドを使うと、SSH公開鍵認証ための秘密鍵と公開鍵のペアを作成することができます。
+
+まず、SSHの秘密鍵を保存しておくディレクトリに移動します。これは、本来は必要な作業ではないのですが、秘密鍵、あるいは、公開鍵のどちらかを「.ssh」ディレクトリに配置するだろうという推測に基づきます。
+
+<pre>
+cd ~/.ssh
+</pre>
+
+公開鍵と秘密鍵のペアを生成するには、ssh-keygenコマンドを実行します。
+
+<pre>
+ssh-keygen -t rsa
+</pre>
+
+生成するファイル名を聞かれますので「id_rsa_example」と入力しましょう。exampleの部分は、用途に応じて変えてください。
+
+「id_rsa_example」と「id_rsa_example.pub」というファイルが作成されます。「id_rsa_example」は秘密鍵、「id_rsa_example.pub」は公開鍵です。
+
+パスフレーズを入力してくださいと聞かれたときは、パスフレーズを入力する場合は、パスフレーズを、必要のない場合は、Enterを押してください。再入力を求められるので、同じパスフレーズ、パスフレーズを設定していない場合は、Enterを押してください。
+
+パスフレーズとは、パスワードのことです。
+
+<h4>秘密鍵の内容</h4>
+
+<a href="https://linux.perlzemi.com/blog/20200113083613.html">cat</a>コマンドで「id_rsa_example」の中身を表示してみましょう。
+
+<pre>
+cat id_rsa_example
+</pre>
+
+以下のように表示されます。
+
+<pre>
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjSsucYA958wTIKUcPRXC2iZxb84FXkzm41/jzpfnUeBFsypS8xfTXpfDaSIYeMDyr9pIUfDuWWPykoofL4WZaJYDy5pQclFwby/KttDRAnm0XZQ2ZDUtnrUUdva55mxOcTJP0c1VWXpwrhBA+JSFLOGB8wxCV8UFh9XWXI4c5QKQ/Hyl8//nXT6suQf199VNf4Ru31rs+49FDW9FyvoX1GGEEBJCT2ROVD6qi1xY766PuhM/4OMQeIxZmZg8ysML307viqkKh/2mecwkdV1mxGQt8GbO3gvTOX5h9p7tGEwa3zSHhxudux1Kf6Pfcg4FwKuld8r77DKMXEszpRI11 myapp@myhost
+</pre>
+
+<h4>公開鍵の内容</h4>
+
+<a href="https://linux.perlzemi.com/blog/20200113083613.html">cat</a>コマンドで「id_rsa_example.pub」の中身を表示してみましょう。
+
+<pre>
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA4CEvH2b3HvgxOqRMKYaTpvcHmmYVuPGxg3784eQPGu9UJgl9
+tC/3xw7RJvK/pXm85Dee4vH1X8Z2W3tLrwvGZ+62imWADNvG33uiMGPOoO/d0RUp
+NgaO5ZnJTbe3T56BHRoI7+QOX5KICNq4RH6Qs3+1UFeAjlg0ASv0wauyCWuuR46/
+U0wWUT126Th5iN2uTNeF0mM3Y0Mb4TVgnH0fQPvEKF9lZApWUe7lYFeCgfJ5drP2
+yU7wv7g5jKiHjiiXS8wdn8SOB8n70JwM/IkbbyIqCKfGCR/hVxGZBxrAidn8uRzL
+Y2YkrZqvP62d6jvlJrgMjgA4yVr7viDYjwN7KwIDAQABAoIBAQCCNYUk3zLOQS6I
+fQ7qSQ7av0UhhBE2ouOYG1xa95127neaqYTn+74dXRRRZlHEltcQVuftvNfqzmfQ
+ee7cQSEBHIPcH1+nGL+O8kqlhjZy9SeO4pZQlrrJ1PBIQGU00kb8WzW5+GoJSB3T
+1w2abVUvkxAJHuzGxaNg0uKc6VzDbz877+dPgJD4vnLvYsyy8IKyCR2KrDRdv+JT
+hR/2OlqlPuFLKWyA1xDHcIuv9ie8u0yaOQU0rnMJSEp7BCedsPUXV0RBgFgcT49O
+61G7ufVDvQxEe3tFEWfpT1guFlMtYlveUPo3gsJDQZo/zfZofcqyHC/gE8I1KkMd
+c9kDOnvRAoGBAPAyljHDjG1KKgTyETggzO9RKxlYT0ALvd8xrDoFCWIavcfoA6Gl
+/RYOt2iihh6PXQO99Igvyffkikaar4FNGxnHE72VJbwQdChxYWnN/gUlphQr/nsJ
+fauALRWNxGueOJTaaz9vnGbTL8Ky5RLkzPjf/hp9ujr/sllyGatFJz8NAoGBAO7f
++ulN6Rot9OGUrdnV7F99HtMOSNkjnIcRW0V4rp6c4Q89LhXx9kWVmcR3jkoYdV16
+ouZ5AXUc43OTPosydVOdMTeSo0YfCNPu/fU7PWTqpp6qn/ZKAdeiiHgIspYkix1k
+o2xY7v4h0yU8MOvMwDEPle7qQoGssI17b/vLY9UXAoGASG3YoHTo+WOtvAQKcTRi
+159QMbpRW2yu+oiN+IjgRXbu10L9JVdaM7aIU8L+UmTElYZIIHDYpCmEELpARess
+St+e8kHxOP51KGTYDQGSoZayt850VEGOZZKnBaLUIed6BFjAkkZjkRYJhtpO/R2F
+OV7Bztcuuu+zpgkj+GNH7FkCgYAzp8O+h9aMjruRvHEL1jLTQ19TDJe8PPMwUhSG
+pV49dndEsFoy7KvwyDUEQ0ZFx5w5prdrV2d1R9X3vDOeLj8o4aku90rPcw6ZpejN
+Cw5vsD5vuT32KHLVipQwQNE9npFmvciJOYIU+oOKXcXGd/Rnp5MoowfWut1C+xpw
+PL9N6QKBgAzbxGL41apbLHuZ+duuz5D8Kbolhcke61+MSXNjvJIvOJruDt6F8TZY
+mJ4gSaRUf9C9315+kRg0UmZafRNW6rVYcxbU9sDVLMPWS1LYd3JXx03Ac5sHK7Ks
+BxFxFujQ1PG44DZBGRWoUGht+Bu/ZBtf9faiS8yR6U5p9AKARGE2
+-----END RSA PRIVATE KEY-----
+</pre>
+
+<h3>秘密鍵に関する注意点</h3>
+
+秘密鍵に関する注意点です。
+
+<h4>秘密鍵のパーミッションは600</h4>
+
+秘密鍵のパーミッションは600である必要があります。ssh-keygenを使って作成した場合は、パーミッションは600に設定されますが、他のサーバーから秘密鍵の内容をコピーしてきた場合は、<a href="https://linux.perlzemi.com/blog/20200519082545.html">chmod</a>コマンドを使って、パーミッションを600にしましょう。
+
+<pre>
+chmod 600 id_rsa_example
+</pre>
+
+<h4>デフォルトで利用される秘密鍵はid_rsa</h4>
+
+デフォルトで利用される秘密鍵はid_rsaです。このことを知らないと、秘密鍵をつかってSSH公開鍵認証を行う場合に、とまどいます。
+
+
+
+
+<h4>接続先ドメインによって、利用する秘密鍵を設定ファイルに</h4>
+
+接続先ドメインによって、利用する秘密鍵を設定できる。以下は、GithubにSSH接続する場合に作成した秘密鍵を使う設定です。
+
+<pre>
+echo '
+Host github github.com
+  HostName github.com
+  IdentityFile ~/.ssh/id_rsa_example
+  User git
+' | cat >> ~/.ssh/config
+chmod 600 ~/.ssh/config
+</pre>
+
+
+<h3>SSHの秘密鍵と公開鍵のペアを必要とする場合の例</h3>
+
+<h4>rsyncによるバックアップの自動化</h4>
+
+<a href="/blog/20190130171737.html">rsync</a>によるバックアップの自動化を行う場合に、パスワードの入力を求められると自動化できないので、秘密鍵と公開鍵のペアを使ってSSHの鍵認証を行います。
+
+<h4>ユーザーログイン</h4>
+
+SSHのログインにユーザーパスワードではなく、SSHの鍵認証を行う場合に、必要になります。
+
+<h4>Github</h4>
+
+Github上で、SSHを使って、Gitリポジトリを取得・更新するときは、Githubに公開鍵を登録必要する必要があります。
+
+<h4>Gitリポジトリ管理 - システム開発のソースコード管理</h4>
+
+<ul>
+  <li><a href="/blog/20200613091136.html">Githubに公開鍵を登録する</a></li>
+</ul>
