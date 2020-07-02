@@ -35,7 +35,10 @@ rsyncは、ディレクトリを再帰的にコピーでき、ファイルの差
 
 本番機で、<a href="/blog/20200623095744.html">ssh-keygenコマンド</a>を使って、秘密鍵と公開鍵のペアを作成し公開鍵をバックアップサーバーに登録しましょう。
 
+rootで作業をします。
+
 <pre>
+sudo su -
 mkdir -p ~/.ssh
 chmod 700 ~/.ssh
 cd ~/.ssh
