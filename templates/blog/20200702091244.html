@@ -70,8 +70,8 @@ vi ~/.ssh/authorized_keys
 これで、SSH公開鍵認証で、rsyncができるようになります。
 
 <pre>
-sudo rsync -e "ssh -p22 -i id_rsa_backup" -av --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
-sudo rsync -e "ssh -p22 -i id_rsa_backup" -av --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
+sudo rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -av --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
+sudo rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -av --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
 </pre>
 
 バックアップ用のディレクトリも作成しておきましょう。
@@ -95,8 +95,8 @@ MAILはrsyncに失敗した場合に通知するメールアドレスです。�
 <pre>
 MAILTO=kimoto.yuki@gmail.com
 
-30 03 * * * rsync -e "ssh -p22 -i id_rsa_backup" -a --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
-30 03 * * * rsync -e "ssh -p22 -i id_rsa_backup" -a --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
+30 03 * * * rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -a --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
+30 03 * * * rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -a --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
 </pre>
 
 rsyncコマンドは「mkdir -p」のように複数階層のディレクトリを作れないことに注意しましょう。

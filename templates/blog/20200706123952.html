@@ -1,0 +1,17 @@
+<h2>Apacheの子プロセスの実行ユーザーとグループの変更</h2>
+
+Apacheの子プロセスの実行ユーザーとグループの変更はApache設定ファイルの「envvars」の中の「APACHE_RUN_USER」と「APACHE_RUN_GROUP」を設定することによって行えます。
+
+Apache自体はroot権限で実行されますが、実際にリクエストを受ける子プロセスはセキュリティ上の理由で、指定したユーザーで実行されます。この子プロセスの実行ユーザーと実行グループを指定する項目が「APACHE_RUN_USER」と「APACHE_RUN_GROUP」環境変数です。
+
+<pre>
+cd /etc/apache2
+sudo vi envvars
+</pre>
+
+Apacheの子プロセスの実行ユーザーとグループを、アプリケーションユーザーに設定する例です。グループには、デフォルトで個別のユーザーだけが所属している同名のグループが存在しますのでそれを指定します。
+
+<pre>
+export APACHE_RUN_USER=myapp
+export APACHE_RUN_GROUP=myapp
+</pre>
