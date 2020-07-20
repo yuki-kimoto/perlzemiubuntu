@@ -1,0 +1,33 @@
+<h2>redis-cli - RedisクライアントからRedisコマンドを実行する</h2>
+
+redis-cliは、Redisコマンドを実行するためのRedisクライアントです。<a href="/blog/20200525135533.html">Redisサーバーをインストール</a>すると自動的にインストールされます。
+
+<pre>
+redis-cli
+</pre>
+
+Redisクライアントが起動します。
+
+<h3>Redisコマンド</h3>
+
+Redisコマンドを実行しましょう。
+
+<h4>PUBを実行するPUBLISH</h4>
+
+PUBLISHコマンドを実行するとPUBを実行できます。PUBは、push通知に使用します。
+
+<pre>
+PUBLISH チャンネル名 メッセージ
+</pre>
+
+チャンネル名もメッセージも単なる文字列です。複雑なデータ構造が必要な場合は、メッセージにJSONを使いましょう。
+
+チャンネル名はすべてのプロセスでグローバルな名前空間ですので、重ならない名前を考えましょう。
+
+<pre>
+PUBLISH  /foo/bar/baz?id=5 Hello
+PUBLISH  "/foo/bar/baz?id=5" "Hello"
+PUBLISH  "/foo/bar/baz?id=5" '{message : "Hello"}'
+</pre>
+
+文字列の囲みは、ダブルクォートとシングルクォートの両方が使えます。
