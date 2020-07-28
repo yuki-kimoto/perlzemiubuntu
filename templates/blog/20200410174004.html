@@ -132,6 +132,18 @@ systemdのログ管理もjournalctlがUbuntuとCentOSで共通で使える。
 
 CentOS 7からはjournalctlコマンドをUbuntuと共通で使うことができます。
 
+<h3>Perl</h3>
+
+Ubuntuの一般的な構成ではデフォルトでPerlがインストールされています。
+
+CentOSの一般的な構成ではデフォルトでPerlがインストールされていないことが多いです。さらに、付け加えておくと、Perlのコアモジュールがperlパッケージから分離されて別になっています。
+
+<pre>
+# CentOSにおけるPerlのインストール
+yum install perl
+yum install perl-core
+</pre>
+
 <h3>バージョン間の変化の大きさ</h3>
 
 Ubuntuは、変化はあれども、なるべく互換性が保たれ、大きな変更は少ない感じがします。
