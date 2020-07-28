@@ -1,12 +1,14 @@
-<h2>UbuntuとCentOSの違うところ・共通化されたところ</h2>
+<h2>UbuntuとCentOSの違いと共通化された部分</h2>
 
-UbuntuとCentOSの違うところをここでまとめておきます。両方で動くようになるのがよいですね。
+Ubuntuと<a href="https://centos.perlzemi.com/">CentOS</a>の違うところをここでまとめておきます。両方で動くようになるのがよいですね。
 
-<h3>CentOSでは「/bin/sh」は「/bin/bash」にシンボリックリンクが張られている</h3>
+<h3>シェルのシェバン「/bin/sh」</h3>
 
-CentOSでは「/bin/sh」は「/bin/bash」にシンボリックリンクが張られている。
+CentOSでは「/bin/sh」は「/bin/bash」にシンボリックリンクが張られているので、bashで実行されます。
 
-シェバンを以下のように書いているとCentOSでは、bashで実行されるのに対して、Ubuntuでは、shで実行される。
+Ubuntuでは「/bin/sh」で実行されます。実装は「dash」と呼ばれるシェルになっています。
+
+シェバンを以下のように書いているとCentOSでは、bashで実行されるのに対して、Ubuntuでは「/bin/sh」で実行されます。
 
 <pre>
 #!/bin/sh
@@ -18,19 +20,51 @@ CentOSでは「/bin/sh」は「/bin/bash」にシンボリックリンクが張�
 ./morbo: 10: ./morbo: Syntax error: "(" unexpected
 </pre>
 
-ポータビリティを持たせるためには、明示的にbashとシェバンを書くのがよい。
+<a href="https://linux.perlzemi.com/">Linux</a>間ポータビリティを持たせるためには、明示的にbashとシェバンと明示的に書きます。
 
 <pre>
 #!/bin/bash
 </pre>
 
+Unix間ともポータビリティを持たせる場合はshの文法で書き直す必要があるでしょう。
+
+<a href="https://tutorial.perlzemi.com/">Perl</a>で書けば、Unix/Linux間で、ポータブルなプログラムが書けます。
+
 <h3>パッケージ管理</h3>
 
-パッケージ管理ツールUbuntuではapt、CentOSではyumの違いがある。パッケージ名も異なります。
+パッケージ管理ツールUbuntuではapt、CentOSではyumの違いがあります。
+
+CentOS 8からはdnfがyumを置き換えます。yumはdnfのエイリアスになります。
+
+パッケージ名も異なります。パッケージ管理は現在のところ共通化できなさそうです。
 
 <h3>sudo</h3>
 
-Ubuntuは、sudoがデフォルトです。CentOSと、手順を共通化するには、CentOSでも、sudoを使うように、サーバー管理を行いましょう。
+Ubuntuは、sudoがデフォルトで利用可能です。
+
+sudoを許可するには、Ubuntuでは、ユーザーをsudoグループに追加します。
+
+<pre>
+# Ubuntuでsudoを許可
+gpasswd -a myapp sudo
+</pre>
+
+CentOSでは、sudoが有効になっていません。visudoでsudoが利用可能になる設定を行います。(CentOS 7の場合)
+
+「%wheel ALL=(ALL) ALL」のコメントを外します。
+
+<pre>
+## Allows people in group wheel to run all commands
+#%wheel ALL=(ALL) ALL
+%wheel ALL=(ALL) ALL
+</pre>
+
+sudoを許可するには、ユーザーをwheelグループに追加します。
+
+<pre>
+# CentOSでsudoを許可
+gpasswd -a myapp wheel
+</pre>
 
 <h3>サーバー</h3>
 
@@ -48,11 +82,13 @@ UbuntuのApacheには、a2ensite, a2enmod, a2enconfなどの、設定ファイ�
 
 <h3>ファイアーウォール</h3>
 
-ファイアーウォールは、Ubuntuはufw、CentOSはfirewalldと異なる。
+ファイアーウォールは、Ubuntuはufw、CentOSはfirewalldです。
 
 ファイアーウォールは、コマンドラインでの設定は、非常にややこしく、やりたくないという気持ちは強い。
 
-VPS、クラウドサービスには、たいてい、ネットワークのパケット制御が存在するので、それで設定すると、Linux自体のファイアーウォールを意識しないですむ。
+VPS、クラウドサービスには、たいてい、ファイアーウォールの設定が存在するので、それで設定すると、Linux自体のファイアーウォールを意識しないですむ。ネットワークの設定でパケット制御を行う部分があります。
+
+オンプレミスの場合は、コマンドでファイアーウォール管理を行う。
 
 <h3>cron</h3>
 
@@ -62,9 +98,9 @@ CentOSの場合は、デフォルトのcronがanacronです。普通のcronが�
 
 <h3>SeLinux</h3>
 
-CentOSの場合は、SeLinuxがデフォルトでonになっている。この機能、リバースプロキシでの接続で、プロキシエラーになっちゃうので、SeLinuxを無効にするか、リバースプロキシができる設定にする必要があります。
+Ubuntuの場合は、CentOSのSeLinuxに該当する機能は、デフォルトでoffになっています。
 
-Ubuntuの場合は、CentOSのSeLinuxに該当する機能は、デフォルトでoffになっているようです。
+CentOSの場合は、SeLinuxがデフォルトでonになっている。この機能、リバースプロキシでの接続で、プロキシエラーになっちゃうので、SeLinuxを無効にするか、リバースプロキシができる設定にする必要があります。
 
 <h3>Let's EncryptによるSSL証明書</h3>
 
@@ -80,7 +116,7 @@ yum install --enablerepo=epel certbot
 
 新しいCent OSのバージョンが出たばかりなど、certbotがepelレポジトリに含まれていない場合は、ソースコードからインストールしする必要があります。またcertbotは、certbot-autoという名前です。
 
-<h3>ここ最近共通になったもの(2020年5月21日現在)</h3>
+<h3>UbuntuとCentOSで共通になったもの</h3>
 
 CentOSとUbuntuで、ここ最近共通になったもの。
 
@@ -88,6 +124,16 @@ CentOSとUbuntuで、ここ最近共通になったもの。
 
 CentOSもUbuntuもサービス(サーバーとして起動する者)は、systemdで管理するようになって、管理コマンドもsystemctlになりました。
 
+CentOS 7からはsystemctlコマンドをUbuntuと共通で使うことができます。
+
 <h4>journalctl</h4>
 
 systemdのログ管理もjournalctlがUbuntuとCentOSで共通で使える。
+
+CentOS 7からはjournalctlコマンドをUbuntuと共通で使うことができます。
+
+<h3>バージョン間の変化の大きさ</h3>
+
+Ubuntuは、変化はあれども、なるべく互換性が保たれ、大きな変更は少ない感じがします。
+
+CentOSの方が変化が大きく。バージョン間の差分は大きく感じる。CentOS 5, 6, 7, 8で、変化は多い。
