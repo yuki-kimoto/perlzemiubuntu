@@ -85,7 +85,7 @@ Let's EncryptでのSSL証明書の更新には「certbot renew」コマンドを
 sudo certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 </pre>
 
-SSL証明書の再読み込みで、Apacheが再起動するので、注意してください。設定ファイルが間違っていた場合は、Apacheが止まります。
+SSL証明書の更新後、SSL証明書を再読み込みするために、<a href="/blog/20200605104005.html">systemctl</a>コマンドでApacheの再起動をしますので、注意してください。設定ファイルが間違っていた場合は、Apacheが止まります。
 
 <h3>Let's EncryptでのSSL証明書の更新の自動化</h3>
 
