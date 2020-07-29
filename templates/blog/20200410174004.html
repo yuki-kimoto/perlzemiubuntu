@@ -144,6 +144,22 @@ yum install perl
 yum install perl-core
 </pre>
 
+<h3>パッケージのインストール後のサーバーの状態</h3>
+
+サーバーアプリケーションをインストールした場合は、Ubuntuの場合は、起動されます。
+
+サーバーアプリケーションをインストールした場合は、CentOSの場合は、起動されていません。
+
+<h3>標準パッケージの種類</h3>
+
+Ubuntuでは標準パッケージでLet's Encryptのクライアントであるcertbotと、Redisサーバーが提供されています。
+
+CentOSの場合は(CentOS 7の場合)は、上記が提供されていません。Linux 用の拡張パッケージ(EPEL)リポジトリをインストールすることで利用可能になります。
+
+<pre>
+sudo yum -y install epel-release
+</pre>
+
 <h3>バージョン間の変化の大きさ</h3>
 
 Ubuntuは、変化はあれども、なるべく互換性が保たれ、大きな変更は少ない感じがします。
