@@ -1,13 +1,33 @@
-<h2>Perlのインストール</h2>
+<h2>UbuntuへのPerlのインストール</h2>
 
-UbuntuにPerlがインストールされていない場合はPerlをインストールしましょう。
+UbuntuへのPerlのインストール方法です。<a href="/blog/20200530085516.html">apt</a>コマンドを使ってPerlをインストールします。
 
 <pre>
 sudo apt install -y perl
 </pre>
 
-Perlのバージョンが確認できればインストールが成功しています。
+Ubuntuでは、デフォルトでPerlがインストールされていることが多いですが、UbuntuにPerlがインストールされていない場合はPerlをインストールしましょう。
+
+Perlのバージョンが確認できればUbuntuへのPerlのインストールが成功しています。
 
 <pre>
 perl -v
 </pre>
+
+<h3>Ubuntuバージョン12以下におけるPerlのインストール</h3>
+
+aptコマンドは、Ubuntu 14から導入されたものですので、Ubuntuバージョン12以下の場合は、<a href="http://manpages.ubuntu.com/manpages/cosmic/ja/man8/apt-get.8.html">apt-get</a>を使いましょう。
+
+<pre>
+sudo apt-get install -y perl
+</pre>
+
+<h3>ユーザー環境へのPerlのインストール</h3>
+
+このページで解説しているPerlは、システムへインストールするシステムPerlです。
+
+ユーザー環境へのPerlのインストールは以下で解説しています。
+
+<ul>
+  <li><a href="/blog/20200413174004.html">ユーザー環境へのPerlのインストール + cpanmのインストール</a>
+</ul>
