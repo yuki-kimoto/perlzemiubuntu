@@ -262,3 +262,31 @@ MacにもWindowsのWinSCPの代わりになるようなソフトウェアがあ�
 <ul>
   <li><a href="/blog/20200715102902.html">SSHポートを変更する - デフォルトの22番ポートはセキュリティ的に危険が高い</a></li>
 </ul>
+
+<h3>タイムゾーンの設定</h3>
+
+タイムゾーンを「Asia/Tokyo」に設定しましょう。<a href="/blog/20200507174004.html">timedatectlでタイムゾーンの設定・確認</a>ができます。
+
+<pre>
+# タイムゾーンを「Asia/Tokyo」に設定
+sudo timedatectl set-timezone Asia/Tokyo
+</pre>
+
+タイムゾーンの確認。
+
+<pre>
+# タイムゾーンの確認
+timedatectl
+</pre>
+
+<h3>パッケージのインストール</h3>
+
+Perl Webシステム開発で必要になるパッケージをインストールしましょう。
+
+<h4>aptのアップデート</h4>
+
+<a href="/blog/20200530085516.html">apt</a>コマンドは、パッケージのインストールコマンドですが、apt自体が古いとパッケージのダウンロードが失敗する場合があるので<a href="/blog/20200524135533.html">aptをアップデート</a>します。
+
+<pre>
+sudo apt update
+</pre>
