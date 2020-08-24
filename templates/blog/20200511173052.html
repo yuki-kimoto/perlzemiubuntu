@@ -93,3 +93,22 @@ ps -ef
 <ul>
   <li><a href="/blog/20200401174004.html">ユーザーの一覧を表示する 「/etc/passwd」ファイル</a></li>
 </ul>
+
+<h3>useraddのオプションを間違った場合の対処</h3>
+
+<h4>ホームディレクトリのオプション「-m」つけ忘れた場合</h4>
+
+userdelでユーザーをいったん削除して、再度useraddでユーザーを作成します。
+
+<pre>
+sudo userdel myapp
+sudo useradd -m myapp -s /bin/bash
+</pre>
+
+<h4>デフォルトのシェルのオプション「-s」をつけ忘れた場合</h4>
+
+usermodで修正できます。
+
+<pre>
+sudo usermod -s /bin/bash myapp
+</pre>
