@@ -362,5 +362,35 @@ SSL証明書の自動発行のために<a href="/blog/20200319174004.html">certb
 sudo apt install -y certbot
 </pre>
 
+<h3>データ用ディレクトリの作成</h3>
+
+Webアプリケーションがデータを保存するためのデータ用のディレクトリを作成しましょう。「myapp」ユーザーだけではなく、他の開発ユーザーも書き込めるように設定しておきます。
+
+「/datadrive」を<a href="https://linux.perlzemi.com/blog/20191211133524.html">mkdir</a>コマンドでデータ用ディレクトリを作成します。
+
+<pre>
+sudo mkdir /datadrive
+</pre>
+
+次に、このデータ用ディレクトリに、Webアプリケーションユーザー「myapp」と他の開発ユーザーが書き込めるようにします。以下の手順の「myapp」ユーザーに関する部分だけを実行してください。
+
+<ul>
+  <li><a href="/blog/20200327174004.html">データディレクトリに複数のユーザーが読み書きする方法 - Webアプリのファイルアップロードディレクトリ</a></li>
+</ul>
+
+<pre>
+sudo groupadd myapp-group
+sudo gpasswd -a myapp myapp-group
+sudo chgrp -R myapp-group /datadrive
+sudo chmod 775 /datadrive
+sudo chmod g+s /datadrive
+
+# 確認
+ls -l / | grep datadrive
+</pre>
+
+これで、データ用ディレクトリが完成しました。
+
+
 ここまで完成
 
