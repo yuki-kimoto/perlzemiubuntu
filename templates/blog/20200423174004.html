@@ -75,6 +75,7 @@ relayhost = $mydomain
 inet_interfaces = loopback-only
 mydestination =
 ' | sudo sh -c 'cat > /etc/postfix/main.cf'
+
 </pre>
 
 shの-cオプションを使っているのは、リダイレクトにroot権限を持たせるためです。
@@ -176,17 +177,17 @@ sendmail
 
 入力待ちになったら、sendmailがインストールされています。Ctrl + C でsendmailを終了しましょう。
 
-ではメールを送信してみましょう。[メール]のところを自分のメールにしてください。
+ではメールを送信してみましょう。「メール送信元」「メール送信先」のところを自分のメールにしてください。
+
+<pre>
+echo Hello | sendmail -f メール送信元 メール送信先
+</pre>
 
 sendmailでは、標準入力が、本文になります。
 
 -fはfromでメール送信元を指定します。メール送信元がない場合は、メールがはじかれるという経験が多いので、指定しています。
 
 その後ろに、メールの送信先を指定します。試験するときは、送信先、送信元どちらも同じで大丈夫です。
-
-<pre>
-echo Hello | sendmail -f メール送信元 メール送信先
-</pre>
 
 <h3>ポート25がブロックされているとsendmailでメールは送れない</h3>
 
