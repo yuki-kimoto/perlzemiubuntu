@@ -429,7 +429,7 @@ sudo systemctl status redis-server
 
 <h4>Redis設定ファイルの編集</h4>
 
-Redis設定ファイルを編集します。間違った場合のためにバックアップもとっておきます。
+Redis設定ファイルを<a href="https://linux.perlzemi.com/blog/20190401171737.html">viエディタ</a>で編集します。間違った場合のためにバックアップもとっておきます。
 
 <pre>
 sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.bak
@@ -456,6 +456,98 @@ Redisの起動と確認を行います。
 sudo systemctl start redis-server
 sudo systemctl status redis-server
 </pre>
+
+<h3>データベースサーバー MariaDB</h3>
+
+データベースサーバーであるMariaDBのインストールと起動確認を行います。
+
+<h4>データベースサーバーと関連ライブラリのインストール</h4>
+
+データベースサーバーMariaDBと関連ライブラリをインストールします。<a href="/blog/20200422174004.html">mariadb-clientのインストール</a>、<a href="/blog/20200421174004.html">mariadb-serverのインストール</a>、<a href="/blog/20200411174004.html">libmysqlclient-dev のインストール</a>、<a href="/blog/20200419174004.html">libmariadb-devのインストール</a>を行います。
+
+<pre>
+sudo apt install -y mariadb-client
+sudo apt install -y mariadb-server
+sudo apt install -y libmariadbclient-dev
+sudo apt install -y libmariadb-dev
+</pre>
+
+<h4>データベースサーバーの起動確認</h4>
+
+<a href="/blog/20200417174004.html">MariaDBが起動</a>していることを確認します。
+
+<pre>
+sudo systemctl status mariadb
+</pre>
+
+<h4>rootユーザーでMariaDBに接続</h4>
+
+まず最初にMariaDBのrootユーザーでMariaDBに接続しましょう。
+
+rootユーザーで接続するためには、mysqlコマンドをsudoで実行します。ユーザー名はrootです。
+
+<pre>
+sudo mysql -uroot
+</pre>
+
+MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
+
+<pre>
+quit
+</pre>
+
+以下の手順では、rootユーザーでMariaDBに接続する手順を最初に実行してください。
+
+詳しい解説は、以下にあります。
+
+<ul>
+  <li><a href="/blog/20200224174004.html">MariaDBの初期設定とユーザーの作成</a></li>
+</ul>
+
+<h4>データベースの作成</h4>
+
+ここでは、Webアプリケーション用の<a href="https://mariadb.perlzemi.com/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。データベース名の変更には、少し工夫はいりますが、後でデータベース名の変更は可能です。
+
+<pre>
+create database myappdb;
+</pre>
+
+作成したデータベースを確認するために、<a href="https://mariadb.perlzemi.com/blog/20200518082643.html">データベースの一覧</a>を表示します。
+
+<pre>
+show databases;
+</pre>
+
+<h4>アプリケーションユーザーの作成</h4>
+
+アプリケーション用のユーザー「myapp」を作成します。
+
+<pre>
+# myappユーザーの作成
+create user myapp;
+</pre>
+
+<h4>権限とパスワードの設定</h4>
+
+myappユーザーにselect,update,insert,delete権限を与えパスワードを設定します。
+
+パスワードは「identified by」の後ろに続いている文字列です。この部分を、自分で設定してください。
+
+<pre>
+# myappユーザーにselect,update,insert,delete権限を与える
+grant insert,update,delete,select on myappdb.* to 'myapp'@'%' identified by 'eifjutab&';
+</pre>
+
+<h4>アプリケーションユーザーでの接続確認</h4>
+
+接続を抜けて、新しく作成した「myapp」ユーザーで、MariaDBに接続できることを確認します。
+
+<pre>
+# rootユーザーで接続
+mysql -umyapp -p
+</pre>
+
+
 
 
 ここまで完成

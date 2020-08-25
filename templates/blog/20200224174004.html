@@ -26,33 +26,43 @@ time_zone
   <li><a href="/blog/20200223174004.html">UbuntuのMariaDBの設定ファイルの場所</a></li>
 </ul>
 
-<h3>MariaDBユーザーの作成</h3>
+<h3>MariaDBのrootユーザーでの接続</h3>
 
-Webアプリケーションのためのユーザーを作成しますが、まず最初はrootパスワードを設定しましょう。
+Ubuntuでは、MariaDBのrootユーザーとして接続するには、Ubuntuのroot権限を使ってアクセスします。つまり、sudoを使って、パスワードなしでrootユーザーで接続します。
 
-<h4>rootパスワードの設定</h4>
-
-rootパスワードの設定方法です。この手順は、MariaDBがクラウドサービスとして提供されている場合は、必要がありません。MariaDBがクラウドサービスでは、MariaDBを作成したときに、管理者ユーザーが作成されているはずですので、rootユーザーの代わりに、そのユーザーを使いましょう。
-
-mysqlコマンドを使って、<a href="https://mariadb.perlzemi.com/blog/20200309102346.html">MariaDBへ接続</a>しましょう。パスワードなしで接続できます。
-
-以下の手順でrootパスワードを設定してください。
-
-<ul>
-  <li><a href="https://mariadb.perlzemi.com/blog/20200616142021.html">rootのパスワードを設定する</a></li>
-</ul>
+<pre>
+sudo mysql -uroot
+</pre>
 
 MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
 
-<h4>アプリケーションユーザーの作成</h4>
+<pre>
+quit
+</pre>
+
+<h3>データベースの作成</h3>
+
+ここでは、Webアプリケーション用の<a href="https://mariadb.perlzemi.com/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。後でデータベース名の変更は可能です(少し工夫はいりますが)。
+
+<pre>
+create database myappdb;
+</pre>
+
+作成したデータベースを確認するために、<a href="https://mariadb.perlzemi.com/blog/20200518082643.html">データベースの一覧</a>を表示します。
+
+<pre>
+show databases;
+</pre>
+
+<h3>アプリケーションユーザーの作成</h3>
 
 Webアプリケーション用のMariaDBユーザを作成しましょう。select,insert,update,deleteの権限を持ったユーザーです。
 
 MariaDBに管理者ユーザで接続します。上記でrootのパスワードを設定した場合は、rootユーザーで、管理者ユーザーが他にいる場合は、そのユーザーで接続してください。
 
 <pre>
-# rootユーザーで接続
-mysql -uroot -p
+# Ubuntuのrootユーザーで接続
+sudo mysql -uroot
 
 # MariaDBクラウドサービスに接続するサンプル
 mysql -h my-devel-db-001.mariadb.database.azure.com -ukanri@my-devel-db-001 -p
@@ -71,7 +81,7 @@ create user myapp;
 次に、<a href="https://mariadb.perlzemi.com/blog/20200522082643.html">データベースへのアクセス権限の設定とパスワードを設定</a>します。
 
 <pre>
-grant insert,update,delete,select on mydatabase.* to 'myapp'@'%' identified by 'eifjutab&';
+grant insert,update,delete,select on myappdb.* to 'myapp'@'%' identified by 'eifjutab&';
 </pre>
 
 接続を抜けて、新しく作成した「myapp」ユーザーで、MariaDBに接続できることを確認します。
