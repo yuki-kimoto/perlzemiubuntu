@@ -401,14 +401,6 @@ ls -l / | grep datadrive
 
 これで、データ用ディレクトリが完成しました。
 
-<h3>cron</h3>
-
-定期プログラム実行の常駐アプリケーションである<a href="/blog/20200520084454.html">cronの起動確認</a>を行います。
-
-<pre>
-sudo systemctl status cron
-</pre>
-
 <h3>Redisサーバー</h3>
 
 揮発性の情報の保存サーバーである<a href="/blog/20200525135533.html">Redisサーバーのインストール</a>と<a href="/blog/20200225174004.html">Redisサーバーの起動確認</a>を行います。
@@ -555,6 +547,133 @@ grant insert,update,delete,select on myappdb.* to 'myapp'@'%' identified by 'eif
 mysql -umyapp -p
 </pre>
 
+<h3>Perl Web開発環境の構築</h3>
+
+Perl Web開発環境の構築としてユーザー環境に<a href="https://tutorial.perlzemi.com/">Perl</a>をインストールし、<a href="https://mojolicious.perlzemi.com/">Mojolicious</a>の小さなWebアプリケーションを立ち上げます。
+
+<h4>Perlのインストール</h4>
+
+ここでは、Perlのトラブルがなるべく少ない「perl-5.20.3」をインストールします。
+
+公式なセキュリティフィックスのサポートが存在するバージョンが良い場合は、最新版のPerlかその前のバージョンのPerlをインストールしましょう。
+
+以下の手順からperlbrewでユーザー環境にPerlをインストールするための必要な部分を抜き出します。plenvで行いたい場合は、以下の手順の中にあるので参考にしてください。
+
+<ul>
+  <li><a href="/blog/20200413174004.html">ユーザーPerlとcpanmのインストール</a></li>
+</ul>
+
+<pre>
+# perlbrewのインストール
+wget -O - http://install.perlbrew.pl | bash
+
+# perlbrewの設定を~/.bashrcに書き込み
+echo "source ~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
+
+# ~/.bashrcを再読み込み
+source  ~/.bashrc
+
+# Perlのインストール
+perlbrew install perl-5.20.3
+
+# インストールしたPerlへの切り替え
+perlbrew switch perl-5.20.3
+
+# Perlのバージョン確認
+perl -v
+
+# cpanmのインストール
+perlbrew install-cpanm
+</pre>
+
+<h4>Webアプリケーションの立ち上げ</h4>
+
+次にMojoliciousのインストールとWebアプリケーションの起動を行います。
+
+以下の記事の内容を実行してください。最後のApacheの設定ファイルの部分以外の手順を実行しましょう。
+
+<ul>
+  <li><a href="/blog/20200729134756.html">MojoliciousによるWebアプリケーションのデプロイ</a></li>
+</ul>
+
+<h3>ドメイン名の取得とDNSサーバーの設定</h3>
+
+ドメインを取得して、ドメイン名とサーバーIPアドレスを紐づけましょう。ドメイン名は、インターネット上でWebサイトを公開するためと、メール送信サーバーの設定のために必要です。
+
+さくらVPSの場合のサーバーのIPアドレスは、VPSコントロールパネルの「IPv4」「ネットワーク情報」「アドレス」に記載されています。
+
+以下の記事の中のAレコードの設定のみを行ってください。
+
+<ul>
+  <li><a href="/blog/20200807062918.html">DNSサーバーの設定 - ドメイン名とIPアドレスを対応させる</a></li>
+</ul>
+
+この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.kimoto-system.co.jp」を使用します。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--
+
 <h3>メール送信サーバー</h3>
 
 メール送信サーバーのインストールと初期設定です。
@@ -627,8 +746,14 @@ sendmailでは、標準入力が、本文になります。
 
 その後ろに、メールの送信先を指定します。試験するときは、送信先、送信元どちらも同じで大丈夫です。
 
-ここまで完成
+<h3>cron</h3>
 
-echo Hello | sendmail -f kimoto.yuki@gmail.com kimoto.yuki@gmail.com
+定期プログラム実行の常駐アプリケーションである<a href="/blog/20200520084454.html">cronの起動確認</a>を行います。
 
-echo Hello | sendmail -f kimoto_yuki@shinshina.co.jp kimoto_yuki@shinshina.co.jp
+<pre>
+sudo systemctl status cron
+</pre>
+
+-->
+
+ここまで完成。
