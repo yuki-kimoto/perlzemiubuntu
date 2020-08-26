@@ -56,7 +56,7 @@
 
 これで、さくらVPSで、Ubuntu 18を使えるようになります。
 
-<h3>パケットフィルタリング</h3>
+<h3>パケットフィルタリング - ファイアーウォールの設定</h3>
 
 Webシステム開発のために必要なポートを開放しましょう。この手順は、2020年8月16日に試したものです。
 
@@ -110,9 +110,9 @@ SSH用のあなた独自のポートを追加してください。ウェルナ�
 
 「パケットフィルタ」「パケットフィルタ設定へ」
 
-<h4>Mojoliciousアプリケーション用のポートを開放</h4>
+<h4>Mojolicious開発サーバー用のポートを開放</h4>
 
-Mojoliciousアプリケーション用のポートを開放しておきましょう。<a href="https://mojolicious.perlzemi.com/">Mojolicious</a>は、PerlのWebフレームワークのひとつで、リアルタイムWebとクラウドサーバーに対応できます。
+Mojolicious開発サーバー用のポートを開放しておきましょう。<a href="https://mojolicious.perlzemi.com/">Mojolicious</a>は、PerlのWebフレームワークのひとつで、リアルタイムWebとクラウドサーバーに対応できます。
 
 Mojolicious開発サーバー用のポートは
 
@@ -134,7 +134,33 @@ Mojolicious開発サーバー用のポートは
 
 開発者が複数いる場合は、必要に応じて、パケットフィルタから別のポートを開放しましょう(3001番、3002番など)。
 
-(ここまで完了。)
+同じ作業を繰り返します。
+
+「パケットフィルタ」「パケットフィルタ設定へ」
+
+<h4>Mojolicious本番サーバー用のポート開放</h4>
+
+Mojolicious本番サーバー用のポートを開放しておきましょう。
+
+Mojolicious本番サーバー用のポートは
+
+<pre>
+8080
+</pre>
+
+です。
+
+「開放ポートを追加する」をクリック。
+
+「フィルタの用途」で「カスタム」をクリック。
+
+プロトコルは「TCP」を選択。
+
+「ポート番号」に「8080」を入力してください。
+
+「設定を保存する」をクリック。設定が完了しました。
+
+開発者が複数いる場合は、必要に応じて、パケットフィルタから別のポートを開放しましょう(3001番、3002番など)。
 
 <h3>Webコンソールからの作業</h3>
 
@@ -618,11 +644,65 @@ perlbrew install-cpanm
 
 この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.kimoto-system.co.jp」を使用します。
 
+<h3>Apache</h3>
 
+WebサーバーであるApacheのインストールと設定を行います。HTTPSで接続できるようにSSLの設定を行います。Mojoliciousアプリケーションに接続できるようにバーチャルホストとリバースプロキシの設定を行います。
 
+ドメイン名の取得とDNSサーバーの設定で、使用するドメインが正しくサーバーのIPアドレスに紐づけられていることが前提です。
 
+<h4>Apacheのインストール</h4>
 
+<a href="/blog/20200424174004.html">Apache</a>のインストールを行います。
 
+<pre>
+sudo apt install -y apache2
+</pre>
+
+<h4>Apacheの起動確認</h4>
+
+<a href="/blog/20200519084454.html">Apacheの起動確認</a>を行います。
+
+<pre>
+sudo systemctl status apache2
+</pre>
+
+<h4>Apacheモジュール</h4>
+
+リバースプロキシの設定とSSLの設定とWebSocketの設定に必要なApacheモジュールを有効にします。
+
+<a href="/blog/20200318174004.html">mod_ssl</a>, <a href="/blog/20200311174004.html">mod_rewrite</a>, <a href="/blog/20200309174004.html">mod_headers</a>, <a href="/blog/20200310174004.html">mod_proxy</a>, <a href="/blog/20200220174004.html">mod_proxy_http</a>, <a href="/blog/20200718090758.html">proxy_wstunnel</a>を有効にします。
+
+<pre>
+# mod_sslを有効化
+sudo a2enmod ssl
+
+# mod_rewriteを有効化
+sudo a2enmod rewrite
+
+# mod_headersを有効化
+sudo a2enmod headers
+
+# mod_proxyを有効化
+sudo a2enmod proxy
+
+# mod_proxy_http
+sudo a2enmod proxy_http
+
+# mod_proxy_wstunnel
+sudo a2enmod proxy_wstunnel
+</pre>
+
+Apacheを再起動します。
+
+<pre>
+sudo systemctl restart apache2
+</pre>
+
+Apacheの状態確認を行います。
+
+<pre>
+sudo systemctl status apache2
+</pre>
 
 
 
