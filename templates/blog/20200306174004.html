@@ -187,6 +187,10 @@ sudo a2ensite www.mydomain.example
 
 有効化が終わったら<a href="/blog/20200519084454.html">Aapacheを再起動</a>してください。
 
+<pre>
+sudo systemctl reload apache2
+</pre>
+
 8080番ポートでPerlでWebサイトが起動していることを確認してください。
 
 「https://www.mydomain.example」でWebサイトが表示できれば成功です。
