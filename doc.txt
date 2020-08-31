@@ -19,9 +19,13 @@ Apache
   /blog/20200723101434.html
 
   ‹LŽ–
-  
+    
+    make
     /blog/20200511173052.html
-
+    
+    libmariadb-dev
+    /blog/20200419174004.html
+  
 cron
 
   20200830052743.html
