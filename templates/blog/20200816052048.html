@@ -832,91 +832,90 @@ Let's EncryptでのSSL証明書の更新する場合「certbot renew」コマン
 sudo certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 </pre>
 
-このコマンドはcronの自動更新に設定しておくと、自動で更新されます。cronの設定については、後程解説します。
+このコマンドは<a href="/blog/20200830052743.html">cron</a>の自動更新に設定しておくと、自動で更新されます。cronの設定については、後程解説します。
 
-<!--
 <h4>Apacheの設定ファイルにSSL証明書を追加</h4>
 
-<a href="/blog/20200611082716.html">Apacheの設定ファイルにSSL証明書を追加</a>してください。
+<a href="/blog/20200611082716.html">Apacheの設定ファイルにSSL証明書を追加</a>します。
 
-<ul>
-  <li><a href="/blog/20200611082716.html">SSL証明書の設定をApacheの設定ファイルに記述する</a></li>
-</ul>
+まずSSLの基本設定ファイルを作成します。これは、後でWebアプリケーションが増えた場合に共通して使うことを想定しています。
 
-SSL証明書の更新後、SSL証明書を再読み込みするために、<a href="/blog/20200605104005.html">systemctl</a>コマンドでApacheの再起動をしますので、注意してください。設定ファイルが間違っていた場合は、Apacheが止まります。
-
-<h3>Let's EncryptでのSSL証明書の更新の自動化</h3>
-
-Let's EncryptでのSSL証明書の更新を手動で行うのは、手間がかかります。一週間に一回、自動的に更新するように設定しておきましょう。
-
-一日一回の場合は、もしcertbotが間違っていた場合に、大量にSSL証明書を発行してしまって、しばらくSSL証明書が取得できないという事態になる可能性があるので、やめておきた方がリスクは避けられます。
-
-1ヵ月に一回だと、もう少し頻度を上げた方が、間違っている場合の確認がしやすいかなと感じます。
-
-というわけで、ここでは、1週間に1回、月曜日の9時に更新するという記述にしておきます。
-
-<h4>rootのcrontabを設定</h4>
-
-rootのcrontabを設定しましょう。
+「conf-available/ssl-basic.conf」というファイル名で<a href="https://linux.perlzemi.com/blog/20190401171737.html">viエディタ</a>で作成します。
 
 <pre>
-sudo crontab
+cd /etc/apache2
+sudo vi conf-available/ssl-basic.conf
 </pre>
 
-crontabが起動したら、以下の内容を記述しましょう。<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>の使い方はこちら。
+以下の内容を追加します。
 
 <pre>
-0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
+SSLEngine on
+SSLProtocol             all -SSLv2 -SSLv3
+SSLCipherSuite          ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+SSLHonorCipherOrder     on
 </pre>
 
--->
+次にWebアプリケーションの設定ファイルを編集します。自己SSL証明書の記載部分をLet's Encryptで作ったSSL証明書に変更します。
 
+<pre>
+cd /etc/apache2/sites-available
+sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
+</pre>
 
+元のSSL証明書の設定部分です。
 
+<pre>
+  SSLEngine on
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</pre>
 
+以下のように書き換えてください。
 
+<pre>
+<VirtualHost *:80>
+  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
 
+  RewriteEngine on
+  RewriteRule (.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
 
+<VirtualHost *:443>
+  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
 
+  <Proxy *>
+    Require all granted
+  </Proxy>
 
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyPass /websocket ws://localhost:8080/websocket
+  ProxyPass / http://localhost:8080/ keepalive=On
+  ProxyPassReverse / http://localhost:8080/
+  RequestHeader set X-Forwarded-Proto "https"
+  
+  # SSL証明書
+  Include conf-available/ssl-basic.conf
+  SSLCertificateFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/privkey.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/chain.pem
+</VirtualHost>
+</pre>
 
+Apacheの設定ファイルが正しいかテストを行います。
 
+<pre>
+sudo apachectl -t
+</pre>
 
+SSL証明書の更新後、SSL証明書を再読み込みするために、<a href="/blog/20200605104005.html">systemctl</a>コマンドでApacheの再起動をします。
 
+<pre>
+sudo systemctl reload apache2
+</pre>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+WebサイトにアクセスしてSSL証明書が有効になっていればOKです。
 
 <!--
 
@@ -998,6 +997,30 @@ sendmailでは、標準入力が、本文になります。
 
 <pre>
 sudo systemctl status cron
+</pre>
+
+<h4>rootのcrontabを設定</h4>
+
+rootのcrontabを設定しましょう。
+
+<pre>
+sudo crontab
+</pre>
+
+crontabが起動したら、以下の内容を記述しましょう。<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>の使い方はこちら。
+
+<h3>Let's EncryptでのSSL証明書の更新の自動化</h3>
+
+Let's EncryptでのSSL証明書の更新を手動で行うのは、手間がかかります。一週間に一回、自動的に更新するように設定しておきましょう。
+
+一日一回の場合は、もしcertbotが間違っていた場合に、大量にSSL証明書を発行してしまって、しばらくSSL証明書が取得できないという事態になる可能性があるので、やめておいた方がリスクは避けられます。
+
+1ヵ月に一回だと、もう少し頻度を上げた方が、間違っている場合の確認がしやすいかなと感じます。
+
+というわけで、ここでは、1週間に1回、月曜日の9時に更新するという記述にしておきます。
+
+<pre>
+0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 </pre>
 
 -->
