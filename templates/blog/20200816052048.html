@@ -919,6 +919,8 @@ WebサイトにアクセスしてSSL証明書が有効になっていればOKで
 
 <h3>Webアプリケーションのsystemdによる管理</h3>
 
+OPを再起動したときにMojoliciousアプリケーションも自動起動するように<a href="/blog/20200901150837.html">Mojoliciousアプリケーションをsystemdへ登録</a>しましょう。
+
 ここでは、perlbrewを使って、Perl 5.20.3をインストールしていることを前提とします。Mojoliciousアプリケーションも上記手順で「Webapp」という名前で作成したことを前提としています。
 
 <h4>systemdの設定ファイル</h4>
@@ -976,7 +978,6 @@ Mojoliciousアプリケーションが起動しているかどうか確認しま
 <pre>
 sudo systemctl status webapp
 </pre>
-
 
 Mojoliciousアプリケーションが再起動できるか確認しましょう。
 
