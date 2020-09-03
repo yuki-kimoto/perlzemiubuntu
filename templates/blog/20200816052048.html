@@ -1028,18 +1028,24 @@ postfixのインストールが始まります。
 
 メール送信のためだけに利用する最小限の設定を行います。
 
+myhostnameに設定するホスト名は「サーバー名.ドメイン名」という名前で構成され、ドメイン名は、DNSサーバーで解決できる必要があります。
+
+ここでは、ドメイン名は「build-sakuravps-ubuntu18.kimoto-system.co.jp」とします。サーバー名は「hostname」コマンドで自動的に取得します。
+
 以下のワンライナーをコピー＆ペーストして貼り付けてください。postfixの設定ファイルである「/etc/postfix/main.cf」に最小限の設定が書き込まれます。
 
 <pre>
-MYHOSTNAME=`hostname`
+MYHOSTNAME=`hostname`.kimoto-system.co.jp
 echo '
 myhostname = ' "$MYHOSTNAME" '
 myorigin = $mydomain
 relayhost = $mydomain
 inet_interfaces = loopback-only
 mydestination =
+smtpd_sasl_auth_enable = yes
+broken_sasl_auth_clients = yes
+smtpd_recipient_restrictions = permit_sasl_authenticated, reject_unauth_destination
 ' | sudo sh -c 'cat > /etc/postfix/main.cf'
-
 </pre>
 
 設定ファイルの確認。
@@ -1053,7 +1059,11 @@ sudo cat /etc/postfix/main.cf
 postfixを起動しましょう。
 
 <pre>
+# 起動
 sudo systemctl start postfix
+
+# 再起動する場合
+sudo systemctl restart postfix
 </pre>
 
 状態を確認。
@@ -1064,10 +1074,10 @@ sudo systemctl status postfix
 
 <h4>sendmailコマンドでメール送信</h4>
 
-sendmailコマンドでメールを送信してみましょう。[メール]のところを自分のメールにしてください。
+sendmailコマンドでメールを送信してみましょう。[メール送信元] [メール送信先]のところを送信可能なのメールアドレスにしてください。
 
 <pre>
-echo Hello | sendmail -f メール送信元 メール送信先
+echo Hello | sendmail -f [メール送信元] [メール送信先]
 </pre>
 
 sendmailでは、標準入力が、本文になります。
@@ -1075,6 +1085,11 @@ sendmailでは、標準入力が、本文になります。
 -fはfromでメール送信元を指定します。メール送信元がない場合は、メールがはじかれるという経験が多いので、指定しています。
 
 その後ろに、メールの送信先を指定します。試験するときは、送信先、送信元どちらも同じで大丈夫です。
+
+<pre>
+# 送信例
+echo Hello | sendmail -f kimoto.yuki@gmail.com kimoto.yuki@gmail.com
+</pre>
 
 <h3>cron</h3>
 
