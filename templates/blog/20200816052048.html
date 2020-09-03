@@ -917,6 +917,90 @@ sudo systemctl reload apache2
 
 WebサイトにアクセスしてSSL証明書が有効になっていればOKです。
 
+<h3>Webアプリケーションのsystemdによる管理</h3>
+
+ここでは、perlbrewを使って、Perl 5.20.3をインストールしていることを前提とします。Mojoliciousアプリケーションも上記手順で「Webapp」という名前で作成したことを前提としています。
+
+<h4>systemdの設定ファイル</h4>
+
+「webapp」というサービス名で、systemdに登録します。以下のファイルを新規作成します。
+
+<pre>
+sudo vi /lib/systemd/system/webapp.service
+</pre>
+
+<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>コマンド開いて以下の内容を書き込んでください。
+
+<pre>
+[Unit]
+Description=My Mojolicious application
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/home/myapp/webapp/script/hypnotoad.pid
+ExecStart=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp
+ExecReload=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp
+ExecStop=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp --stop
+KillMode=process
+User=myapp
+Group=myapp-group
+Environment=MY_SERVER_ENV=my_dev
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<h4>サービスの有効化</h4>
+
+サービスを有効化しましょう。
+
+<pre>
+sudo systemctl enable webapp
+</pre>
+
+もしMojoliciousアプリケーションがすでに起動している場合は、停止します。
+
+<pre>
+/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp --stop
+</pre>
+
+Mojoliciousアプリケーションをsystemdの管理下でスタートしましょう。
+
+<pre>
+sudo systemctl start webapp
+</pre>
+
+Mojoliciousアプリケーションが起動しているかどうか確認しましょう。
+
+<pre>
+sudo systemctl status webapp
+</pre>
+
+
+Mojoliciousアプリケーションが再起動できるか確認しましょう。
+
+<pre>
+sudo systemctl reload webapp
+</pre>
+
+Mojoliciousアプリケーションが停止できるか確認しましょう。
+
+<pre>
+sudo systemctl stop webapp
+</pre>
+
+Mojoliciousアプリケーションを立ち上げておきましょう。
+
+<pre>
+sudo systemctl start webapp
+</pre>
+
+<h4>OSの再起動</h4>
+
+<a href="/blog/20200903120232.html">OSを再起動</a>を行ってMojoliciousアプリケーションが自動再起動されるか確認しましょう。
+
+
 <!--
 
 <h3>メール送信サーバー</h3>
