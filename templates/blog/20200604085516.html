@@ -22,7 +22,7 @@
 
 cronはプログラムを定期実行するためのアプリケーションですが、その設定ファイルはcrontabというコマンドを使って編集します。
 
-crontabは、ユーザーごとに持つことができます。kimotoというユーザーでcrontabを編集すると、それはkimotoのcrontabになります。
+crontabは、ユーザーごとに持つことができます。myappというユーザーでcrontabを編集すると、それはmyappのcrontabになります。
 
 <h3>crontabを編集する</h3>
 
@@ -92,10 +92,10 @@ crontabののはまりどころのひとつは、perlbrewやplenvでインスト
 env | grep PATH
 </pre>
 
-PATHを含んだ環境変数がいくつか表示されるので、PATHというものを探します。(ユーザー名がadminsの場合の例です。)
+PATHを含んだ環境変数がいくつか表示されるので、PATHというものを探します。(ユーザー名がmyappの場合の例です。)
 
 <pre>
-PATH=/home/admins/perl5/perlbrew/bin:/home/admins/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/admins/bin
+PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/myapp/bin
 </pre>
 
 以下のコマンドでcrontabを編集します。
@@ -107,7 +107,7 @@ crontab -e
 そして上記のPATHの値をcrontabの一番上に書き込みます。
 
 <pre>
-PATH=/home/admins/perl5/perlbrew/bin:/home/admins/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/admins/bin
+PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/myapp/bin
 
 # crontabの設定が続く...
 </pre>
@@ -116,10 +116,10 @@ PATH=/home/admins/perl5/perlbrew/bin:/home/admins/perl5/perlbrew/perls/perl-5.16
 
 <h3>Perlのライブラリのパスを追加する</h3>
 
-Webアプリケーションで読み込んでいるライブラリのパスがあれば以下のように「PERL5LIB」を設定しましょう。
+ライブラリのパスがあれば以下のように「PERL5LIB」を設定しましょう。Mojoliciousで作成したアプリケーションをバッチファイルから読み込む場合に必要な記述です。
 
 <pre>
-PERL5LIB=/home/admins/webapp/fudousancms/lib
+PERL5LIB=/home/myapp/webapp/lib
 </pre>
 
 <h3>cronのエラーが発生した場合のメールの送信先を変更する MAILTO</h3>
@@ -131,13 +131,13 @@ cronは、標準エラー出力に出力があった場合は、メールを送�
 設定しない場合は、cronを実行したユーザーのローカルのメールボックスに入ります。
 
 <pre>
-MAILTO=kimoto@somehost.com
+MAILTO=kimoto_test@kimoto-system.co.jp
 </pre>
 
 複数のメールアドレスを設定する場合はカンマで区切ります。
 
 <pre>
-MAILTO=kimoto@somehost.com,taro@somehost.com
+MAILTO=kimoto_test@kimoto-system.co.jp,taro@somehost.com
 </pre>
 
 メールアドレスを設定しておくと、cronで実行しているバッチ処理のエラーを知ることができるので便利です。
