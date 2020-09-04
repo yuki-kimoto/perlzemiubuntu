@@ -630,6 +630,22 @@ perlbrew install-cpanm
   <li><a href="/blog/20200729134756.html">MojoliciousによるWebアプリケーションのデプロイ</a></li>
 </ul>
 
+<h4>バッチプログラムがライブラリのパスを発見できるようにする</h4>
+
+バッチプログラムがWebアプリケーションのライブラリのパスを発見できるようにしておきましょう。Webアプリケーションに加えて、バッチプログラムを作成する場合の準備をしておきます。
+
+「~/.bashrc」に追加しましょう。
+
+<pre>
+vi ~/.bashrc
+</pre>
+
+以下の内容を追記します。
+
+<pre>
+export PERL5LIB=/home/myapp/webapp/lib
+</pre>
+
 <h3>ドメイン名の取得とDNSサーバーの設定</h3>
 
 ドメインを取得して、ドメイン名とサーバーIPアドレスを紐づけましょう。ドメイン名は、インターネット上でWebサイトを公開するためと、メール送信サーバーの設定のために必要です。
@@ -643,6 +659,66 @@ perlbrew install-cpanm
 </ul>
 
 この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.kimoto-system.co.jp」を使用します。
+
+<h3>メールアドレスの作成とDNSサーバーの設定</h3>
+
+メールアドレスの作成とDNSサーバーの設定を行いましょう。
+
+<ul>
+  <li><a href="/blog/20200828123127.html">メールアドレスの作成とDNSサーバーの設定</a></li>
+</ul>
+
+<h3>cron</h3>
+
+定期プログラム実行の常駐アプリケーションであるcronの起動確認を行います。
+
+<h4>cronの起動確認</h4>
+
+以下の記事の「sudo systemctl status cron」を実行してApacheが起動していることを確認してください。
+
+<ul>
+  <li><a href="/blog/20200520084454.html">cronの起動・停止・再起動・状態確認, cronの実行ログ</a></li>
+</ul>
+
+<h4>crontabの設定</h4>
+
+<a href="/blog/20200604085516.html">crontabの初期設定</a>をしておきましょう。
+
+cronの設定はcrontabに書きます。crontabは、ユーザーごとに持つことができます。myappというユーザーでcrontabを編集すると、それはmyappのcrontabになります。
+
+crontabを編集するには「-e」オプションを使用します。
+
+<pre>
+crontab -e
+</pre>
+
+エディタが起動します。
+
+cronの落とし穴として、ユーザー環境にインストールしたPerlが使われないというものがあります。これを解決するためにPATH環境変数を設定します。
+
+<pre>
+env | grep -P '^PATH'
+</pre>
+
+表示された値を以下のように設定します。
+
+<pre>
+PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/myapp/bin
+</pre>
+
+cronの自動実行でエラーが発生した場合にメールが来るように設定しておきましょう。
+
+<pre>
+MAILTO=kimoto_test@kimoto-system.co.jp
+</pre>
+
+バッチプログラムがWebアプリケーションのライブラリのパスを読み込んでくれるように設定しておきましょう。
+
+<pre>
+PERL5LIB=/home/myapp/webapp/lib
+</pre>
+
+保存して終了しましょう。
 
 <h3>Apache</h3>
 
@@ -917,6 +993,30 @@ sudo systemctl reload apache2
 
 WebサイトにアクセスしてSSL証明書が有効になっていればOKです。
 
+<h4>Let's EncryptでのSSL証明書の更新の自動化</h4>
+
+Let's EncryptでのSSL証明書の更新を手動で行うのは、手間がかかります。一週間に一回、自動的に更新するように設定しておきましょう。
+
+一日一回の場合は、もしcertbotが間違っていた場合に、大量にSSL証明書を発行してしまって、しばらくSSL証明書が取得できないという事態になる可能性があるので、やめておいた方がリスクは避けられます。
+
+1ヵ月に一回だと、もう少し頻度を上げた方が、間違っている場合の確認がしやすいかなと感じます。
+
+というわけで、ここでは、1週間に1回、月曜日の9時に更新するという記述にしておきます。
+
+rootのcrontabを修正するには「sudo」をつけてcrontabを起動します。
+
+<pre>
+sudo crontab -e
+</pre>
+
+以下のようにcrontabの内容を設定します。メールアドレスは、自分が受信できるメールアドレスを指定してください。
+
+<pre>
+MAILTO=kimoto_test@kimoto-system.co.jp
+
+0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
+</pre>
+
 <h3>Webアプリケーションのsystemdによる管理</h3>
 
 OPを再起動したときにMojoliciousアプリケーションも自動起動するように<a href="/blog/20200901150837.html">Mojoliciousアプリケーションをsystemdへ登録</a>しましょう。
@@ -1000,6 +1100,10 @@ sudo systemctl start webapp
 <h4>OSの再起動</h4>
 
 <a href="/blog/20200903120232.html">OSを再起動</a>を行ってMojoliciousアプリケーションが自動再起動されるか確認しましょう。
+
+<pre>
+sudo reboot
+</pre>
 
 
 <!--
@@ -1089,38 +1193,6 @@ sendmailでは、標準入力が、本文になります。
 <pre>
 # 送信例
 echo Hello | sendmail -f kimoto.yuki@gmail.com kimoto.yuki@gmail.com
-</pre>
-
-<h3>cron</h3>
-
-定期プログラム実行の常駐アプリケーションである<a href="/blog/20200520084454.html">cronの起動確認</a>を行います。
-
-<pre>
-sudo systemctl status cron
-</pre>
-
-<h4>rootのcrontabを設定</h4>
-
-rootのcrontabを設定しましょう。
-
-<pre>
-sudo crontab
-</pre>
-
-crontabが起動したら、以下の内容を記述しましょう。<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>の使い方はこちら。
-
-<h3>Let's EncryptでのSSL証明書の更新の自動化</h3>
-
-Let's EncryptでのSSL証明書の更新を手動で行うのは、手間がかかります。一週間に一回、自動的に更新するように設定しておきましょう。
-
-一日一回の場合は、もしcertbotが間違っていた場合に、大量にSSL証明書を発行してしまって、しばらくSSL証明書が取得できないという事態になる可能性があるので、やめておいた方がリスクは避けられます。
-
-1ヵ月に一回だと、もう少し頻度を上げた方が、間違っている場合の確認がしやすいかなと感じます。
-
-というわけで、ここでは、1週間に1回、月曜日の9時に更新するという記述にしておきます。
-
-<pre>
-0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 </pre>
 
 -->

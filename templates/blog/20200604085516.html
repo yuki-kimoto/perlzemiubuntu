@@ -89,13 +89,13 @@ crontabののはまりどころのひとつは、perlbrewやplenvでインスト
 まずperlbrewをインストールしたユーザーで、PATH環境変数の値を表示します。
 
 <pre>
-env | grep PATH
+env | grep -P '^PATH'
 </pre>
 
 PATHを含んだ環境変数がいくつか表示されるので、PATHというものを探します。(ユーザー名がmyappの場合の例です。)
 
 <pre>
-PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/myapp/bin
+PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
 </pre>
 
 以下のコマンドでcrontabを編集します。
