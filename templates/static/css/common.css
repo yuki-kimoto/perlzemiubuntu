@@ -113,8 +113,6 @@
   
   /* tags */
   h1 {
-    max-width:1020px;
-    width:100%;
     font-size:26px;
     padding:9px 10px 0 78px;
     background:url(/images/ubuntu-logo.png) no-repeat 30px 3px;
