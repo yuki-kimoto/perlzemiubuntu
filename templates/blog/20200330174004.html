@@ -31,3 +31,15 @@ kimotoをmyapp-groupグループに追加するサンプルです。
 <pre>
 sudo gpasswd -a kimoto myapp-group
 </pre>
+
+グループに追加されたユーザーは<a href="/blog/20200403174004.html">/etc/group</a>ファイルで確認できます。
+
+<pre>
+sudo cat /etc/group
+</pre>
+
+出力例です。
+
+<pre>
+myapp-group:x:1009:kimoto,ken
+</pre>
