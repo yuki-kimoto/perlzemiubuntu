@@ -340,9 +340,9 @@ sudo apt install -y vim
 
 手順でよく利用されるHTTPクライアントである<a href="/blog/20200826170338.html">curlのインストール</a>をしておきます。
 
-<ul>
-  <li><a href="/blog/20200514084132.html">curlのインストール</a></li>
-</ul>
+<pre>
+sudo apt install -y curl
+</pre>
 
 <h4>SSL通信</h4>
 
@@ -531,14 +531,6 @@ MariaDBへの接続を終了するには「quit」と入力してEnterを押し�
 quit
 </pre>
 
-以下の手順では、rootユーザーでMariaDBに接続する手順を最初に実行してください。
-
-詳しい解説は、以下にあります。
-
-<ul>
-  <li><a href="/blog/20200224174004.html">MariaDBの初期設定とユーザーの作成</a></li>
-</ul>
-
 <h4>データベースの作成</h4>
 
 ここでは、Webアプリケーション用の<a href="https://mariadb.perlzemi.com/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。データベース名の変更には、少し工夫はいりますが、後でデータベース名の変更は可能です。
@@ -581,6 +573,8 @@ grant insert,update,delete,select on myappdb.* to 'myapp'@'%' identified by 'eif
 # rootユーザーで接続
 mysql -umyapp -p
 </pre>
+
+MaridDBの初期設定の詳しい解説は<a href="/blog/20200224174004.html">MariaDBの初期設定とユーザーの作成</a>が参考になります。
 
 <h3>Perl Web開発環境の構築</h3>
 

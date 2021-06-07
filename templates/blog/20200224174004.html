@@ -22,7 +22,21 @@
 
 データベースサーバーとして利用するときに必要なMariaDBの初期設定についての解説です。
 
-<h3>タイムゾーンの設定</h3>
+<h3>MariaDBのrootユーザーでの接続</h3>
+
+Ubuntuでは、MariaDBのrootユーザーとして接続するには、Ubuntuのroot権限を使ってアクセスします。つまり、sudoを使って、パスワードなしでrootユーザーで接続します。
+
+<pre>
+sudo mysql -uroot
+</pre>
+
+MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
+
+<pre>
+quit
+</pre>
+
+<h3>タイムゾーンの設定 - オプション</h3>
 
 MariaDBのデフォルトのタイムゾーンは、OSのタイムゾーンです。つまり。<a href="/blog/20200507174004.html">OSのタイムゾーンの設定</a>を行っている場合は、MariaDBのタイムゾーンの設定はいりません。
 
@@ -45,20 +59,6 @@ time_zone
 <ul>
   <li><a href="/blog/20200223174004.html">UbuntuのMariaDBの設定ファイルの場所</a></li>
 </ul>
-
-<h3>MariaDBのrootユーザーでの接続</h3>
-
-Ubuntuでは、MariaDBのrootユーザーとして接続するには、Ubuntuのroot権限を使ってアクセスします。つまり、sudoを使って、パスワードなしでrootユーザーで接続します。
-
-<pre>
-sudo mysql -uroot
-</pre>
-
-MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
-
-<pre>
-quit
-</pre>
 
 <h3>データベースの作成</h3>
 
