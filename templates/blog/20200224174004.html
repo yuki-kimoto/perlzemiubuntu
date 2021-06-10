@@ -100,6 +100,8 @@ create user myapp;
 
 次に、<a href="https://mariadb.perlzemi.com/blog/20200522082643.html">データベースへのアクセス権限の設定とパスワードを設定</a>します。
 
+以下の、localhostの部分は、データベースサーバーが、同じサーバーにある場合の設定です。クラウドサーバーの場合ですと、接続元のIPアドレス、または、ドメイン名を指定してください。
+
 <pre>
 grant insert,update,delete,select on myappdb.* to 'myapp'@'localhost' identified by 'eifjutab&';
 </pre>

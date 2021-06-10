@@ -568,7 +568,7 @@ myappユーザーにselect,update,insert,delete権限を与えパスワードを
 
 <pre>
 # myappユーザーにselect,update,insert,delete権限を与える
-grant insert,update,delete,select on myappdb.* to 'myapp'localhost'%' identified by 'eifjutab&';
+grant insert,update,delete,select on myappdb.* to 'myapp'@'localhost' identified by 'eifjutab&';
 </pre>
 
 PerlでDBD::mysqlをインストールするときに、testデータベースへの接続権限必要になるので、設定しておきます。
