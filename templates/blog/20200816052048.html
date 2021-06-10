@@ -141,7 +141,7 @@ Mojolicious開発サーバー用のポートは
 
 <h4>Mojolicious本番サーバー用のポート開放</h4>
 
-Mojolicious本番サーバー用のポートを開放しておきましょう。
+Mojolicious本番サーバー用のポートを開放しておきましょう。これは、試験に使用します。
 
 Mojolicious本番サーバー用のポートは
 
@@ -283,6 +283,8 @@ SCPクライアントとして、Windowsの場合はWinSCPがあります。
 MacにもWindowsのWinSCPの代わりになるようなソフトウェアがあるので、インストールしましょう。
 
 <h3>SSHサーバーの設定</h3>
+
+SSHクライアントを使って、SSHでサーバーに接続します。デフォルトでは、SSHのポート番号は22番になっています。
 
 サーバーのセキュリティを高めるために、先ほど、さくらVPSのパケットフィルタで追加で解放したSSHのポートに変更しましょう。
 
@@ -566,7 +568,14 @@ myappユーザーにselect,update,insert,delete権限を与えパスワードを
 
 <pre>
 # myappユーザーにselect,update,insert,delete権限を与える
-grant insert,update,delete,select on myappdb.* to 'myapp'@'%' identified by 'eifjutab&';
+grant insert,update,delete,select on myappdb.* to 'myapp'localhost'%' identified by 'eifjutab&';
+</pre>
+
+PerlでDBD::mysqlをインストールするときに、testデータベースへの接続権限必要になるので、設定しておきます。
+
+<pre>
+create database test;
+grant all privileges on test.* to 'myapp'@'localhost' identified by 's3kr1t';
 </pre>
 
 <h4>アプリケーションユーザーでの接続確認</h4>
