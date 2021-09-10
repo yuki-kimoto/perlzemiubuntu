@@ -33,7 +33,7 @@
     font-size:26px;
     background-size:43px;
     height:100%;
-    width:70%;
+    width:60%;
   }
   h1 a, h1 a:visited {
     color:white;
@@ -41,9 +41,15 @@
     color:#333;
   }
   .header_right {
-    width:30%;
+    width:40%;
   }
-  
+  .header_right a {
+    display:block;
+    background:#FF4DA0;
+    color:white;
+    text-decoration:none;
+    padding:10px 20px;
+  }
   .footer {
     width:100%;
     margin:0 auto;
@@ -255,6 +261,14 @@
     border:1px solid #0070C0;
     border-bottom:none;
   }
+  .side_list_body {
+    text-align:center;
+    letter-spacing:1px;    
+    font-weight:bold;
+    line-height:1.5;
+    font-size:15px;
+  }
+  
   .side_list ul {
     margin-bottom:30px;
   }
@@ -398,7 +412,6 @@
     overflow:visible;
   }
   .side {
-    display:none;
     margin:0;
     padding:0;
     width:100%;
