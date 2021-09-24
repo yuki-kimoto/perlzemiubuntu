@@ -462,15 +462,7 @@
     border-bottom:none;
   }
 
-  h2 {
-    padding-left:10px;
-    padding-right:10px;
-  }
-  p {
-    padding-left:10px;
-    padding-right:10px;
-  }
-  pre {
+  h2, h4, p, pre, blockquote, table, ul, ol  {
     margin-left:10px;
     margin-right:10px;
   }
