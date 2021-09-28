@@ -668,7 +668,7 @@ export PERL5LIB=/home/myapp/webapp/lib
   <li><a href="/blog/20200807062918.html">DNSサーバーの設定 - ドメイン名とIPアドレスを対応させる</a></li>
 </ul>
 
-この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.kimoto-system.co.jp」を使用します。
+この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.perlclub.net」を使用します。
 
 <h3>メールアドレスの作成とDNSサーバーの設定</h3>
 
@@ -719,7 +719,7 @@ PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2
 cronの自動実行でエラーが発生した場合にメールが来るように設定しておきましょう。
 
 <pre>
-MAILTO=kimoto_test@kimoto-system.co.jp
+MAILTO=kimoto_test@perlclub.net
 </pre>
 
 バッチプログラムがWebアプリケーションのライブラリのパスを読み込んでくれるように設定しておきましょう。
@@ -806,25 +806,25 @@ sudo systemctl status apache2
 
 この設定ファイルのディレクトリについては、以下のページで詳しく解説しています。
 
-サイトのドメイン名(ここではbuild-sakuravps-ubuntu18.kimoto-system.co.jp)に「.conf」を付けた名前で、<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで、設定ファイルを作成しましょう。
+サイトのドメイン名(ここではbuild-sakuravps-ubuntu18.perlclub.net)に「.conf」を付けた名前で、<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで、設定ファイルを作成しましょう。
 
 <pre>
 cd /etc/apache2/sites-available
-sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
+sudo vi build-sakuravps-ubuntu18.perlclub.net.conf
 </pre>
 
 バーチャルホストとリバースプロキシの設定ファイルの内容です。WebSocketとHTTPSに対応したリバースプロキシの設定です。SSL証明書は、デフォルトで準備されている自己SSL証明書を指定しています。これは、後で、正式なSSL証明書に差し替えます。
 
 <pre>
 <VirtualHost *:80>
-  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
+  ServerName build-sakuravps-ubuntu18.perlclub.net
 
   RewriteEngine on
   RewriteRule (.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
-  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
+  ServerName build-sakuravps-ubuntu18.perlclub.net
 
   <Proxy *>
     Require all granted
@@ -848,7 +848,7 @@ sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
 設定が終わったら、設定ファイルを有効にします。
 
 <pre>
-sudo a2ensite build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
+sudo a2ensite build-sakuravps-ubuntu18.perlclub.net.conf
 </pre>
 
 <h4>設定ファイルの再読み込み</h4>
@@ -868,7 +868,7 @@ sudo systemctl reload apache2
 以下のドメインででWebサイトが表示できれば成功です。SSLの警告がでるのは、この後、正式なSSL証明書の設定をすることで、修正されます。
 
 <pre>
-https://build-sakuravps-ubuntu18.kimoto-system.co.jp
+https://build-sakuravps-ubuntu18.perlclub.net
 </pre>
 
 <h4>SSL証明書の取得</h4>
@@ -882,14 +882,14 @@ Let's Encryptは、HTTPリクエストによってSSL証明書の認証を行う
 hypnotoad webapp.pl
 </pre>
 
-ドメイン名は「build-sakuravps-ubuntu18.kimoto-system.co.jp」という名前で取得しており、DNSサーバーにおける、ドメイン名とIPアドレスの対応の記述は済んでいることを、この記事では前提とします。適宜対応する部分を書き換えてください。
+ドメイン名は「build-sakuravps-ubuntu18.perlclub.net」という名前で取得しており、DNSサーバーにおける、ドメイン名とIPアドレスの対応の記述は済んでいることを、この記事では前提とします。適宜対応する部分を書き換えてください。
 
-メールアドレスの作成の作業が終了しており「kimoto_test@kimoto-system.co.jp」というメールアドレスで送受信できることをこの記事では前提とします。適宜対応する部分を書き換えてください。
+メールアドレスの作成の作業が終了しており「kimoto_test@perlclub.net」というメールアドレスで送受信できることをこの記事では前提とします。適宜対応する部分を書き換えてください。
 
 SSL証明書をLet's Encryptで取得するには、certbotコマンドを実行してください。
 
 <pre>
-sudo certbot certonly --agree-tos --non-interactive -d build-sakuravps-ubuntu18.kimoto-system.co.jp --webroot -w /home/myapp/webapp/public --email kimoto_test@kimoto-system.co.jp
+sudo certbot certonly --agree-tos --non-interactive -d build-sakuravps-ubuntu18.perlclub.net --webroot -w /home/myapp/webapp/public --email kimoto_test@perlclub.net
 </pre>
 
 以下のメッセージが含まれていれば成功です。
@@ -901,15 +901,15 @@ Congratulations! Your certificate and chain have been saved at:
 SSL証明書が以下のディレクトリに作成されます。上から、SSLの証明書ファイル、SSL証明書の秘密鍵ファイル、中間証明書ファイルです。
 
 <pre>
-/etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/cert.pem
-/etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/privkey.pem
-/etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/chain.pem
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/cert.pem
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/privkey.pem
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/chain.pem
 </pre>
 
 lsコマンドで実際に見てみましょう。
 
 <pre>
-sudo ls -l /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp
+sudo ls -l /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net
 </pre>
 
 Let's EncryptでのSSL証明書の更新する場合「certbot renew」コマンドを使用します。取得したすべてのSSL証明書に対して更新が必要かどうかの確認が行われ、更新期限が1ヵ月以内であれば証明書が更新されます。
@@ -946,7 +946,7 @@ SSLHonorCipherOrder     on
 
 <pre>
 cd /etc/apache2/sites-available
-sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
+sudo vi build-sakuravps-ubuntu18.perlclub.net.conf
 </pre>
 
 元のSSL証明書の設定部分です。
@@ -961,14 +961,14 @@ sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
 
 <pre>
 <VirtualHost *:80>
-  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
+  ServerName build-sakuravps-ubuntu18.perlclub.net
 
   RewriteEngine on
   RewriteRule (.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </VirtualHost>
 
 <VirtualHost *:443>
-  ServerName build-sakuravps-ubuntu18.kimoto-system.co.jp
+  ServerName build-sakuravps-ubuntu18.perlclub.net
 
   <Proxy *>
     Require all granted
@@ -983,9 +983,9 @@ sudo vi build-sakuravps-ubuntu18.kimoto-system.co.jp.conf
   
   # SSL証明書
   Include conf-available/ssl-basic.conf
-  SSLCertificateFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/cert.pem
-  SSLCertificateKeyFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/privkey.pem
-  SSLCertificateChainFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.kimoto-system.co.jp/chain.pem
+  SSLCertificateFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/privkey.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/chain.pem
 </VirtualHost>
 </pre>
 
@@ -1022,7 +1022,7 @@ sudo crontab -e
 以下のようにcrontabの内容を設定します。メールアドレスは、自分が受信できるメールアドレスを指定してください。
 
 <pre>
-MAILTO=kimoto_test@kimoto-system.co.jp
+MAILTO=kimoto_test@perlclub.net
 
 0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 </pre>
@@ -1228,7 +1228,7 @@ sendmailでは、標準入力が、本文になります。
 
 <pre>
 # 送信例
-echo Hello | sendmail -f kimoto_test@kimoto-system.co.jp kimoto_test@kimoto-system.co.jp
+echo Hello | sendmail -f kimoto_test@perlclub.net kimoto_test@perlclub.net
 </pre>
 
 メール送信ができればOKです。

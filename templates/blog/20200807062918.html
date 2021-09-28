@@ -26,7 +26,7 @@ DNSについての基本的な考え方と設定方法について書きます�
 
 <h3>DNSとは</h3>
 
-DNSとは、ドメインネームシステムのことで、ドメイン名(例: kimoto-system.co.jp)とIPアドレス(59.106.185.188)を対応させる仕組みのことです。
+DNSとは、ドメインネームシステムのことで、ドメイン名(例: perlclub.net)とIPアドレス(59.106.185.188)を対応させる仕組みのことです。
 
 お名前.comなどの、ドメイン名取得サービスで取得することができます。
 
@@ -34,7 +34,7 @@ DNSとは、ドメインネームシステムのことで、ドメイン名(例:
   <li><a href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3513971&pid=886673689" rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3513971&pid=886673689" height="1" width="1" border="0">お名前.com</a></a>
 </ul>
 
-価格は、.comなどの一般的なドメイン「(例)kimoto-system.com」で、年間で1000円程度。会社用のco.jpドメイン「(例)kimoto-system.co.jp」で、年間2000円程度を見積もっておくとよいでしょう。
+価格は、.comなどの一般的なドメイン「(例)perlclub.net」で、年間で1000円程度。会社用のco.jpドメイン「(例)perlclub.net」で、年間2000円程度を見積もっておくとよいでしょう。
 
 <h3>Aレコードの設定</h3>
 
@@ -46,20 +46,20 @@ DNSの設定は以下のページで解説されています。
 
 DNSサーバーによって、設定方法に若干の違いがありますが、基本は、AレコードにIPアドレスを設定して、それに対応するドメイン名を設定します。ドメイン名は、サブドメインでも、ドメイン名そのものでもかまいません。
 
-サブドメインとは「www.kimoto-system.co.jp」というようなドメイン名の前に「文字列.」が付いたものです。
+サブドメインとは「perlclub.net」というようなドメイン名の前に「文字列.」が付いたものです。
 
 サブドメインの作成はAレコードか、後で解説するCNAMEレコードを使って行います。
 
-「kimoto-system.co.jp」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
+「perlclub.net」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
 
 <table>
-  <tr><th>kimoto-system.co.jp</th><td>Aレコード</td><td>59.106.185.191</td></tr>
+  <tr><th>perlclub.net</th><td>Aレコード</td><td>59.106.185.191</td></tr>
 </table>
 
-「www.kimoto-system.co.jp」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
+「perlclub.net」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
 
 <table>
-  <tr><th>www.kimoto-system.co.jp</th><td>Aレコード</td><td>59.106.185.191</td></tr>
+  <tr><th>perlclub.net</th><td>Aレコード</td><td>59.106.185.191</td></tr>
 </table>
 
 <h3>サーバーのIPアドレスの調べ方</h3>
@@ -76,7 +76,7 @@ DNSサーバーによって、設定方法に若干の違いがありますが�
 
 CNAMEレコードを使うと、ドメイン名の別名を設定することができます。
 
-CNAMEレコードを設定できるのは、サブドメイン(www.kimoto-system.co.jpやacount.kimoto-system.co.jp)だけです。ネイキッドドメイン(kimoto-system.co.jp)に設定できないので注意してください。
+CNAMEレコードを設定できるのは、サブドメイン(perlclub.netやacount.perlclub.net)だけです。ネイキッドドメイン(perlclub.net)に設定できないので注意してください。
 
 <h4>CNAMEレコードの設定の例</h4>
 
@@ -87,21 +87,21 @@ CNAMEレコードを設定できるのは、サブドメイン(www.kimoto-system
 このサーバーを識別するサブドメイン名をAレコードを使って、まず作成します。
 
 <table>
-  <tr><th>prod001.kimoto-system.co.jp</th><td>Aレコード</td><td>59.106.185.179</td></tr>
+  <tr><th>prod001.perlclub.net</th><td>Aレコード</td><td>59.106.185.179</td></tr>
 </table>
 
 次にCNAMEレコードを使って、上記のドメイン名に対する別名を作成します。
 
 <table>
-  <tr><th>foo.kimoto-system.co.jp</th><td>CNAMEレコード</td><td>prod001.kimoto-system.co.jp</td></tr>
-  <tr><th>bar.kimoto-system.co.jp</th><td>CNAMEレコード</td><td>prod001.kimoto-system.co.jp</td></tr>
+  <tr><th>foo.perlclub.net</th><td>CNAMEレコード</td><td>prod001.perlclub.net</td></tr>
+  <tr><th>bar.perlclub.net</th><td>CNAMEレコード</td><td>prod001.perlclub.net</td></tr>
 </table>
 
-「foo.kimoto-system.co.jp」は「prod001.kimoto-system.co.jp」の別名になりました。
+「foo.perlclub.net」は「prod001.perlclub.net」の別名になりました。
 
-「bar.kimoto-system.co.jp」は「prod001.kimoto-system.co.jp」の別名になりました。
+「bar.perlclub.net」は「prod001.perlclub.net」の別名になりました。
 
-DNSサーバーへの問い合わせでは「foo.kimoto-system.co.jp」も「bar.kimoto-system.co.jp」も「prod001.kimoto-system.co.jp」のAレコードに設定した「59.106.185.179」を返します。
+DNSサーバーへの問い合わせでは「foo.perlclub.net」も「bar.perlclub.net」も「prod001.perlclub.net」のAレコードに設定した「59.106.185.179」を返します。
 
 <h3>DNSレコードの問い合わせ</h3>
 
