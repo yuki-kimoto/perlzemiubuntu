@@ -32,9 +32,9 @@ makeは、主な用途として、C言語のソースファイルをコンパイ
 
 また、makeのサブコマンド(本当はサブコマンドという名前ではない)「make test」や「make install」などを作って、一連のシェルコマンドやプログラムを実行できます。
 
-makeは、<a href="https://tutorial.perlzemi.com/blog/20100504127089.html">CPAN</a>からPerlのモジュールをインストールするときにも必要となります。C言語ソースコードを含んでいる<a href="https://tutorial.perlzemi.com/blog/20100809127859.html">XSモジュール</a>の場合は、もちろん必要ですが、C言語ソースコードを含んでいないモジュールでも、多くの場合は必要です。
+makeは、<a href="https://perlzemi.com/blog/20100504127089.html">CPAN</a>からPerlのモジュールをインストールするときにも必要となります。C言語ソースコードを含んでいる<a href="https://perlzemi.com/blog/20100809127859.html">XSモジュール</a>の場合は、もちろん必要ですが、C言語ソースコードを含んでいないモジュールでも、多くの場合は必要です。
 
-多くの場合はというのは、<a href="https://tutorial.perlzemi.com/blog/20170210150108.html">ExtUtils::MakeMaker</a>が使われている場合のことです。Module::BuildやModule::Build::Tinyが使われている場合はいらない。
+多くの場合はというのは、<a href="https://perlzemi.com/blog/20170210150108.html">ExtUtils::MakeMaker</a>が使われている場合のことです。Module::BuildやModule::Build::Tinyが使われている場合はいらない。
 
 以下のような手順を実行するだけで、モジュールをコンパイルして、ファイルをディレクトリに配置、テストを行って、インストールするということができます。
 

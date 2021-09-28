@@ -22,7 +22,7 @@
 
 ApacheのCGIプログラムでユーザーPerlを利用する方法を解説します。
 
-ApacheのCGIプログラムでは通常、システムにインストールされているPerlが利用されます。ですが、CPANモジュールの管理の手間を一元化するために、<a href="https://tutorial.perlzemi.com/blog/20110220130464.html">perlbrew</a>や<a href="https://tutorial.perlzemi.com/blog/20180816153437.html">plenv</a>でユーザー環境にインストールしたユーザーPerlを使いたいという場合があると思います。
+ApacheのCGIプログラムでは通常、システムにインストールされているPerlが利用されます。ですが、CPANモジュールの管理の手間を一元化するために、<a href="https://perlzemi.com/blog/20110220130464.html">perlbrew</a>や<a href="https://perlzemi.com/blog/20180816153437.html">plenv</a>でユーザー環境にインストールしたユーザーPerlを使いたいという場合があると思います。
 
 新しくPerlでWebアプリケーションを作る場合は、リアルタイムWebとクラウドサーバーに自然に対応できるリバースプロキシを使ったWebシステム開発手法をお勧めしますが、既存のCGIアプリケーションが存在するという場合も、まだまだあると思います。
 
@@ -32,7 +32,7 @@ UbuntuのApacheにおける環境変数の設定方法は、envvarsファイル�
 
 <h4>環境変数PATHの設定</h4>
 
-環境変数PATHの設定しましょう。まず、現在のPATHを調べます。<a href="https://linux.perlclub.net/blog/20190102171737.html">env</a>コマンドと<a href="https://linux.perlclub.net/blog/20200602093211.html">grep</a>コマンドでPATHを表示します。PATHという名前を含む環境変数が複数あるので、<a href="https://tutorial.perlzemi.com/blog/20100827127859.html">Perlの正規表現</a>を使ってPATHだけに絞り込んでいます。
+環境変数PATHの設定しましょう。まず、現在のPATHを調べます。<a href="https://linux.perlclub.net/blog/20190102171737.html">env</a>コマンドと<a href="https://linux.perlclub.net/blog/20200602093211.html">grep</a>コマンドでPATHを表示します。PATHという名前を含む環境変数が複数あるので、<a href="https://perlzemi.com/blog/20100827127859.html">Perlの正規表現</a>を使ってPATHだけに絞り込んでいます。
 
 <pre>
 env | grep -P '^PATH='

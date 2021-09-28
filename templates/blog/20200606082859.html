@@ -29,11 +29,11 @@ sudo apt install -y libreadline-dev
 
 <h3>Perlのデバッガのコマンドライン履歴を使える用にする方法</h3>
 
-<a href="https://tutorial.perlzemi.com/blog/20100302126967.html">Perlのデバッガ</a>のコマンド履歴の機能はTerm::ReadLine::Gnuというモジュールに依存していますが、これはC言語で書かれたReadLineライブラリに依存しています。
+<a href="https://perlzemi.com/blog/20100302126967.html">Perlのデバッガ</a>のコマンド履歴の機能はTerm::ReadLine::Gnuというモジュールに依存していますが、これはC言語で書かれたReadLineライブラリに依存しています。
 
 UbuntuでPerlのデバッガを行う場合に、上下キーでコマンドのヒストリーが効かないという場合は、Term::ReadLine::Gnuライブラリがインストールされていないという可能性を疑ってみましょう。
 
-libreadline-devパッケージをインストールした後に、Term::ReadLine::Gnuを<a href="https://tutorial.perlzemi.com/blog/20101027127859.html">cpanm</a>を使ってインストールします。
+libreadline-devパッケージをインストールした後に、Term::ReadLine::Gnuを<a href="https://perlzemi.com/blog/20101027127859.html">cpanm</a>を使ってインストールします。
 
 <pre>
 cpanm Term::ReadLine::Gnu
