@@ -215,7 +215,7 @@ Password:
 ubuntu@tk2-250-35845:~$
 </pre>
 
-この状態になれば、<a href="https://linux.perlzemi.com/blog/20200211081227.html">Linuxのコマンド</a>が実行できます。
+この状態になれば、<a href="https://linux.perlclub.net/blog/20200211081227.html">Linuxのコマンド</a>が実行できます。
 
 <h3>Webアプリケーション用のユーザーの追加</h3>
 
@@ -263,7 +263,7 @@ sudo gpasswd -a myapp sudo
 SSHクライアントでSSHサーバーに接続してコマンド実行するツールに、Windowsの場合はTeraTermがあります。
 
 <ul>
-  <li><a href="https://linux.perlzemi.com/blog/20200525082545.html">Linuxサーバーにコマンドを送る - TeraTermのインストールと使い方</a></li>
+  <li><a href="https://linux.perlclub.net/blog/20200525082545.html">Linuxサーバーにコマンドを送る - TeraTermのインストールと使い方</a></li>
 </ul>
 
 <a href="https://www.atmarkit.co.jp/ait/articles/1006/25/news095.html">PuTTY</a>などの他のWindowsで動くSSHクライアントもありますので、お好みで。
@@ -277,7 +277,7 @@ SCPというSSH上に構築されるプロトコルを使うとサーバー上�
 SCPクライアントとして、Windowsの場合はWinSCPがあります。
 
 <ul>
-  <li><a href="https://linux.perlzemi.com/blog/20200520082545.html">Linuxサーバー上のファイルを編集 - WinSCPのインストールと使い方</a></li>
+  <li><a href="https://linux.perlclub.net/blog/20200520082545.html">Linuxサーバー上のファイルを編集 - WinSCPのインストールと使い方</a></li>
 </ul>
 
 MacにもWindowsのWinSCPの代わりになるようなソフトウェアがあるので、インストールしましょう。
@@ -413,7 +413,7 @@ sudo apt install -y certbot
 
 Webアプリケーションがデータを保存するためのデータ用のディレクトリを作成しましょう。「myapp」ユーザーだけではなく、他の開発ユーザーも書き込めるように設定しておきます。
 
-「/datadrive」を<a href="https://linux.perlzemi.com/blog/20191211133524.html">mkdir</a>コマンドでデータ用ディレクトリを作成します。
+「/datadrive」を<a href="https://linux.perlclub.net/blog/20191211133524.html">mkdir</a>コマンドでデータ用ディレクトリを作成します。
 
 <pre>
 sudo mkdir /datadrive
@@ -470,7 +470,7 @@ Redisサーバーのデフォルト設定では、IPv6が有効化されてい�
 
 <h4>Redis設定ファイルの編集</h4>
 
-Redis設定ファイルを<a href="https://linux.perlzemi.com/blog/20190401171737.html">viエディタ</a>で編集します。間違った場合のためにバックアップもとっておきます。
+Redis設定ファイルを<a href="https://linux.perlclub.net/blog/20190401171737.html">viエディタ</a>で編集します。間違った場合のためにバックアップもとっておきます。
 
 <pre>
 sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.bak
@@ -806,7 +806,7 @@ sudo systemctl status apache2
 
 この設定ファイルのディレクトリについては、以下のページで詳しく解説しています。
 
-サイトのドメイン名(ここではbuild-sakuravps-ubuntu18.kimoto-system.co.jp)に「.conf」を付けた名前で、<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>コマンドで、設定ファイルを作成しましょう。
+サイトのドメイン名(ここではbuild-sakuravps-ubuntu18.kimoto-system.co.jp)に「.conf」を付けた名前で、<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで、設定ファイルを作成しましょう。
 
 <pre>
 cd /etc/apache2/sites-available
@@ -926,7 +926,7 @@ sudo certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
 
 まずSSLの基本設定ファイルを作成します。これは、後でWebアプリケーションが増えた場合に共通して使うことを想定しています。
 
-「conf-available/ssl-basic.conf」というファイル名で<a href="https://linux.perlzemi.com/blog/20190401171737.html">viエディタ</a>で作成します。
+「conf-available/ssl-basic.conf」というファイル名で<a href="https://linux.perlclub.net/blog/20190401171737.html">viエディタ</a>で作成します。
 
 <pre>
 cd /etc/apache2
@@ -1041,7 +1041,7 @@ OPを再起動したときにMojoliciousアプリケーションも自動起動�
 sudo vi /lib/systemd/system/webapp.service
 </pre>
 
-<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>コマンド開いて以下の内容を書き込んでください。
+<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンド開いて以下の内容を書き込んでください。
 
 <pre>
 [Unit]
@@ -1159,7 +1159,7 @@ APIキーを取得しましょう。SendGridの管理画面にログインしま
 
 <h4>postfixの設定ファイルの編集</h4>
 
-postfixの設定ファイルを<a href="https://linux.perlzemi.com/blog/20190401171737.html">vi</a>コマンドで編集します。
+postfixの設定ファイルを<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで編集します。
 
 <pre>
 sudo vi /etc/postfix/main.cf
