@@ -1,3 +1,5 @@
+  @import 'variables.css';
+  
 /* Default settings */
   
   /* all */
@@ -183,7 +185,7 @@
   .side_list {
   }
   .side_list_title {
-    background:#2F5597;
+    background:var(--theme_color);
     color:white;
     font-weight:bold;
     padding: 11px 0px 9px 0px;
@@ -231,7 +233,7 @@
   }
   h3 {
     font-size:21px;
-    border-top:4px solid #2F5597;
+    border-top:4px solid var(--theme_color);
     padding:16px 0px 15px 18px;
     letter-spacing:0.5px;
     margin:15px 0 10px 0;
