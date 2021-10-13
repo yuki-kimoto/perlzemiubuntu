@@ -1,0 +1,126 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200829052743.html">
+        <span itemprop="name">MariaDB</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>MariaDBの初期設定とユーザーの作成</h2>
+
+データベースサーバーとして利用するときに必要なMariaDBの初期設定についての解説です。
+
+<h3>MariaDBのrootユーザーでの接続</h3>
+
+Ubuntuでは、MariaDBのrootユーザーとして接続するには、Ubuntuのroot権限を使ってアクセスします。つまり、sudoを使って、パスワードなしでrootユーザーで接続します。
+
+<pre>
+sudo mysql -uroot
+</pre>
+
+MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
+
+<pre>
+quit
+</pre>
+
+<h3>タイムゾーンの設定 - オプション</h3>
+
+MariaDBのデフォルトのタイムゾーンは、OSのタイムゾーンです。つまり。<a href="/blog/20200507174004.html">OSのタイムゾーンの設定</a>を行っている場合は、MariaDBのタイムゾーンの設定はいりません。
+
+タイムゾーンの設定が必要となるのは、MariaDBがクラウドサービスとして、提供されている場合です。この場合は、MariaDBの設定ファイルのタイムゾーン設定を行ってください。そのままではUTC時刻になっています。
+
+UTCと「Asia/Tokyo」の時間差分である「+09:00」を設定します。
+
+<pre>
+# パラメータ名
+time_zone
+
+# 値
++09:00
+</pre>
+
+<h3>MariaDBの設定ファイルの場所</h3>
+
+初期設定では、特に設定の必要がありませんが、メモリの設定は、必ず行うことになるので、UbuntuにおけるMariaDBの設定ファイルの場所を記載しておきます。
+
+<ul>
+  <li><a href="/blog/20200223174004.html">UbuntuのMariaDBの設定ファイルの場所</a></li>
+</ul>
+
+<h3>データベースの作成</h3>
+
+ここでは、Webアプリケーション用の<a href="https://mariadb.perlclub.net/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。後でデータベース名の変更は可能です(少し工夫はいりますが)。
+
+<pre>
+create database myappdb;
+</pre>
+
+作成したデータベースを確認するために、<a href="https://mariadb.perlclub.net/blog/20200518082643.html">データベースの一覧</a>を表示します。
+
+<pre>
+show databases;
+</pre>
+
+<h3>アプリケーションユーザーの作成</h3>
+
+Webアプリケーション用のMariaDBユーザを作成しましょう。select,insert,update,deleteの権限を持ったユーザーです。
+
+MariaDBに管理者ユーザで接続します。上記でrootのパスワードを設定した場合は、rootユーザーで、管理者ユーザーが他にいる場合は、そのユーザーで接続してください。
+
+<pre>
+# Ubuntuのrootユーザーで接続
+sudo mysql -uroot
+
+# MariaDBクラウドサービスに接続するサンプル
+mysql -h my-devel-db-001.mariadb.database.azure.com -ukanri@my-devel-db-001 -p
+</pre>
+
+パスワードを聞かれますので、入力してください。
+
+データべースがリモートにあり、接続できない場合は、データベースサーバー側のファイアーウォールの確認も合わせておこなってください。
+
+<a href="https://mariadb.perlclub.net/blog/20200523082643.html">MariaDBでユーザーの作成</a>を行います。
+
+<pre>
+create user myapp;
+</pre>
+
+次に、<a href="https://mariadb.perlclub.net/blog/20200522082643.html">データベースへのアクセス権限の設定とパスワードを設定</a>します。
+
+以下の、localhostの部分は、データベースサーバーが、同じサーバーにある場合の設定です。クラウドサーバーの場合ですと、接続元のIPアドレス、または、ドメイン名を指定してください。
+
+<pre>
+grant insert,update,delete,select on myappdb.* to 'myapp'@'localhost' identified by 'eifjutab&';
+</pre>
+
+PerlでDBD::mysqlをインストールするときに、testデータベースへの接続権限必要になるので、設定しておきます。
+
+<pre>
+create database test;
+grant all privileges on test.* to 'myapp'@'localhost' identified by 's3kr1t';
+</pre>
+
+接続を抜けて、新しく作成した「myapp」ユーザーで、MariaDBに接続できることを確認します。
+
+<pre>
+# rootユーザーで接続
+mysql -umyapp -p
+
+# MariaDBクラウドサービスに接続するサンプル
+mysql -h my-devel-db-001.mariadb.database.azure.com -umyapp@my-devel-db-001 -p
+</pre>
+
+これで初期設定とユーザーの作成が完了しました。

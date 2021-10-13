@@ -1,0 +1,47 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>makeのインストール</h2>
+
+makeのインストール方法を解説します。<a href="/blog/20200530085516.html">apt</a>コマンドを使って、makeをインストールします。sudoを使って管理者権限で実行します。
+
+<pre>
+sudo apt install -y make
+</pre>
+
+<h3>makeの主な用途</h3>
+
+makeは、主な用途として、C言語のソースファイルをコンパイルするときに、ソースファイルの依存関係を調べて、再コンパイルが必要なソースファイルだけをコンパイルするためのツールです。
+
+また、makeのサブコマンド(本当はサブコマンドという名前ではない)「make test」や「make install」などを作って、一連のシェルコマンドやプログラムを実行できます。
+
+makeは、<a href="https://perlzemi.com/blog/20100504127089.html">CPAN</a>からPerlのモジュールをインストールするときにも必要となります。C言語ソースコードを含んでいる<a href="https://perlzemi.com/blog/20100809127859.html">XSモジュール</a>の場合は、もちろん必要ですが、C言語ソースコードを含んでいないモジュールでも、多くの場合は必要です。
+
+多くの場合はというのは、<a href="https://perlzemi.com/blog/20170210150108.html">ExtUtils::MakeMaker</a>が使われている場合のことです。Module::BuildやModule::Build::Tinyが使われている場合はいらない。
+
+以下のような手順を実行するだけで、モジュールをコンパイルして、ファイルをディレクトリに配置、テストを行って、インストールするということができます。
+
+<pre>
+make
+make test
+make install
+</pre>
+
+これがCPANモジュールのインストールにおいて行われています。

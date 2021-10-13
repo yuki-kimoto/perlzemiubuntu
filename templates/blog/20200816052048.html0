@@ -1,0 +1,1238 @@
+<h2>さくらVPS+Ubuntu 18+PerlでWebシステム開発 環境構築</h2>
+
+さくらVPS+Ubuntu 18+PerlでWebシステム開発環境を行う手順のまとめ。
+
+<h3>さくらVPSの申し込み</h3>
+
+さくらVPSを申し込みます。
+
+<a href="https://vps.sakura.ad.jp/specification/">さくらVPS 料金・仕様一覧</a>
+
+<h3>さくらVPSへUbuntu 18をインストール</h3>
+
+さくらVPSへUbuntu 18をインストールしましょう。インストール手順は、2020年8月16日に試したものです。
+
+<a href="https://secure.sakura.ad.jp/vps/#/login">さくらVPSコントールパネル</a>からログイン。
+
+右上、サーバー新規追加をクリック。
+
+ゾーンを選択。石狩 第1ゾーン。東京 第2ゾーン。大阪 第3ゾーン。
+
+コストが安く、サービスを行う場所に近いゾーンを選ぶのが良いでしょう。
+
+プラン選択。512, 1G, 2Gの中からまずは選択しましょう。ストレージは100G程度あったほうが、後ほど困らないと経験的に感じますが、最初に始めるなら、一番コストの小さなプランもお勧めです。
+
+ストレージを増やしたい場合は、ストレージ変更オプションで、ストレージを増やしましょう。料金は初回のみです。ストレージ性能が下がるリスクについて書かれているので、速度をとるか容量をとるかで決めましょう。
+
+次へ進む。
+
+サーバーの名前は、任意項目なので、そのまま。
+
+サーバーの説明も、任意項目なので、そのまま。
+
+インストールするOSは、Ubuntu 18.04amd64(64bit)です。
+
+管理ユーザ名は固定で「ubuntu」となっています。
+
+「新しい管理ユーザのパスワード」と「新しい管理ユーザのパスワード（確認のため再入力）」を入力します。これは、実質的にはrootパスワードになります。
+
+スタートアップスクリプトは、利用しません。
+
+パケットフィルタの設定は、デフォルトでSSHの22番ポートのみとなっています。これは、後で変更します。
+
+公開鍵の登録は、登録しないを選択します。
+
+次へ進む。
+
+支払いパターンを選択します。月払いか年間一括払いを選択できます。
+
+支払い方法を選択します。クレジットカード、銀行振込、請求書払いを選択できます。
+
+クーポンは、空白にしておきます。クーポンがあって、使いたい場合は入力してください。
+
+次へ進む。
+
+お申し込み確認の画面になりますので、同意するを選択して、申し込みをクリック。
+
+これで、さくらVPSで、Ubuntu 18を使えるようになります。
+
+<h3>パケットフィルタリング - ファイアーウォールの設定</h3>
+
+Webシステム開発のために必要なポートを開放しましょう。この手順は、2020年8月16日に試したものです。
+
+さくらVPSログイン。
+
+左サイドバー、サーバーをクリック。
+
+サーバー一覧から、作成したサーバーをクリック。
+
+タブの一番右側の「パケットフィルタ」をクリック。
+
+「パケットフィルタ設定へ」をクリック。
+
+「解放ポートを追加する」をクリック。
+
+<h4>HTTPとHTTPSのポートを開放</h4>
+
+「フィルタの用途」で「Web」をクリック。HTTPの80番ポートと、HTTPSの443番ポートが解放されます。
+
+「設定を保存する」をクリック。設定が完了しました。
+
+同じ作業を繰り返します。
+
+「パケットフィルタ」「パケットフィルタ設定へ」
+
+<h4>SSHのポートを開放</h4>
+
+<a href="/blog/20200715102902.html">SSHのデフォルトの22番ポートは非常にセキュリティリスクのあるポート</a>です。
+SSH用のあなた独自のポートを追加してください。ウェルナウンポートと、Webアプリケーションで使うポートを避けて選びます。
+
+自分で選べないよーという方は「30000」番台のポート(32767まで)を一つ選びましょう。例を書いておきます。
+
+<ul>
+  <li>30012</li>
+  <li>31463</li>
+  <li>32130</li>
+</ul>
+
+さくらVPSでは、パケットフィルタリングでは、ポートの値は数値で 1 から 32767 の範囲で指定する必要があるようです。
+
+「開放ポートを追加する」をクリック。
+
+「フィルタの用途」で「カスタム」をクリック。
+
+プロトコルは「TCP」を選択。
+
+「ポート番号」に上記で選択したSSH用のポート番号を入力してください。
+
+「設定を保存する」をクリック。設定が完了しました。
+
+同じ作業を繰り返します。
+
+「パケットフィルタ」「パケットフィルタ設定へ」
+
+<h4>Mojolicious開発サーバー用のポートを開放</h4>
+
+Mojolicious開発サーバー用のポートを開放しておきましょう。<a href="https://mojolicious.perlzemi.com/">Mojolicious</a>は、PerlのWebフレームワークのひとつで、リアルタイムWebとクラウドサーバーに対応できます。
+
+Mojolicious開発サーバー用のポートは
+
+<pre>
+3000
+</pre>
+
+です。
+
+「開放ポートを追加する」をクリック。
+
+「フィルタの用途」で「カスタム」をクリック。
+
+プロトコルは「TCP」を選択。
+
+「ポート番号」に「3000」を入力してください。
+
+「設定を保存する」をクリック。設定が完了しました。
+
+開発者が複数いる場合は、必要に応じて、パケットフィルタから別のポートを開放しましょう(3001番、3002番など)。
+
+同じ作業を繰り返します。
+
+「パケットフィルタ」「パケットフィルタ設定へ」
+
+<h4>Mojolicious本番サーバー用のポート開放</h4>
+
+Mojolicious本番サーバー用のポートを開放しておきましょう。これは、試験に使用します。
+
+Mojolicious本番サーバー用のポートは
+
+<pre>
+8080
+</pre>
+
+です。
+
+「開放ポートを追加する」をクリック。
+
+「フィルタの用途」で「カスタム」をクリック。
+
+プロトコルは「TCP」を選択。
+
+「ポート番号」に「8080」を入力してください。
+
+「設定を保存する」をクリック。設定が完了しました。
+
+開発者が複数いる場合は、必要に応じて、パケットフィルタから別のポートを開放しましょう(3001番、3002番など)。
+
+<h3>Webコンソールからの作業</h3>
+
+Webコンソールからの作業について解説します。
+
+まずVPSサービスを申し込んだ後のサーバーの操作は、まずWebコンソールからのコマンドで始めます。
+
+この記事では、Webコンソールは、Webブラウザから利用できるCUI端末のことです。
+
+最低限やっておかなければならないことは、Webアプリケーション用のユーザーの作成です。
+
+Webアプリケーションのユーザーの作成の作業が終われば、SSHクライアントと呼ばれるツールを使って、WindowsやMacOSからUbuntuサーバーにアクセスできるようになります。
+
+Webコンソールからすべてのコマンド実行を行えますが、効率を考えた場合は、SSHクライアントとSSH上でサーバー上のファイルを編集できるソフトウェアをWindowsやMacOS上にインストールして使うのが、現実的です。
+
+<h4>Webコンソールを表示する</h4>
+
+Webコンソールを表示しましょう。
+
+さくらVPSへログインします。
+
+対象のサーバーをクリックします。
+
+サイト上部「コンソール」をクリックします。
+
+「シリアルコンソール(β版)」をクリックします。シリアルコンソールが起動します。シリアルコンソールは、Webコンソールの一つです。シリアルコンソールを使ってコマンド実行を行っていきます。
+
+シリアルコンソールが起動したら、一度Enterキーを押してください。
+
+次のようにloginユーザーを入力できるようになります。
+
+<pre>
+tk2-250-35845 login:
+</pre>
+
+「ubuntu」と入力して、Enterを押してください。
+
+<pre>
+ubuntu
+</pre>
+
+以下のようにパスワードを聞かれます。
+
+<pre>
+Password:
+</pre>
+
+初期パスワードを入力して、Enterを押してください。ログインできれば成功です。以下のように表示されます。
+
+<pre>
+ubuntu@tk2-250-35845:~$
+</pre>
+
+この状態になれば、<a href="https://linux.perlclub.net/blog/20200211081227.html">Linuxのコマンド</a>が実行できます。
+
+<h3>Webアプリケーション用のユーザーの追加</h3>
+
+Webアプリケーション用のユーザー「myapp」を追加しましょう。この名前は任意で構いませんが、これ以降の手順では「myapp」を使って解説します。
+
+<h4>ユーザーの追加</h4>
+
+ユーザーを追加するには<a href="/blog/20200511173052.html">useradd</a>コマンドを使用します。「-m」オプションで、ホームディレクトリが作られます。
+
+<a href="/blog/20200531085516.html">sudo</a>コマンドは、管理者権限で実行するためのコマンドだとここでは想定してください。
+
+<pre>
+# ユーザーの追加(ホームディレクトリあり。シェルにbashを使う)
+sudo useradd -m myapp -s /bin/bash
+</pre>
+
+sudoコマンドを実行するとパスワードを聞かれますので、初期パスワードを入力してください。
+
+<h4>パスワードの設定</h4>
+
+Webアプリケーション用のユーザー「myapp」のパスワードを設定しましょう。「myapp」はsudoグループに追加して、管理者権限を持たせますので、安全な長さと複雑さのパスワードにしておくことを推奨します。
+
+パスワードは<a href="/blog/20200510173052.html">passwd</a>コマンドで設定できます。
+
+<pre>
+sudo passwd myapp
+</pre>
+
+パスワードの入力と確認のための再入力を求められるので設定します。
+
+<h4>sudoグループに登録</h4>
+
+アプリケーションユーザー「myapp」を<a href="/blog/20200330174004.html">gpasswd</a>コマンドを使って、sudoグループに登録します。「myapp」ユーザーに管理者権限を与えます。
+
+<pre>
+sudo gpasswd -a myapp sudo
+</pre>
+
+<h3>SSHクライアントの利用</h3>
+
+パソコン上からSSHでサーバーへの接続して、コマンド実行とファイル編集ができるようにしましょう。
+
+<h4>SSHクライアントでコマンド実行</h4>
+
+SSHクライアントでSSHサーバーに接続してコマンド実行するツールに、Windowsの場合はTeraTermがあります。
+
+<ul>
+  <li><a href="https://linux.perlclub.net/blog/20200525082545.html">Linuxサーバーにコマンドを送る - TeraTermのインストールと使い方</a></li>
+</ul>
+
+<a href="https://www.atmarkit.co.jp/ait/articles/1006/25/news095.html">PuTTY</a>などの他のWindowsで動くSSHクライアントもありますので、お好みで。
+
+Macの場合は、ターミナルからsshコマンドが使えます。
+
+<h4>SCPを使ってサーバー上のファイルを編集</h4>
+
+SCPというSSH上に構築されるプロトコルを使うとサーバー上のファイルを編集できます。
+
+SCPクライアントとして、Windowsの場合はWinSCPがあります。
+
+<ul>
+  <li><a href="https://linux.perlclub.net/blog/20200520082545.html">Linuxサーバー上のファイルを編集 - WinSCPのインストールと使い方</a></li>
+</ul>
+
+MacにもWindowsのWinSCPの代わりになるようなソフトウェアがあるので、インストールしましょう。
+
+<h3>SSHサーバーの設定</h3>
+
+SSHクライアントを使って、SSHでサーバーに接続します。デフォルトでは、SSHのポート番号は22番になっています。
+
+サーバーのセキュリティを高めるために、先ほど、さくらVPSのパケットフィルタで追加で解放したSSHのポートに変更しましょう。
+
+<ul>
+  <li><a href="/blog/20200715102902.html">SSHポートを変更する - デフォルトの22番ポートはセキュリティ的に危険が高い</a></li>
+</ul>
+
+<h3>タイムゾーンの設定</h3>
+
+タイムゾーンを「Asia/Tokyo」に設定しましょう。<a href="/blog/20200507174004.html">timedatectlでタイムゾーンの設定・確認</a>ができます。
+
+<pre>
+# タイムゾーンを「Asia/Tokyo」に設定
+sudo timedatectl set-timezone Asia/Tokyo
+</pre>
+
+タイムゾーンの確認。
+
+<pre>
+# タイムゾーンの確認
+timedatectl
+</pre>
+
+<h3>パッケージのインストール</h3>
+
+Perl Webシステム開発で必要になるパッケージをインストールしましょう。
+
+<h4>aptのアップデート</h4>
+
+<a href="/blog/20200530085516.html">apt</a>コマンドは、パッケージのインストールコマンドですが、apt自体が古いとパッケージのダウンロードが失敗する場合があるので<a href="/blog/20200524135533.html">aptをアップデート</a>します。
+
+<pre>
+sudo apt update
+</pre>
+
+<h4>コンパイラ・リンカ</h4>
+
+コンパイラ・リンカのインストールです。<a href="/blog/20200514084132.html">makeのインストール</a>、<a href="/blog/20200504174004.html">gccのインストール</a>、<a href="/blog/20200503174004.html">g++のインストール</a>を行いましょう。Perlのモジュールのコンパイルに必要です。
+
+aptでインストールする手順は一行ずつ実行していくことをお勧めします。手順がとばされたり、インストールされていることを確認せずに、進んでいくという経験が多いという理由で。
+
+<pre>
+sudo apt install -y make
+sudo apt install -y gcc
+sudo apt install -y g++
+</pre>
+
+<h4>テキストエディタ</h4>
+
+Ubuntuのデフォルトのviは機能が限定されているので、より便利な<a href="/blog/20200825150919.html">vimのインストール</a>を行いましょう。
+
+<pre>
+sudo apt install -y vim
+</pre>
+
+<h4>HTTPクライアント</h4>
+
+手順でよく利用されるHTTPクライアントである<a href="/blog/20200826170338.html">curlのインストール</a>をしておきます。
+
+<pre>
+sudo apt install -y curl
+</pre>
+
+<h4>SSL通信</h4>
+
+SSL通信のために<a href="/blog/20200412174004.html">libssl-devのインストール</a>を行いましょう。
+
+<pre>
+sudo apt install -y libssl-dev
+</pre>
+
+<h4>画像処理</h4>
+
+画像処理のために<a href="/blog/20200501174004.html">libpng-devのインストール</a>、<a href="/blog/20200502174004.html">libgif-devのインストール</a>、<a href="/blog/20200426174004.html">libjpeg-devのインストール</a>を行いましょう。
+
+<pre>
+sudo apt install -y libpng-dev
+sudo apt install -y libgif-dev
+sudo apt install -y libjpeg-dev
+</pre>
+
+<h4>圧縮・解凍</h4>
+
+圧縮・解凍のために<a href="/blog/20200323174004.html">zipのインストール</a>を行いましょう。
+
+<pre>
+sudo apt install -y zip
+</pre>
+
+<h4>ネットワーク</h4>
+
+ifconfigが使えるように<a href="/blog/20200324174004.html">net-toolsのインストール</a>を行いましょう。ipコマンドがLinuxでは推奨されていますが、使いたいサーバー管理者も多そうなので。
+
+<pre>
+sudo apt install -y net-tools
+</pre>
+
+<h4>リポジトリ管理</h4>
+
+リポジトリ管理のために<a href="/blog/20200607082859.html">gitのインストール</a>を行いましょう。
+
+<pre>
+sudo apt install -y git
+</pre>
+
+<h4>Perl</h4>
+
+システムPerlのためのしばしば使うであろうツールとモジュールをインストールしましょう。<a href="/blog/20200516081846.html">perl-docパッケージのインストール</a>、<a href="/blog/20200515081846.html">libio-socket-ssl-perlのインストール</a>、<a href="/blog/20200606082859.html">libreadline-devのインストール</a>、<a href="/blog/20200227174004.html">libterm-readline-gnu-perlのインストール</a>を行います。
+
+<pre>
+sudo apt install -y perl-doc
+sudo apt install -y libio-socket-ssl-perl
+sudo apt install -y libreadline-dev
+sudo apt install -y libterm-readline-gnu-perl
+</pre>
+
+<h4>SSL証明書</h4>
+
+SSL証明書の自動発行のために<a href="/blog/20200319174004.html">certbotのインストール</a>を行います。
+
+<pre>
+sudo apt install -y certbot
+</pre>
+
+<h3>データ用ディレクトリの作成</h3>
+
+Webアプリケーションがデータを保存するためのデータ用のディレクトリを作成しましょう。「myapp」ユーザーだけではなく、他の開発ユーザーも書き込めるように設定しておきます。
+
+「/datadrive」を<a href="https://linux.perlclub.net/blog/20191211133524.html">mkdir</a>コマンドでデータ用ディレクトリを作成します。
+
+<pre>
+sudo mkdir /datadrive
+</pre>
+
+次に、このデータ用ディレクトリに、Webアプリケーションユーザー「myapp」と他の開発ユーザーが書き込めるようにします。
+
+<ul>
+  <li><a href="/blog/20200327174004.html">データディレクトリに複数のユーザーが読み書きする方法 - Webアプリのファイルアップロードディレクトリ</a></li>
+</ul>
+
+上記の手順の「myapp」ユーザーに関する部分だけを抜き出しました。
+
+<pre>
+sudo groupadd myapp-group
+sudo gpasswd -a myapp myapp-group
+sudo chgrp -R myapp-group /datadrive
+sudo chmod 775 /datadrive
+sudo chmod g+s /datadrive
+
+# 確認
+ls -l / | grep datadrive
+</pre>
+
+これで、データ用ディレクトリが完成しました。
+
+<h3>Redisサーバー</h3>
+
+揮発性の情報の保存サーバーである<a href="/blog/20200525135533.html">Redisサーバーのインストール</a>と<a href="/blog/20200225174004.html">Redisサーバーの起動確認</a>を行います。
+
+Redisは、主にユーザー認証とセッション管理に利用します。
+
+RedisのPub/Sub機能を利用してpush通知、リアルタイム更新、リアルタイムチャットなどのリアルタイムWebに対応することもできます。
+
+<h4>Redisサーバーのインストール</h4>
+
+Redsiサーバーをインストールします。
+
+<pre>
+sudo apt install -y redis-server
+</pre>
+
+Redisのインストールはすぐ終わっているはずですが、Redisサーバーの起動に内部で失敗するために、処理に時間がかかります。リトライなどをしているのでしょうか。しばらく待ちましょう。
+
+<h4>Redisサーバーの起動確認</h4>
+
+Redsiサーバーの起動確認を行います。
+
+<pre>
+sudo systemctl status redis-server
+</pre>
+
+Redisサーバーのデフォルト設定では、IPv6が有効化されていない場合は、起動に失敗するようです。さくらのVPSのUbuntu 18では、IPv6が、デフォルトで設定されていません。
+
+<h4>Redis設定ファイルの編集</h4>
+
+Redis設定ファイルを<a href="https://linux.perlclub.net/blog/20190401171737.html">viエディタ</a>で編集します。間違った場合のためにバックアップもとっておきます。
+
+<pre>
+sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.bak
+sudo vi /etc/redis/redis.conf
+</pre>
+
+以下を
+
+<pre>
+bind 127.0.0.1 ::1
+</pre>
+
+以下に変更
+
+<pre>
+bind 127.0.0.1
+</pre>
+
+<h4>Redisの起動と確認</h4>
+
+Redisの起動と確認を行います。
+
+<pre>
+sudo systemctl start redis-server
+sudo systemctl status redis-server
+</pre>
+
+<h3>データベースサーバー MariaDB</h3>
+
+データベースサーバーであるMariaDBのインストールと起動確認を行います。
+
+<h4>データベースサーバーと関連ライブラリのインストール</h4>
+
+データベースサーバーMariaDBと関連ライブラリをインストールします。<a href="/blog/20200422174004.html">mariadb-clientのインストール</a>、<a href="/blog/20200421174004.html">mariadb-serverのインストール</a>、<a href="/blog/20200411174004.html">libmysqlclient-dev のインストール</a>、<a href="/blog/20200419174004.html">libmariadb-devのインストール</a>を行います。
+
+<pre>
+sudo apt install -y mariadb-client
+sudo apt install -y mariadb-server
+sudo apt install -y libmariadbclient-dev
+sudo apt install -y libmariadb-dev
+</pre>
+
+<h4>データベースサーバーの起動確認</h4>
+
+<a href="/blog/20200417174004.html">MariaDBが起動</a>していることを確認します。
+
+<pre>
+sudo systemctl status mariadb
+</pre>
+
+<h4>rootユーザーでMariaDBに接続</h4>
+
+まず最初にMariaDBのrootユーザーでMariaDBに接続しましょう。
+
+rootユーザーで接続するためには、mysqlコマンドをsudoで実行します。ユーザー名はrootです。
+
+<pre>
+sudo mysql -uroot
+</pre>
+
+MariaDBへの接続を終了するには「quit」と入力してEnterを押します。
+
+<pre>
+quit
+</pre>
+
+<h4>データベースの作成</h4>
+
+ここでは、Webアプリケーション用の<a href="https://mariadb.perlclub.net/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。データベース名の変更には、少し工夫はいりますが、後でデータベース名の変更は可能です。
+
+<pre>
+create database myappdb;
+</pre>
+
+作成したデータベースを確認するために、<a href="https://mariadb.perlclub.net/blog/20200518082643.html">データベースの一覧</a>を表示します。
+
+<pre>
+show databases;
+</pre>
+
+<h4>アプリケーションユーザーの作成</h4>
+
+アプリケーション用のユーザー「myapp」を作成します。
+
+<pre>
+# myappユーザーの作成
+create user myapp;
+</pre>
+
+<h4>権限とパスワードの設定</h4>
+
+myappユーザーにselect,update,insert,delete権限を与えパスワードを設定します。
+
+パスワードは「identified by」の後ろに続いている文字列です。この部分を、自分で設定してください。
+
+<pre>
+# myappユーザーにselect,update,insert,delete権限を与える
+grant insert,update,delete,select on myappdb.* to 'myapp'@'localhost' identified by 'eifjutab&';
+</pre>
+
+PerlでDBD::mysqlをインストールするときに、testデータベースへの接続権限必要になるので、設定しておきます。
+
+<pre>
+create database test;
+grant all privileges on test.* to 'myapp'@'localhost' identified by 's3kr1t';
+</pre>
+
+<h4>アプリケーションユーザーでの接続確認</h4>
+
+接続を抜けて、新しく作成した「myapp」ユーザーで、MariaDBに接続できることを確認します。
+
+<pre>
+# rootユーザーで接続
+mysql -umyapp -p
+</pre>
+
+MaridDBの初期設定の詳しい解説は<a href="/blog/20200224174004.html">MariaDBの初期設定とユーザーの作成</a>が参考になります。
+
+<h3>Perl Web開発環境の構築</h3>
+
+Perl Web開発環境の構築としてユーザー環境に<a href="https://perlzemi.com/">Perl</a>をインストールし、<a href="https://mojolicious.perlzemi.com/">Mojolicious</a>の小さなWebアプリケーションを立ち上げます。
+
+<h4>Perlのインストール</h4>
+
+ここでは、Perlのトラブルがなるべく少ない「perl-5.20.3」をインストールします。
+
+公式なセキュリティフィックスのサポートが存在するバージョンが良い場合は、最新版のPerlかその前のバージョンのPerlをインストールしましょう。
+
+以下の手順からperlbrewでユーザー環境にPerlをインストールするための必要な部分を抜き出します。plenvで行いたい場合は、以下の手順の中にあるので参考にしてください。
+
+<ul>
+  <li><a href="/blog/20200413174004.html">ユーザーPerlとcpanmのインストール</a></li>
+</ul>
+
+Perlのインストールは、ソースコードからビルドされ、さらに試験が実行されるので、非常に時間がかかります。10分～20分くらいかかる気がするので、お茶でも飲みましょう。
+
+<pre>
+# perlbrewのインストール
+wget -O - http://install.perlbrew.pl | bash
+
+# perlbrewの設定を~/.bashrcに書き込み
+echo "source ~/perl5/perlbrew/etc/bashrc" >> ~/.bashrc
+
+# ~/.bashrcを再読み込み
+source  ~/.bashrc
+
+# Perlのインストール
+perlbrew install perl-5.20.3
+
+# インストールしたPerlへの切り替え
+perlbrew switch perl-5.20.3
+
+# Perlのバージョン確認
+perl -v
+
+# cpanmのインストール
+perlbrew install-cpanm
+</pre>
+
+<h4>Webアプリケーションの立ち上げ</h4>
+
+次にMojoliciousのインストールとWebアプリケーションの起動を行います。
+
+以下の記事の内容を実行してください。最後の「ApacheからのリバースプキシによるWebアプリケーションへの接続」の部分以外の手順を実行しましょう。
+
+<ul>
+  <li><a href="/blog/20200729134756.html">MojoliciousによるWebアプリケーションのデプロイ</a></li>
+</ul>
+
+<h4>バッチプログラムがライブラリのパスを発見できるようにする</h4>
+
+バッチプログラムがWebアプリケーションのライブラリのパスを発見できるようにしておきましょう。Webアプリケーションに加えて、バッチプログラムを作成する場合の準備をしておきます。
+
+「~/.bashrc」に追加しましょう。
+
+<pre>
+vi ~/.bashrc
+</pre>
+
+以下の内容を追記します。
+
+<pre>
+export PERL5LIB=/home/myapp/webapp/lib
+</pre>
+
+<h3>ドメイン名の取得とDNSサーバーの設定</h3>
+
+ドメインを取得して、ドメイン名とサーバーIPアドレスを紐づけましょう。ドメイン名は、インターネット上でWebサイトを公開するためと、メール送信サーバーの設定のために必要です。
+
+さくらVPSの場合のサーバーのIPアドレスは、VPSコントロールパネルの「IPv4」「ネットワーク情報」「アドレス」に記載されています。
+
+以下の記事の中のAレコードの設定のみを行ってください。
+
+<ul>
+  <li><a href="/blog/20200807062918.html">DNSサーバーの設定 - ドメイン名とIPアドレスを対応させる</a></li>
+</ul>
+
+この記事のここからの例では、ドメイン名として「build-sakuravps-ubuntu18.perlclub.net」を使用します。
+
+<h3>メールアドレスの作成とDNSサーバーの設定</h3>
+
+メールアドレスの作成とDNSサーバーの設定を行いましょう。
+
+<ul>
+  <li><a href="/blog/20200828123127.html">メールアドレスの作成とDNSサーバーの設定</a></li>
+</ul>
+
+<h3>cron</h3>
+
+定期プログラム実行の常駐アプリケーションであるcronの起動確認を行います。
+
+<h4>cronの起動確認</h4>
+
+以下の記事の「sudo systemctl status cron」を実行してApacheが起動していることを確認してください。
+
+<ul>
+  <li><a href="/blog/20200520084454.html">cronの起動・停止・再起動・状態確認, cronの実行ログ</a></li>
+</ul>
+
+<h4>crontabの設定</h4>
+
+<a href="/blog/20200604085516.html">crontabの初期設定</a>をしておきましょう。
+
+cronの設定はcrontabに書きます。crontabは、ユーザーごとに持つことができます。myappというユーザーでcrontabを編集すると、それはmyappのcrontabになります。
+
+crontabを編集するには「-e」オプションを使用します。
+
+<pre>
+crontab -e
+</pre>
+
+エディタが起動します。
+
+cronの落とし穴として、ユーザー環境にインストールしたPerlが使われないというものがあります。これを解決するためにPATH環境変数を設定します。
+
+<pre>
+env | grep -P '^PATH'
+</pre>
+
+表示された値を以下のように設定します。
+
+<pre>
+PATH=/home/myapp/perl5/perlbrew/bin:/home/myapp/perl5/perlbrew/perls/perl-5.16.2/bin:/usr/kerberos/bin:/usr/local/bin:/bin:/usr/bin:/home/myapp/bin
+</pre>
+
+cronの自動実行でエラーが発生した場合にメールが来るように設定しておきましょう。
+
+<pre>
+MAILTO=kimoto_test@perlclub.net
+</pre>
+
+バッチプログラムがWebアプリケーションのライブラリのパスを読み込んでくれるように設定しておきましょう。
+
+<pre>
+PERL5LIB=/home/myapp/webapp/lib
+</pre>
+
+保存して終了しましょう。
+
+<h3>Apache</h3>
+
+WebサーバーであるApacheのインストールと設定を行います。HTTPSで接続できるようにSSLの設定を行います。Mojoliciousアプリケーションに接続できるようにバーチャルホストとリバースプロキシの設定を行います。
+
+ドメイン名の取得とDNSサーバーの設定で、使用するドメインが正しくサーバーのIPアドレスに紐づけられていることが前提です。
+
+<h4>Apacheのインストール</h4>
+
+<a href="/blog/20200424174004.html">Apache</a>のインストールを行います。
+
+<pre>
+sudo apt install -y apache2
+</pre>
+
+<h4>Apacheの起動確認</h4>
+
+<a href="/blog/20200519084454.html">Apacheの起動確認</a>を行います。
+
+<pre>
+sudo systemctl status apache2
+</pre>
+
+<h4>Apacheモジュール</h4>
+
+リバースプロキシの設定とSSLの設定とWebSocketの設定に必要なApacheモジュールを有効にします。
+
+<a href="/blog/20200318174004.html">mod_ssl</a>, <a href="/blog/20200311174004.html">mod_rewrite</a>, <a href="/blog/20200309174004.html">mod_headers</a>, <a href="/blog/20200310174004.html">mod_proxy</a>, <a href="/blog/20200220174004.html">mod_proxy_http</a>, <a href="/blog/20200718090758.html">proxy_wstunnel</a>を有効にします。
+
+<pre>
+# mod_sslを有効化
+sudo a2enmod ssl
+
+# mod_rewriteを有効化
+sudo a2enmod rewrite
+
+# mod_headersを有効化
+sudo a2enmod headers
+
+# mod_proxyを有効化
+sudo a2enmod proxy
+
+# mod_proxy_http
+sudo a2enmod proxy_http
+
+# mod_proxy_wstunnel
+sudo a2enmod proxy_wstunnel
+</pre>
+
+Apacheを再起動します。
+
+<pre>
+sudo systemctl restart apache2
+</pre>
+
+Apacheの状態確認を行います。
+
+<pre>
+sudo systemctl status apache2
+</pre>
+
+<h4>バーチャルホストとリバースプロキシの設定</h4>
+
+バーチャルホストとリバースプロキシを設定してApacheへのHTTP接続をMojoliciousアプリケーションに転送します。以下の手順から、必要な部分を抜粋します。
+
+<ul>
+  <li><a href="/blog/20200306174004.html">WebサイトをバーチャルホストとリバースプロキシでApacheから接続する</a></li>
+</ul>
+
+設定ファイルを以下のディレクトリに配置します。
+
+<pre>
+/etc/apache2/sites-available
+</pre>
+
+この設定ファイルのディレクトリについては、以下のページで詳しく解説しています。
+
+サイトのドメイン名(ここではbuild-sakuravps-ubuntu18.perlclub.net)に「.conf」を付けた名前で、<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで、設定ファイルを作成しましょう。
+
+<pre>
+cd /etc/apache2/sites-available
+sudo vi build-sakuravps-ubuntu18.perlclub.net.conf
+</pre>
+
+バーチャルホストとリバースプロキシの設定ファイルの内容です。WebSocketとHTTPSに対応したリバースプロキシの設定です。SSL証明書は、デフォルトで準備されている自己SSL証明書を指定しています。これは、後で、正式なSSL証明書に差し替えます。
+
+<pre>
+<VirtualHost *:80>
+  ServerName build-sakuravps-ubuntu18.perlclub.net
+
+  RewriteEngine on
+  RewriteRule (.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName build-sakuravps-ubuntu18.perlclub.net
+
+  <Proxy *>
+    Require all granted
+  </Proxy>
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyPass /websocket ws://localhost:8080/websocket
+  ProxyPass / http://localhost:8080/ keepalive=On
+  ProxyPassReverse / http://localhost:8080/
+  RequestHeader set X-Forwarded-Proto "https"
+
+  SSLEngine on
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</VirtualHost>
+</pre>
+
+<h4>設定ファイルの有効化</h4>
+
+設定が終わったら、設定ファイルを有効にします。
+
+<pre>
+sudo a2ensite build-sakuravps-ubuntu18.perlclub.net.conf
+</pre>
+
+<h4>設定ファイルの再読み込み</h4>
+
+Apacheの設定ファイルを再読み込みします。再読み込みの前に、<a href="/blog/20200609132409.html">Apacheの設定ファイルのテスト</a>をしましょう。
+
+<pre>
+sudo apachectl -t
+</pre>
+
+Apacheを再起動します。
+
+<pre>
+sudo systemctl reload apache2
+</pre>
+
+以下のドメインででWebサイトが表示できれば成功です。SSLの警告がでるのは、この後、正式なSSL証明書の設定をすることで、修正されます。
+
+<pre>
+https://build-sakuravps-ubuntu18.perlclub.net
+</pre>
+
+<h4>SSL証明書の取得</h4>
+
+HTTPSでリクエストを受けるために、<a href="/blog/20200618081050.html">Let's Encryptを使ってSSL証明書の発行</a>を行います。
+
+Let's Encryptは、HTTPリクエストによってSSL証明書の認証を行うので、Webアプリケーションを起動します。
+
+<pre>
+# Webアプリケーションの起動
+hypnotoad webapp.pl
+</pre>
+
+ドメイン名は「build-sakuravps-ubuntu18.perlclub.net」という名前で取得しており、DNSサーバーにおける、ドメイン名とIPアドレスの対応の記述は済んでいることを、この記事では前提とします。適宜対応する部分を書き換えてください。
+
+メールアドレスの作成の作業が終了しており「kimoto_test@perlclub.net」というメールアドレスで送受信できることをこの記事では前提とします。適宜対応する部分を書き換えてください。
+
+SSL証明書をLet's Encryptで取得するには、certbotコマンドを実行してください。
+
+<pre>
+sudo certbot certonly --agree-tos --non-interactive -d build-sakuravps-ubuntu18.perlclub.net --webroot -w /home/myapp/webapp/public --email kimoto_test@perlclub.net
+</pre>
+
+以下のメッセージが含まれていれば成功です。
+
+<pre>
+Congratulations! Your certificate and chain have been saved at:
+</pre>
+
+SSL証明書が以下のディレクトリに作成されます。上から、SSLの証明書ファイル、SSL証明書の秘密鍵ファイル、中間証明書ファイルです。
+
+<pre>
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/cert.pem
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/privkey.pem
+/etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/chain.pem
+</pre>
+
+lsコマンドで実際に見てみましょう。
+
+<pre>
+sudo ls -l /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net
+</pre>
+
+Let's EncryptでのSSL証明書の更新する場合「certbot renew」コマンドを使用します。取得したすべてのSSL証明書に対して更新が必要かどうかの確認が行われ、更新期限が1ヵ月以内であれば証明書が更新されます。
+
+<pre>
+sudo certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
+</pre>
+
+このコマンドは<a href="/blog/20200830052743.html">cron</a>の自動更新に設定しておくと、自動で更新されます。cronの設定については、後程解説します。
+
+<h4>Apacheの設定ファイルにSSL証明書を追加</h4>
+
+<a href="/blog/20200611082716.html">Apacheの設定ファイルにSSL証明書を追加</a>します。
+
+まずSSLの基本設定ファイルを作成します。これは、後でWebアプリケーションが増えた場合に共通して使うことを想定しています。
+
+「conf-available/ssl-basic.conf」というファイル名で<a href="https://linux.perlclub.net/blog/20190401171737.html">viエディタ</a>で作成します。
+
+<pre>
+cd /etc/apache2
+sudo vi conf-available/ssl-basic.conf
+</pre>
+
+以下の内容を追加します。
+
+<pre>
+SSLEngine on
+SSLProtocol             all -SSLv2 -SSLv3
+SSLCipherSuite          ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES256-SHA:ECDHE-ECDSA-DES-CBC3-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:DES-CBC3-SHA:!DSS
+SSLHonorCipherOrder     on
+</pre>
+
+次にWebアプリケーションの設定ファイルを編集します。自己SSL証明書の記載部分をLet's Encryptで作ったSSL証明書に変更します。
+
+<pre>
+cd /etc/apache2/sites-available
+sudo vi build-sakuravps-ubuntu18.perlclub.net.conf
+</pre>
+
+元のSSL証明書の設定部分です。
+
+<pre>
+  SSLEngine on
+  SSLCertificateFile      /etc/ssl/certs/ssl-cert-snakeoil.pem
+  SSLCertificateKeyFile /etc/ssl/private/ssl-cert-snakeoil.key
+</pre>
+
+以下のように書き換えてください。
+
+<pre>
+<VirtualHost *:80>
+  ServerName build-sakuravps-ubuntu18.perlclub.net
+
+  RewriteEngine on
+  RewriteRule (.*)?$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName build-sakuravps-ubuntu18.perlclub.net
+
+  <Proxy *>
+    Require all granted
+  </Proxy>
+
+  ProxyRequests Off
+  ProxyPreserveHost On
+  ProxyPass /websocket ws://localhost:8080/websocket
+  ProxyPass / http://localhost:8080/ keepalive=On
+  ProxyPassReverse / http://localhost:8080/
+  RequestHeader set X-Forwarded-Proto "https"
+  
+  # SSL証明書
+  Include conf-available/ssl-basic.conf
+  SSLCertificateFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/cert.pem
+  SSLCertificateKeyFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/privkey.pem
+  SSLCertificateChainFile /etc/letsencrypt/live/build-sakuravps-ubuntu18.perlclub.net/chain.pem
+</VirtualHost>
+</pre>
+
+Apacheの設定ファイルが正しいかテストを行います。
+
+<pre>
+sudo apachectl -t
+</pre>
+
+SSL証明書の更新後、SSL証明書を再読み込みするために、<a href="/blog/20200605104005.html">systemctl</a>コマンドでApacheの再起動をします。
+
+<pre>
+sudo systemctl reload apache2
+</pre>
+
+WebサイトにアクセスしてSSL証明書が有効になっていればOKです。
+
+<h4>Let's EncryptでのSSL証明書の更新の自動化</h4>
+
+Let's EncryptでのSSL証明書の更新を手動で行うのは、手間がかかります。一週間に一回、自動的に更新するように設定しておきましょう。
+
+一日一回の場合は、もしcertbotが間違っていた場合に、大量にSSL証明書を発行してしまって、しばらくSSL証明書が取得できないという事態になる可能性があるので、やめておいた方がリスクは避けられます。
+
+1ヵ月に一回だと、もう少し頻度を上げた方が、間違っている場合の確認がしやすいかなと感じます。
+
+というわけで、ここでは、1週間に1回、月曜日の9時に更新するという記述にしておきます。
+
+rootのcrontabを修正するには「sudo」をつけてcrontabを起動します。
+
+<pre>
+sudo crontab -e
+</pre>
+
+以下のようにcrontabの内容を設定します。メールアドレスは、自分が受信できるメールアドレスを指定してください。
+
+<pre>
+MAILTO=kimoto_test@perlclub.net
+
+0 9 * * 1 certbot renew -q --no-self-upgrade --post-hook "systemctl reload apache2"
+</pre>
+
+<h3>Webアプリケーションのsystemdによる管理</h3>
+
+OPを再起動したときにMojoliciousアプリケーションも自動起動するように<a href="/blog/20200901150837.html">Mojoliciousアプリケーションをsystemdへ登録</a>しましょう。
+
+ここでは、perlbrewを使って、Perl 5.20.3をインストールしていることを前提とします。Mojoliciousアプリケーションも上記手順で「Webapp」という名前で作成したことを前提としています。
+
+<h4>systemdの設定ファイル</h4>
+
+「webapp」というサービス名で、systemdに登録します。以下のファイルを新規作成します。
+
+<pre>
+sudo vi /lib/systemd/system/webapp.service
+</pre>
+
+<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンド開いて以下の内容を書き込んでください。
+
+<pre>
+[Unit]
+Description=My Mojolicious application
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/home/myapp/webapp/script/hypnotoad.pid
+ExecStart=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp
+ExecReload=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp
+ExecStop=/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp --stop
+KillMode=process
+User=myapp
+Group=myapp-group
+Environment=MY_SERVER_ENV=my_dev
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<h4>サービスの有効化</h4>
+
+サービスを有効化しましょう。
+
+<pre>
+sudo systemctl enable webapp
+</pre>
+
+もしMojoliciousアプリケーションがすでに起動している場合は、停止します。
+
+<pre>
+/home/myapp/perl5/perlbrew/perls/perl-5.20.3/bin/hypnotoad /home/myapp/webapp/script/webapp --stop
+</pre>
+
+Mojoliciousアプリケーションをsystemdの管理下でスタートしましょう。
+
+<pre>
+sudo systemctl start webapp
+</pre>
+
+Mojoliciousアプリケーションが起動しているかどうか確認しましょう。
+
+<pre>
+sudo systemctl status webapp
+</pre>
+
+Mojoliciousアプリケーションが再起動できるか確認しましょう。
+
+<pre>
+sudo systemctl reload webapp
+</pre>
+
+Mojoliciousアプリケーションが停止できるか確認しましょう。
+
+<pre>
+sudo systemctl stop webapp
+</pre>
+
+Mojoliciousアプリケーションを立ち上げておきましょう。
+
+<pre>
+sudo systemctl start webapp
+</pre>
+
+<h4>OSの再起動</h4>
+
+<a href="/blog/20200903120232.html">OSを再起動</a>を行ってMojoliciousアプリケーションが自動再起動されるか確認しましょう。
+
+<pre>
+sudo reboot
+</pre>
+
+<h3>メール送信</h3>
+
+sendmailコマンドでメール送信ができるようにします。メール送信サーバーとして利用するpostfixのインストールを行います。クラウドメールサービスSendGridをpostfixと連携させる設定を行います。
+
+<h4>postfixのインストール</h4>
+
+メール送信サーバー<a href="/blog/20200423174004.html">postfixのインストール</a>を行いましょう。メール送信サーバーとして機能するpostfixをインストールするとメールを送信するためのsendmailコマンドが使える用になります。
+
+<pre>
+sudo apt install -y postfix
+</pre>
+
+インストールコマンドを実行すると、GUIのような画面が立ち上がります。
+
+キーボードの右を押すと、Okが光ります。Enterを押します。
+
+上下キーで「No configuration」を選択します。右キーを押すとOkに勧めるので、Enterを押します。
+
+postfixがインストールされます。
+
+<h4>SendGridへの申し込み</h4>
+
+SendGridトップページから、メールアドレスを入力して申し込みます。
+
+<a href="https://sendgrid.kke.co.jp">SendGrid申し込み</a>
+
+翌営業日までには、アカウントが発行されます。
+
+SendGridとposfixの連携については、<a href="/blog/20200521085509.html">クラウドメール配信SendGridとPostfixとの連携</a>で解説しているものを、必要な部分だけ、以下に書き出します。
+
+<h4>APIキーを取得する</h4>
+
+APIキーを取得しましょう。SendGridの管理画面にログインします。左のサイドバーの「Settings」をクリック。「API keys」をクリック。
+
+右上の「Create API Key」をクリック。
+
+「API Key name」に任意の名前を入力。(例)perlgenki。
+
+「API Key Permissions」を「Full Access」に。
+
+作成されたAPIキーが表示されます。一度しか表示されないので、コピペして、どこかに保存してください。もし画面を消してしまった場合は、削除して、作成しなおしましょう。
+
+<h4>postfixの設定ファイルの編集</h4>
+
+postfixの設定ファイルを<a href="https://linux.perlclub.net/blog/20190401171737.html">vi</a>コマンドで編集します。
+
+<pre>
+sudo vi /etc/postfix/main.cf
+</pre>
+
+以下の内容を記述します。その他の設定はいらず、これだけOKです。
+
+<pre>
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+smtp_sasl_tls_security_options = noanonymous
+smtp_tls_security_level = encrypt
+header_size_limit = 4096000
+relayhost = [smtp.sendgrid.net]:587
+</pre>
+
+ここで上で設定に記述したパスワードファイルを作成します。
+
+<pre>
+sudo vi /etc/postfix/sasl_passwd
+</pre>
+
+SendGridで取得したAPIキーを指定します。APIキーの部分を、取得したAPIキーに書き換えてください。
+
+<pre>
+[smtp.sendgrid.net]:587 apikey:APIキー
+</pre>
+
+次に、このファイルがrootアカウントでのみ読み書きができるよう制限されていることを確認して、postmap コマンドを使用してPostfixがこの新しいファイルを使用するようハッシュテーブルを更新します:
+
+<pre>
+sudo chmod 600 /etc/postfix/sasl_passwd
+sudo postmap /etc/postfix/sasl_passwd
+</pre>
+
+最後にPostfixを<a href="/blog/20200605104005.html">systemctl</a>で、起動してください。
+
+<pre>
+# 起動
+sudo systemctl start postfix
+
+# 再起動したい場合は以下で
+sudo systemctl restart postfix
+</pre>
+
+Postfixの状態を確認します。
+
+<pre>
+sudo systemctl status postfix
+</pre>
+
+<h4>sendmailコマンドでメール送信</h4>
+
+sendmailコマンドでメールを送信してみましょう。[メール送信元] [メール送信先]のところを送信可能なのメールアドレスにしてください。
+
+<pre>
+echo Hello | sendmail -f [メール送信元] [メール送信先]
+</pre>
+
+sendmailでは、標準入力が、本文になります。
+
+-fはfromでメール送信元を指定します。メール送信元がない場合は、メールがはじかれるという経験が多いので、指定しています。
+
+その後ろに、メールの送信先を指定します。試験するときは、送信先、送信元どちらも同じで大丈夫です。
+
+<pre>
+# 送信例
+echo Hello | sendmail -f kimoto_test@perlclub.net kimoto_test@perlclub.net
+</pre>
+
+メール送信ができればOKです。
+
+<h3>完成!!!</h3>
+
+さくらVPS+Ubuntu 18+PerlでWebシステム開発 環境構築の完成です。お疲れさまでした。

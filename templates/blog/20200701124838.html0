@@ -1,0 +1,50 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200526151435.html">
+        <span itemprop="name">Apache</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Let's EncryptのアクセスURLだけをApacheのベーシック認証から除外する</h2>
+
+Let's EncryptがSSL証明書を発行するときには、Let's Encryptのクライアントはそのサイトにアクセスできることを調べます。ひとつ注意しないといけないのは、ベーシック認証をサイト全体にかけている場合に、Let's Encryptのクライアントがアクセスできなくなってしまうということです。
+
+ここでは、Let's EncryptのアクセスURLだけを、ベーシック認証から除外する方法を解説します。
+
+Apacheの設定ファイルで以下のように設定してください。
+
+<pre>
+<Location / >
+  AuthType Basic
+  AuthName "Secret Zone"
+  AuthUserFile /var/www/.htpasswd
+  Require user foo
+</Location>
+
+<Location /.well-known/acme-challenge >
+  Require all granted
+</Location>
+</pre>
+
+Let's Encryptが使うパスだけは、接続をすべて許可してください。
+
+<pre>
+/.well-known/acme-challenge
+</pre>
+
+がLet's Encryptが使うパスです。
+
+「/」がベーシック認証のパスになっていますが、その後ろの設定で「/.well-known/acme-challenge」のパスに対しては、すべての接続が許可されます。

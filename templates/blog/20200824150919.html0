@@ -1,0 +1,33 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200822150919.html">
+        <span itemprop="name">メール設定</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Postfixのバージョンの確認方法</h2>
+
+Postfixのバージョンの確認方法です。postconfコマンドでPostfixの設定が表示されるので、mail_versionという項目を見ます。
+
+<pre>
+sudo postconf | grep -P '^mail_version'
+</pre>
+
+Postfixのバージョンが表示されたときのサンプルです。
+
+<pre>
+mail_version = 3.3.0
+</pre>

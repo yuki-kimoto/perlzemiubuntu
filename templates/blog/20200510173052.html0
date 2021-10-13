@@ -1,0 +1,41 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200723101434.html">
+        <span itemprop="name">ユーザー管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>passwdコマンド - パスワードの設定</h2>
+
+ユーザーを追加したらパスワードも設定します。<b>passwd</b>コマンドを使用します。パスワード設定などのユーザー管理は、sudoを使ってrootユーザーとして実行します。
+
+<pre>
+sudo passwd kimoto
+</pre>
+
+パスワードの入力と確認のための再入力を求められるので設定します。
+
+<h3>rootユーザーのパスワードを変更するには?</h3>
+
+ユーザー名をrootにするか、ユーザー名を指定しないでpasswdコマンドを実行します。
+
+<pre>
+sudo passwd root
+
+あるいは
+
+sudo passwd
+</pre>

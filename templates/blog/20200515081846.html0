@@ -1,0 +1,34 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+<h2>libio-socket-ssl-perlパッケージのインストール - PerlのIO::Socket::SSL</h2>
+
+PerlでHTTPSアクセスが行えるようにlibio-socket-ssl-perlパッケージを<a href="/blog/20200530085516.html">apt</a>コマンドを使って、インストールします。sudoを使って管理者権限で実行します。
+
+<pre>
+sudo apt install -y libio-socket-ssl-perl
+</pre>
+
+PerlのIO::Socket::SSLモジュールがインストールされます。Net::SSLeayも、IO::Socket::SSLに依存しているので、インストールされます。
+
+<h4>HTTP::Tinyを使ってHTTPSにアクセス</h4>
+
+(以下は2020年5月16日段階で、まだ試していません)
+
+PerlのコアモジュールであるHTTP::TinyはIO::Socket::SSLを使ったHTTPSアクセスを透過的にサポートしています。

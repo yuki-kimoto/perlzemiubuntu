@@ -1,0 +1,57 @@
+<h2>タイムゾーンの確認と設定 - timedatectlコマンド</h2>
+
+タイムゾーンの確認と変更は、<b>timedatectlコマンド</b>で行えます。タイムゾーンは、UTC時刻(協定世界時)を基準として、各国の時刻がどの程度進んでいるかを設定するものです。
+
+日本の場合は、9時間進んでいます。
+
+<h3>タイムゾーンの確認</h3>
+
+timedatectlコマンドで、現在のタイムゾーンを確認できます。
+
+<pre>
+timedatectl
+</pre>
+
+以下のように現在設定されているタイムゾーンが表示されます。デフォルトでは「UTC」です。
+
+<pre>
+                      Local time: Wed 2020-05-13 03:44:55 UTC
+                  Universal time: Wed 2020-05-13 03:44:55 UTC
+                        RTC time: Wed 2020-05-13 03:44:55
+                       Time zone: Etc/UTC (UTC, +0000)
+       System clock synchronized: yes
+systemd-timesyncd.service active: yes
+                 RTC in local TZ: no
+</pre>
+
+<h3>利用可能なタイムゾーンの一覧</h3>
+
+利用可能なタイムゾーンの一覧を表示するには「timedatectl list-timezones」コマンドを使用します。
+
+<pre>
+timedatectl list-timezones
+</pre>
+
+たくさん表示されます。日本の場合は「Asia/Tokyo」です。
+
+<pre>
+Asia/Tashkent
+Asia/Tbilisi
+Asia/Tehran
+Asia/Thimphu
+Asia/Tokyo
+Asia/Tomsk
+Asia/Ulaanbaatar
+Asia/Urumqi
+Asia/Ust-Nera
+Asia/Vientiane
+Asia/Vladivostok
+</pre>
+
+<h3>タイムゾーンの変更</h3>
+
+タイムゾーンを変更しましょう。タイムゾーンを変更するには「timedatectl set-timezone」コマンドを使用します。ここ日本の場合は「Asia/Tokyo」を設定します。sudoコマンドで管理者権限で実行します。
+
+<pre>
+sudo timedatectl set-timezone Asia/Tokyo
+</pre>

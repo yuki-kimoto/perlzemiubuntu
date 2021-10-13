@@ -1,0 +1,95 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>aptコマンド - パッケージ管理</h2>
+
+<b>aptコマンド</b>を使ってパッケージ管理を行うことができます。
+
+<h3>パッケージのインストール - apt install</h3>
+
+パッケージをインストールするには「apt install」を使用します。<a href="/blog/20200531085516.html">sudo</a>コマンドで、管理者権限で実行します。
+
+<pre>
+sudo apt install パッケージ名
+</pre>
+
+<h3>パッケージの削除 - apt remove</h3>
+
+パッケージを削除するには「apt remove」を使用します。<a href="/blog/20200531085516.html">sudo</a>コマンドで、管理者権限で実行します。
+
+<pre>
+sudo apt remove パッケージ名
+</pre>
+
+<h3>aptシステムのアップグレード - apt upgrade</h3>
+
+aptシステムのアップグレードするには「apt upgrade」を使用します。<a href="/blog/20200531085516.html">sudo</a>コマンドで、管理者権限で実行します。
+
+すでに何らかのパッケージがインストールされている場合は、新しいaptシステムが参照するパッケージに更新されます。
+
+この場合は、確率が低いとしても、既存のアプリケーションが動かなくなリスクがあり、アプリケーション修正が必要な場合があるという点は注意しましょう。
+
+<pre>
+sudo apt upgrade
+</pre>
+
+「apt install」でエラーが発生する場合は、「apt upgrade」を試してみましょう。エラーが修正される場合があります。
+
+<h3>パッケージ管理に関する情報</h3>
+
+デフォルトでインストールされているパッケージについては、以下を参考にしてください。
+
+<a href="/blog/20200506174004.html">Ubuntu 18.04 LTSにデフォルトでインストールされているソフトウェアパッケージ</a>
+
+パッケージ名の検索については以下の記事を参考にしてください。
+
+<a href="/blog/20200430174004.html">Ubuntuのパッケージの検索サイト</a>
+
+パッケージの依存関係を調べるには以下の記事を参考にしてください。
+
+<a href="/blog/20200427174004.html">パッケージの依存関係を調べる</a>
+
+<h3>aptとapt-getとの違い</h3>
+
+Ubuntu 14から、一般的なパッケージ管理においてaptコマンドが推奨されるようになりました。
+
+aptはapt-getとapt-chaceコマンドを、システム管理者がより簡潔につかえるラッパーアプリケーションです。
+
+apt-getとapt-chacheは、aptの一段下にある低レベルレイヤーという位置づけになりました。
+
+aptとapt-getの違いについては、以下が詳しいです。
+
+<a href="https://www.translatetheweb.com/?ref=TVert&from=&to=ja&a=https%3A%2F%2Fitsfoss.com%2Fapt-vs-apt-get-difference%2F">aptとapt-getの違い説明</a>
+
+<h3>aptの公式ドキュメント</h3>
+
+aptの公式ドキュメントは以下にあります。
+
+<ul>
+  <li><a href="http://manpages.ubuntu.com/manpages/xenial/en/man8/apt.8.html">Ubuntu Manpage: apt - command-line interface</a></li>
+</ul>
+
+<h3>aptでインストールできるパッケージ</h3>
+
+aptでインストールできるパッケージはこちらで紹介しています。
+
+<ul>
+  <li><a href="/blog/20200529085516.html">Ubuntuでインストールできるパッケージの紹介</a></li>
+</ul>

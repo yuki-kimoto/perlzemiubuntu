@@ -1,0 +1,43 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200526151435.html">
+        <span itemprop="name">Apache</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Apacheの設定ファイルが正しかテストする - apachectl -t</h2>
+
+Apacheの設定ファイルが正しかテストするにはapachectlコマンドの「-t」オプションを使用します。
+
+<pre>
+sudo apachectl -t
+</pre>
+
+<a href="/blog/20200307174004.html">自己SSL証明書</a>を読み込んでいる場合に、root権限が必要になるので、sudoでroot権限で実行する方がよいでしょう。
+
+Aapcheの設定ファイルを間違ったまま<a href="/blog/20200605104005.html">systemctl</a>コマンドで、<a href="/blog/20200519084454.html">Apacheを再起動</a>してしまうと、Apacheが停止します。Apacheが停止すると、Apache上で動いているすべてのWebサイト・Webサービスがダウンします。
+
+これは、起こりやすいミスで、多くのエンジニアが経験するミスです。Webサイトが全部停止して、焦った方も多いのではないでしょうか。
+
+Apacheの再起動を行う前は、Apacheの設定ファイルが正しいかテストしておく習慣をつけておくのがお勧めです。
+
+また、たとえ、Apacheの設定ファイルが正しくても、それは、再起動ができるということを意味するだけで、設定を間違っていたために、意図したように動いていないということもあります。
+
+元に戻せるよう設定ファイルのバックアップを行っておくことは大切です。
+
+Ubuntuの場合は、細かく設定ファイルが分かれているので、<a href="https://git.perlclub.net/">Git</a>を使って管理できると便利でしょう。
+
+Aapcheの設定ファイルを変更する必要がある場合は、できるだけ少しづつ変更して、間違いがないことを確認しながら、再起動する方法がお勧めです。一度に変更すると、どこが間違っているかわからなくなったり、全部をやりなおす必要がでてくるからです。

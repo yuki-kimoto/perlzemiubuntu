@@ -1,0 +1,102 @@
+<h2>cronとrsyncを使ったファイルバックアップ自動化</h2>
+
+cronとrsyncを使ったファイルバックアップ自動化する方法を解説します。
+
+<h4>バックアップサーバーにバックアップディレクトリを作成</h4>
+
+バックアップサーバーにバックアップディレクトリを作成しましょう。「/datadrive」はすでに存在するとします。
+
+<pre>
+mkdir -p /datadrive/backup
+</pre>
+
+<h4>ファイルバックアップにはrsyncを使う</h4>
+
+ファイルのバックアップには<a href="https://linux.perlclub.net/blog/20190130171737.html">rsync</a>を使います。
+
+<pre>
+sudo rsync -e "ssh -p22" -av --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
+sudo rsync -e "ssh -p22" -av --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
+</pre>
+
+rsyncは、ディレクトリを再帰的にコピーでき、ファイルの差分だけをコピーしてくれるので、ファイルの更新は差分のチェックと差分のコピーの時間だけになります。
+
+「--delete」オプションを指定しておくと、削除したファイルも検知してくれて、ミラーリングを行うことができます。
+
+<h4>ファイルは本番機からバックアップ機に向かって転送する</h4>
+
+ファイルは、本番機からバックアップ機に向かって転送します。セキュリティの理由で、本番機へのrootログインはSSHでは禁止されていると思われるからです。
+
+バックアップしたいファイルの中には、root権限が必要なものもあります。
+
+ですので、本番機側で、rsyncコマンドを実行して、バックアップ機に転送します。
+
+<h4>秘密鍵と公開鍵のペアを作成し公開鍵をバックアップサーバーに登録する</h4>
+
+本番機で、<a href="/blog/20200623095744.html">ssh-keygenコマンド</a>を使って、秘密鍵と公開鍵のペアを作成し公開鍵をバックアップサーバーに登録しましょう。
+
+rootのディレクトリに秘密鍵と公開鍵のペアを生成します。
+
+<pre>
+sudo mkdir -p /root/.ssh
+sudo chmod 700 /root/.ssh
+
+# ファイル名は「/root/.ssh/id_rsa_backup」
+sudo ssh-keygen -t rsa
+</pre>
+
+公開鍵を表示します。
+
+<pre>
+sudo cat /root/.ssh/id_rsa_backup.pub
+</pre>
+
+表示された公開鍵をコピーしておきます。
+
+バックアップサーバーで作業します。
+
+<pre>
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+cd ~/.ssh
+</pre>
+
+公開鍵を登録します。「authorized_keys」ファイルを開いて、コピーした公開鍵を一番下に、張り付けます。
+
+<pre>
+vi ~/.ssh/authorized_keys
+</pre>
+
+これで、SSH公開鍵認証で、rsyncができるようになります。
+
+<pre>
+sudo rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -av --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
+sudo rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -av --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
+</pre>
+
+バックアップ用のディレクトリも作成しておきましょう。
+
+<h4>ファイルバックアップをrootのcrontabに登録する</h4>
+
+実行するコマンドは本番機のrootの<a href="/blog/20200604085516.html">crontab</a>に登録しましょう。
+
+rootのcrontabを以下のようにして開くことができます。
+
+<pre>
+sudo crontab -e
+</pre>
+
+crontabの中に、以下のようにバックアップのコマンドを記述します。<a href="/blog/20200531085516.html">sudo</a>はcrontabには書かないので、注意してください。
+
+時間は任意です。夜間の処理が少ない時間帯が良いと思います。
+
+MAILはrsyncに失敗した場合に通知するメールアドレスです。詳細を表示する「-v」オプションは外しておきましょう。
+
+<pre>
+MAILTO=kimoto.yuki@gmail.com
+
+30 03 * * * rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -a --delete /datadrive/ myapp@133.242.230.50:/datadrive/backup/datadrive/
+30 03 * * * rsync -e "ssh -p22 -i /root/.ssh/id_rsa_backup" -a --delete /etc_letsencrypt/ myapp@133.242.230.50:/datadrive/backup/etc_letsencrypt/
+</pre>
+
+rsyncコマンドは「mkdir -p」のように複数階層のディレクトリを作れないことに注意しましょう。

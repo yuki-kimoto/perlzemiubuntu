@@ -1,0 +1,40 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+<h2>aptのアップデート - apt update</h2>
+
+aptをアップデートするには「apt update」を使用します。sudoを使ってroot権限で実行します。
+
+<pre>
+sudo apt update
+</pre>
+
+aptが参照するURLなどが変更していたりした場合は「apt install」が失敗する場合があります。
+
+ですので、aptを最初に使い始める場合は「apt update」をしておくと安心です。
+
+「apt install gcc」を実行すると、以下のようなエラーがでましたが「apt update」を実行すると、このエラーがでなくなりました。
+
+<pre>
+Err:1 http://security.ubuntu.com/ubuntu bionic-updates/main amd64 linux-libc-dev amd64 4.15.0-99.100
+  404  Not Found [IP: 13.66.189.214 80]
+Fetched 378 kB in 0s (950 kB/s)
+E: Failed to fetch http://security.ubuntu.com/ubuntu/pool/main/l/linux/linux-libc-dev_4.15.0-99.100_amd64.deb  404  Not Found [IP: 13.66.189.214 80]
+E: Unable to fetch some archives, maybe run apt-get update or try with --fix-missing?
+</pre>

@@ -1,0 +1,172 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200823150919.html">
+        <span itemprop="name">systemd</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>systemctl - systemdで管理されているサーバーアプリケーションの管理</h2>
+
+<b>systemctl</b>コマンドを使うと、systemdで管理されているサーバーアプリケーションの管理を行うことができます。
+
+ここでは、apache2を使って、各種コマンドについて解説します。
+
+<h4>アプリケーションの開始</h3>
+
+アプリケーションを開始するには、startコマンドを使用します。
+
+<pre>
+sudo systemctl start apache2
+</pre>
+
+<h4>アプリケーションの停止</h3>
+
+アプリケーションを停止するには、stopコマンドを使用します。
+
+<pre>
+sudo systemctl stop apache2
+</pre>
+
+<h4>アプリケーションの再起動</h3>
+
+アプリケーションを再起動するには、restartコマンドを使用します。
+
+<pre>
+sudo systemctl restart apache2
+</pre>
+
+stopの後に、startが実行されます。
+
+<h4>アプリケーションの状態</h3>
+
+アプリケーションの状態を見るには、statusコマンドを使用します。
+
+<pre>
+sudo systemctl status apache2
+</pre>
+
+アプリケーションが起動している場合は、以下のように表示されます。
+
+<pre>
+● apache2.service - The Apache HTTP Server
+   Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           mqapache2-systemd.conf
+   Active: active (running) since Fri 2020-06-05 10:27:15 JST; 3h 32min ago
+ Main PID: 1624 (apache2)
+    Tasks: 55 (limit: 9479)
+   CGroup: /system.slice/apache2.service
+           tq1624 /usr/sbin/apache2 -k start
+           tq1628 /usr/sbin/apache2 -k start
+           mq1629 /usr/sbin/apache2 -k start
+</pre>
+
+<h4>アプリケーションのリロード</h3>
+
+アプリケーションで、reloadが定義されている場合は、reloadを使うことができます。
+
+<pre>
+sudo systemctl reload apache2
+</pre>
+
+<a href="/blog/20200526151435.html">apache2</a>の場合はグレースフルスタート、postfixの場合は、設定ファイルの再読み込みが定義されています。
+
+<h3>各アプリケーションのsystemdの設定ファイルを見る</h3>
+
+各アプリケーションのsystemdの設定ファイルは「systemctl status」の内容に含まれています。
+
+<pre>
+sudo systemctl status apache2
+</pre>
+
+以下の「/lib/systemd/system/apache2.service」というのが、systemdのapacheの設定ファイルです。
+
+<pre>
+● apache2.service - The Apache HTTP Server
+   Loaded: loaded (/lib/systemd/system/apache2.service; enabled; vendor preset: enabled)
+  Drop-In: /lib/systemd/system/apache2.service.d
+           mqapache2-systemd.conf
+   Active: active (running) since Fri 2020-06-05 10:27:15 JST; 3h 32min ago
+ Main PID: 1624 (apache2)
+    Tasks: 55 (limit: 9479)
+   CGroup: /system.slice/apache2.service
+           tq1624 /usr/sbin/apache2 -k start
+           tq1628 /usr/sbin/apache2 -k start
+           mq1629 /usr/sbin/apache2 -k start
+</pre>
+
+catコマンドを使って「/lib/systemd/system/apache2.service」の中身を見てみましょう。
+
+<pre>
+[Unit]
+Description=The Apache HTTP Server
+After=network.target remote-fs.target nss-lookup.target
+
+[Service]
+Type=forking
+Environment=APACHE_STARTED_BY_SYSTEMD=true
+ExecStart=/usr/sbin/apachectl start
+ExecStop=/usr/sbin/apachectl stop
+ExecReload=/usr/sbin/apachectl graceful
+PrivateTmp=true
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+<h3>systemdの設定ファイル</h3>
+
+systemdの設定ファイルは「/lib/systemd/system」にあります。以下はApacheの設定ファイルです。
+
+<pre>
+/lib/systemd/system/apache2.service
+</pre>
+
+<h3>systemdのサービスとして追加</h3>
+
+systemdで管理される新しいアプリケーションを追加するには、systemdの設定ファイルがあるディレクトリの中に設定ファイルを追加します。
+
+MojoliciousでWebアプリケーションを作成してhypnotoadで起動している場合にこれを<a href="https://docs.mojolicious.org/Mojolicious/Guides/Cookbook">systemdで管理する場合の公式ドキュメントのサンプル</a>は以下のようになっています。
+
+<pre>
+[Unit]
+Description=My Mojolicious application
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/home/sri/myapp/script/hypnotoad.pid
+ExecStart=/path/to/hypnotoad /home/sri/myapp/script/my_app
+ExecReload=/path/to/hypnotoad /home/sri/myapp/script/my_app
+KillMode=process
+
+[Install]
+WantedBy=multi-user.target
+</pre>
+
+ファイル名は以下のようにします。「mywebapp」の部分は任意の名前でOKです。viを使って、編集して、内容を追記しましょう。
+<pre>
+sudo vi /lib/systemd/system/mywebapp.service
+</pre>
+
+systemdにサービスとして登録しておくと、OSの再起動時に、Webアプリケーションを自動起動させることができます。
+
+設定ファイルが正しいく記述されているかどうかはsystemctlコマンドのstatusで確認することができます。
+
+<pre>
+systemctl status mywebapp
+</pre>

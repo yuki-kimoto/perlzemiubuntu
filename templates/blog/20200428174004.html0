@@ -1,0 +1,57 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+<h2>ライブラリの読み込みパス</h2>
+
+Ubuntuのライブラリの読み込みパスについての情報です。
+
+<h4>aptでインストールしたパッケージのライブラリの読み込みパス</h4>
+
+aptでインストールしたパッケージのライブラリは「/usr/lib/x86_64-linux-gnu」にあります。
+
+<pre>
+/usr/lib/x86_64-linux-gnu
+</pre>
+
+<h4>ライブラリの読み込みパスの確認</h4>
+
+ライブラリの読み込みパスを確認するには「/etc/ld.so.conf」の中を見ます。
+
+<pre>
+cat /etc/ld.so.conf
+</pre>
+
+中身を見てみると、さらにincludeされています。
+
+<pre>
+include ld.so.conf.d/*.conf
+</pre>
+
+ですので、<a href="https://linux.perlclub.net/blog/20200113083613.html">catコマンド</a>で、すべての読み込みファイルを出力してみましょう。
+
+<pre>
+$ cat /etc/ld.so.conf.d/*.conf
+
+# libc default configuration
+/usr/local/lib
+# Multiarch support
+/usr/local/lib/x86_64-linux-gnu
+/lib/x86_64-linux-gnu
+/usr/lib/x86_64-linux-gnu
+</pre>

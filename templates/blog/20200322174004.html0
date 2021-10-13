@@ -1,0 +1,48 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200526151435.html">
+        <span itemprop="name">Apache</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Apacheの子プロセスの実行ユーザーがデータディレクトリに書き込む方法</h2>
+
+UbuntuのApacheではroot権限で起動した後、実際にリクエストを受ける子プロセスが「www-data」というユーザーで実行されます。
+
+psコマンドで、実際のプロセスを見てみましょう。<a href="https://linux.perlclub.net/blog/20200602093211.html">grep</a>コマンドでapacheを絞り込みます。
+
+<pre>
+ps -ef | grep apache
+</pre>
+
+<pre>
+root       1624      1  0 Jun05 ?        00:00:10 /usr/sbin/apache2 -k start
+admins    10576  10188  0 13:11 pts/1    00:00:00 grep --color=auto apache
+www-data 115206   1624  0 06:25 ?        00:00:00 /usr/sbin/apache2 -k start
+www-data 115207   1624  0 06:25 ?        00:00:00 /usr/sbin/apache2 -k start
+</pre>
+
+Ubuntuサーバー構築入門では、アプリケーション用のグループ「myapp-group」を作成して、グループに所属するユーザーがデータディレクトリに書き込める運用を紹介しています。
+
+<ul>
+  <li><a href="/blog/20200327174004.html">データディレクトリに複数のユーザーが読み書きする方法 - Webアプリのファイルアップロードディレクトリ</a></li>
+</ul>
+
+もし、CGIアプリケーションが存在して、Aapcheで起動される場合に、このデータディレクトリに、ファイルを書き込むためには「www-data」ユーザーを、<a href="/blog/20200330174004.html">gpasswd</a>コマンドで、myapp-groupグループに追加してください。
+
+<pre>
+sudo gpasswd -a www-data myapp-group
+</pre>

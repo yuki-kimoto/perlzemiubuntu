@@ -1,0 +1,22 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li>
+      Redis
+    </li>
+  </ul>
+</div>
+
+<h2>Redisサーバー - 揮発性データ保存サーバー</h2>
+
+Redisサーバーのインストールを解説します。Redisサーバーは、セッション管理やワンタイムパスワードなどの揮発性データの保存や、push通知などのリアルタイムWebを実現するためのPub/Sub機能に利用します。
+
+<ul>
+  <li><a href="/blog/20200225174004.html">Redisサーバーの起動・停止・再起動・状態確認</a></li>
+  <li><a href="/blog/20200720125704.html">redis-cli - RedisクライアントからRedisコマンドを実行する</a></li>
+</ul>

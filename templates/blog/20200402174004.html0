@@ -1,0 +1,58 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200723101434.html">
+        <span itemprop="name">ユーザー管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>userdelコマンド - ユーザーを削除する</h2>
+
+<b>userdelコマンド</b>で、ユーザーを削除できます。sudoでroot権限で実行します。
+
+<pre>
+sudo userdel kimoto
+</pre>
+
+
+<pre>
+sudo userdel kimoto
+</pre>
+
+ホームディレクトリの内容やメールは、削除されないので安心してください。
+
+このユーザーがプロセスを使用していた場合は、削除ができません。
+
+そのユーザーがプロセスを使っていない時間に行うか、プロセスを確認して、killしてよいものであれば、killする必要があります。
+
+<pre>
+# プロセスの確認
+ps -ef
+</pre>
+
+<h3>ユーザー管理のその他の操作</h3>
+
+ユーザー追加。
+
+<ul>
+  <li><a href="/blog/20200511173052.html">ユーザーを追加する - useraddコマンド</a></li>
+</ul>
+
+ユーザー一覧。
+
+<ul>
+  <li><a href="/blog/20200401174004.html">ユーザーの一覧を表示する 「/etc/passwd」ファイル</a></li>
+</ul>
+

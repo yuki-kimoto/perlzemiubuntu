@@ -1,0 +1,144 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200827123127.html">
+        <span itemprop="name">Perl</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>ユーザーPerlにcpanmでImage::Magickをインストールする</h2>
+
+ユーザーPerlにcpanmでImage::Magicをインストールする方法です。
+
+最初に注意を書いておきますと、Image::Magickモジュールは、ユーザー環境のPerlにcpanmで、インストールすることが非常に難しいモジュールです。cpanmで簡単にインストールすることができず、手動でMakefile.PLを書き換える必要があります。
+
+新規にPerlシステム開発で、画像処理を行う場合は、Perlで書かれた<a href="https://perlzemi.com/blog/20110820131832.html">Imager</a>という画像編集モジュールがありますので、まずこちらを試してみましょう。
+
+<a href="https://ubuntu.perlclub.net/blog/20200425174004.html">ImageMagicをインストール</a>してconvertコマンドなどを<a href="https://perlzemi.com/blog/20180124151680.html">system関数</a>で、呼び出すことは、次善の方法です。
+
+<h3>ユーザーPerlにcpanmでImage::Magickをインストールするために必要なパッケージ</h3>
+
+<h4>libmagickcore-devのインストール</h4>
+
+PerlのImage::Magickをインストールする前提としてImageMagickのヘッダとライブラリをインストールしましょう。
+
+<ul>
+  <li><a href="/blog/20200612115851.html">libmagickcore-devのインストール - ImageMagickのヘッダとライブラリ</a></li>
+</ul>
+
+ImageMagickの以下のヘッダを探します。
+
+<pre>
+find /usr/include | grep 'ImageMagick.h'
+find /usr/include | grep 'magick-baseconfig.h'
+</pre>
+
+以下のように表示されます。バージョン番号は異なる可能性があります。
+
+<pre>
+/usr/include/ImageMagick-6/magick/ImageMagick.h
+/usr/include/x86_64-linux-gnu/ImageMagick-6/magick/magick-baseconfig.h
+</pre>
+
+これらの、ImageMagicのインクルードディレクトリを覚えておきます。これらの名前は、Ubuntuのバージョンにより違う可能性があります。
+
+<pre>
+/usr/include/ImageMagick-6
+/usr/include/x86_64-linux-gnu/ImageMagick-6
+</pre>
+
+<h4>libperl-devのインストール</h4>
+
+Perlのヘッダとライブラリが必要です。
+
+<ul>
+  <li><a href="/blog/20200620115851.html">libperl-devのインストール - Perlのヘッダとライブラリ</a></li>
+</ul>
+
+<h3>ユーザーPerlにcpanmでImage::Magickのインストールする</h3>
+
+まず一度cpanmでImage::Magickをインストールしてみましょう。
+
+<pre>
+cpanm Image::Magick
+</pre>
+
+失敗しますね。ログを見ると「magick/magick-baseconfig.h」がないといわれています。
+
+<pre>
+/usr/include/ImageMagick-6/magick/magick-config.h:21:10: fatal error: magick/magick-baseconfig.h: No such file or directory
+ #include "magick/magick-baseconfig.h"
+</pre>
+
+Makefileを書き換えて、インクルードディレクトリ「/usr/include/ImageMagick-6」にする作業をします。
+
+まず、cpanmのビルドディレクトリに移動します。
+
+<pre>
+cd ~/.cpanm/latest-build
+</pre>
+
+<a href="https://linux.perlclub.net/blog/20191126082723.html">ls</a>コマンドでディレクトリを表示します。
+
+<pre>
+ls
+</pre>
+
+Image::MagickはPerlMagickに含まれているので、以下のディレクトリを見つけましょう。バージョン番号は、環境によって異なります。
+
+<pre>
+PerlMagick-6.89
+</pre>
+
+ディレクトリに移動。
+
+<pre>
+cd PerlMagick-6.89
+</pre>
+
+Makefileを編集します。
+
+<pre>
+vi Makefile.PL
+</pre>
+
+$INC_magickを書き換えます。以下のインクルードディレクトリを先頭に追加しましょう。「-I」はインクルードディレクトリを追加するgccのオプションです。
+
+<pre>
+/usr/include/ImageMagick-6
+/usr/include/x86_64-linux-gnu/ImageMagick-6
+</pre>
+
+<pre>
+# 変更前
+my $INC_magick = '-I/usr/local/include/ImageMagick-6 -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/include/libxml2 -I"' . $Config{'usrinc'} . '/ImageMagick-6"';
+
+# 変更後
+my $INC_magick = '-I/usr/include/ImageMagick-6 -I/usr/include/x86_64-linux-gnu/ImageMagick-6 -I/usr/local/include/ImageMagick-6 -DMAGICKCORE_HDRI_ENABLE=0 -DMAGICKCORE_QUANTUM_DEPTH=16 -I/usr/include/libxml2 -I"' . $Config{'usrinc'} . '/ImageMagick-6"';
+</pre>
+
+後はコンパイルしてインストールです。
+
+<pre>
+perl Makefile.PL
+make
+make install
+</pre>
+
+モジュールを読み込んでエラーが出ないことを確認しましょう。
+
+<pre>
+perl -e 'use Image::Magick'
+</pre>

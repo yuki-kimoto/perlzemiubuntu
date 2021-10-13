@@ -1,0 +1,37 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li>
+      Perl
+    </li>
+  </ul>
+</div>
+
+<h2>Perl - Webプラグラミング言語</h2>
+
+PerlのインストールとWebアプリケーション実行環境の構築について解説しています。
+
+<h3>ユーザーPerlとcpanmのインストール</h3>
+
+<ul>
+  <li><a href="/blog/20200413174004.html">ユーザーPerlとcpanmのインストール</a></li>
+  <li><a href="/blog/20200729134756.html">MojoliciousによるWebアプリケーションのデプロイ</a></li>
+</ul>
+
+<h3>Webアプリケーションに必要なモジュール</h3>
+
+<ul>
+  <li><a href="/blog/20200617081050.html">Webフレームワーク MojoliciousのインストールとWebアプリケーションの実行</a></li>
+</ul>
+
+<h3>C言語ライブラリに依存するPerlモジュール</h3>
+
+<ul>
+  <li><a href="/blog/20200221174004.html">ユーザーPerlにcpanmでXML::LibXMLをインストールする</a></li>
+  <li><a href="/blog/20200622115851.html">ユーザーPerlにcpanmでImage::Magickをインストールする</a></li>
+</ul>

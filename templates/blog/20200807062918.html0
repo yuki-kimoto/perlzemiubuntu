@@ -1,0 +1,116 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200902120232.html">
+        <span itemprop="name">ドメイン管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>ドメイン名の取得とDNSサーバーの設定</h2>
+
+ドメイン名の取得とDNSサーバーの設定について解説します。ドメイン名とIPアドレスを対応させることによって、Webサイトをインターネットで公開できます。
+
+DNSについての基本的な考え方と設定方法について書きます。
+
+<h3>DNSとは</h3>
+
+DNSとは、ドメインネームシステムのことで、ドメイン名(例: perlclub.net)とIPアドレス(59.106.185.188)を対応させる仕組みのことです。
+
+お名前.comなどの、ドメイン名取得サービスで取得することができます。
+
+<ul>
+  <li><a href="//ck.jp.ap.valuecommerce.com/servlet/referral?sid=3513971&pid=886673689" rel="nofollow"><img src="//ad.jp.ap.valuecommerce.com/servlet/gifbanner?sid=3513971&pid=886673689" height="1" width="1" border="0">お名前.com</a></a>
+</ul>
+
+価格は、.comなどの一般的なドメイン「(例)perlclub.net」で、年間で1000円程度。会社用のco.jpドメイン「(例)perlclub.net」で、年間2000円程度を見積もっておくとよいでしょう。
+
+<h3>Aレコードの設定</h3>
+
+DNSの設定は以下のページで解説されています。
+
+<ul>
+  <li><a href="https://www.onamae.com/guide/p/70">ネームサーバー/DNSについて</a></li>
+</ul>
+
+DNSサーバーによって、設定方法に若干の違いがありますが、基本は、AレコードにIPアドレスを設定して、それに対応するドメイン名を設定します。ドメイン名は、サブドメインでも、ドメイン名そのものでもかまいません。
+
+サブドメインとは「perlclub.net」というようなドメイン名の前に「文字列.」が付いたものです。
+
+サブドメインの作成はAレコードか、後で解説するCNAMEレコードを使って行います。
+
+「perlclub.net」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
+
+<table>
+  <tr><th>perlclub.net</th><td>Aレコード</td><td>59.106.185.191</td></tr>
+</table>
+
+「perlclub.net」というドメイン名で「59.106.185.191」というIPアドレスをもつWebサーバーにアクセスさせたい場合は、以下の設定を行います。
+
+<table>
+  <tr><th>perlclub.net</th><td>Aレコード</td><td>59.106.185.191</td></tr>
+</table>
+
+<h3>サーバーのIPアドレスの調べ方</h3>
+
+サーバーのIPアドレスの調べ方を書いておきます。DNSサーバーの設定を行う場合は、サーバーのIPアドレスが必要でだからです。
+
+サーバーには、IPアドレスが存在しています。正確に書くと、サーバーに接続されているNIC(ネットワークインターフェースカード)に、IPアドレスが設定されてます。
+
+ネットワークは仮想化されているかもしれませんが、Webアプリケーションを作成するエンジニアから見た場合は、気にする必要はありません。VPSサービスやクラウドサービスのサーバー情報やネットワーク設定のページに記載されているIPアドレスをメモしておきましょう。
+
+パブリッククラウドでないのであればipコマンドやifconfigコマンドを使うと、サーバーのIPアドレスを見ることができます。
+
+<h3>CNAMEレコードの利用</h3>
+
+CNAMEレコードを使うと、ドメイン名の別名を設定することができます。
+
+CNAMEレコードを設定できるのは、サブドメイン(perlclub.netやacount.perlclub.net)だけです。ネイキッドドメイン(perlclub.net)に設定できないので注意してください。
+
+<h4>CNAMEレコードの設定の例</h4>
+
+複数のサブドメインに同じIPアドレスを設定する場合は、CNAMEレコードが便利です。
+
+あるサーバーのIPアドレスが「59.106.185.179」だったとします。
+
+このサーバーを識別するサブドメイン名をAレコードを使って、まず作成します。
+
+<table>
+  <tr><th>prod001.perlclub.net</th><td>Aレコード</td><td>59.106.185.179</td></tr>
+</table>
+
+次にCNAMEレコードを使って、上記のドメイン名に対する別名を作成します。
+
+<table>
+  <tr><th>foo.perlclub.net</th><td>CNAMEレコード</td><td>prod001.perlclub.net</td></tr>
+  <tr><th>bar.perlclub.net</th><td>CNAMEレコード</td><td>prod001.perlclub.net</td></tr>
+</table>
+
+「foo.perlclub.net」は「prod001.perlclub.net」の別名になりました。
+
+「bar.perlclub.net」は「prod001.perlclub.net」の別名になりました。
+
+DNSサーバーへの問い合わせでは「foo.perlclub.net」も「bar.perlclub.net」も「prod001.perlclub.net」のAレコードに設定した「59.106.185.179」を返します。
+
+<h3>DNSレコードの問い合わせ</h3>
+
+DNSレコードの問い合わせは<a href="https://linux.perlclub.net/blog/20200622141433.html">dig</a>コマンドを使うのが簡単です。Aレコード、CNAMEレコード、MXレコードの設定の確認ができます。
+
+<h3>メールアドレスの設定</h3>
+
+メールを利用する場合は、メールアドレスに関する設定も行う必要があります。メールアドレスの作成とDNSサーバーの設定については以下の記事を参考にしてください。
+
+<ul>
+  <li><a href="/blog/20200828123127.html">メールアドレスの作成とDNSサーバーの設定</a></li>
+</ul>

@@ -1,0 +1,26 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+<h2>Ubuntuのパッケージの検索サイト</h2>
+
+Ubuntuのパッケージの検索には「Ubuntu パッケージ検索」が便利です。
+
+<a href="https://packages.ubuntu.com/">Ubuntu パッケージ検索</a>
+
+ライブラリの部分名はわかるのにUbuntuのパッケージの正しい名前がわからない場合に、便利です。

@@ -1,0 +1,167 @@
+<h2>UbuntuとCentOSの違いと共通化された部分</h2>
+
+Ubuntuと<a href="https://centos.perlclub.net/">CentOS</a>の違うところをここでまとめておきます。両方で動くようになるのがよいですね。
+
+<h3>シェルのシェバン「/bin/sh」</h3>
+
+CentOSでは「/bin/sh」は「/bin/bash」にシンボリックリンクが張られているので、bashで実行されます。
+
+Ubuntuでは「/bin/sh」で実行されます。実装は「dash」と呼ばれるシェルになっています。
+
+シェバンを以下のように書いているとCentOSでは、bashで実行されるのに対して、Ubuntuでは「/bin/sh」で実行されます。
+
+<pre>
+#!/bin/sh
+</pre>
+
+そして、bashの文法を使っていると以下のように文法エラーになる。
+
+<pre>
+./morbo: 10: ./morbo: Syntax error: "(" unexpected
+</pre>
+
+<a href="https://linux.perlclub.net/">Linux</a>間ポータビリティを持たせるためには、明示的にbashとシェバンと明示的に書きます。
+
+<pre>
+#!/bin/bash
+</pre>
+
+Unix間ともポータビリティを持たせる場合はshの文法で書き直す必要があるでしょう。
+
+<a href="https://perlzemi.com/">Perl</a>で書けば、Unix/Linux間で、ポータブルなプログラムが書けます。
+
+<h3>パッケージ管理</h3>
+
+パッケージ管理ツールUbuntuではapt、CentOSではyumの違いがあります。
+
+CentOS 8からはdnfがyumを置き換えます。yumはdnfのエイリアスになります。
+
+パッケージ名も異なります。パッケージ管理は現在のところ共通化できなさそうです。
+
+<h3>sudo</h3>
+
+Ubuntuは、sudoがデフォルトで利用可能です。
+
+sudoを許可するには、Ubuntuでは、ユーザーをsudoグループに追加します。
+
+<pre>
+# Ubuntuでsudoを許可
+gpasswd -a myapp sudo
+</pre>
+
+CentOSでは、sudoが有効になっていません。visudoでsudoが利用可能になる設定を行います。(CentOS 7の場合)
+
+「%wheel ALL=(ALL) ALL」のコメントを外します。
+
+<pre>
+## Allows people in group wheel to run all commands
+#%wheel ALL=(ALL) ALL
+%wheel ALL=(ALL) ALL
+</pre>
+
+sudoを許可するには、ユーザーをwheelグループに追加します。
+
+<pre>
+# CentOSでsudoを許可
+gpasswd -a myapp wheel
+</pre>
+
+<h3>サーバー</h3>
+
+<h4>Apache</h4>
+
+Apacheは名前が異なります。CentOSではhttpdなのに対して、Ubuntuでは、apache2です。
+
+設定ファイルの場所や、<a href="/blog/20200605104005.html">systemctl</a>コマンドを実行するときの名前が異なっています。
+
+設定ファイルの構成も、CentOSとUbuntuで異なっています。
+
+UbuntuのApacheには、a2ensite, a2enmod, a2enconfなどの、設定ファイル有効化コマンドがあります。
+
+コマンドを使って設定ファイルを有効化・無効可するといったことが、Ubuntuでは、やりやすくなっています。
+
+<h3>ファイアーウォール</h3>
+
+ファイアーウォールは、Ubuntuはufw、CentOSはfirewalldです。
+
+ファイアーウォールは、コマンドラインでの設定は、非常にややこしく、やりたくないという気持ちは強い。
+
+VPS、クラウドサービスには、たいてい、ファイアーウォールの設定が存在するので、それで設定すると、Linux自体のファイアーウォールを意識しないですむ。ネットワークの設定でパケット制御を行う部分があります。
+
+オンプレミスの場合は、コマンドでファイアーウォール管理を行う。
+
+<h3>cron</h3>
+
+Ubuntuの場合は、デフォルトでcronがインストールされていて、普通のcronです。自然にcronを使えます。
+
+CentOSの場合は、デフォルトのcronがanacronです。普通のcronが欲しい場合は、anacronをアンインストールして、普通のcronをインストールする必要があります。
+
+<h3>SeLinux</h3>
+
+Ubuntuの場合は、CentOSのSeLinuxに該当する機能は、デフォルトでoffになっています。
+
+CentOSの場合は、SeLinuxがデフォルトでonになっている。この機能、リバースプロキシでの接続で、プロキシエラーになっちゃうので、SeLinuxを無効にするか、リバースプロキシができる設定にする必要があります。
+
+<h3>Let's EncryptによるSSL証明書</h3>
+
+Ubuntuでは、certbotがaptからインストールできます。
+
+CentOSでは、以下のようにcertbotをインストールします。
+
+<pre>
+# Cent OS 7
+yum install epel-release
+yum install --enablerepo=epel certbot
+</pre>
+
+新しいCent OSのバージョンが出たばかりなど、certbotがepelレポジトリに含まれていない場合は、ソースコードからインストールしする必要があります。またcertbotは、certbot-autoという名前です。
+
+<h3>UbuntuとCentOSで共通になったもの</h3>
+
+CentOSとUbuntuで、ここ最近共通になったもの。
+
+<h4>systemctl</h4>
+
+CentOSもUbuntuもサービス(サーバーとして起動する者)は、systemdで管理するようになって、管理コマンドもsystemctlになりました。
+
+CentOS 7からはsystemctlコマンドをUbuntuと共通で使うことができます。
+
+<h4>journalctl</h4>
+
+systemdのログ管理もjournalctlがUbuntuとCentOSで共通で使える。
+
+CentOS 7からはjournalctlコマンドをUbuntuと共通で使うことができます。
+
+<h3>Perl</h3>
+
+Ubuntuの一般的な構成ではデフォルトで<a href="https://perlzemi.com/">Perl</a>がインストールされています。
+
+CentOSの一般的な構成ではデフォルトでPerlがインストールされていないことが多いです。さらに、付け加えておくと、Perlのコアモジュールがperlパッケージから分離されて別になっています。
+
+<pre>
+# CentOSにおけるPerlのインストール
+yum install perl
+yum install perl-core
+</pre>
+
+<h3>パッケージのインストール後のサーバーの状態</h3>
+
+サーバーアプリケーションをインストールした場合は、Ubuntuの場合は、起動されます。
+
+サーバーアプリケーションをインストールした場合は、CentOSの場合は、起動されていません。
+
+<h3>標準パッケージの種類</h3>
+
+Ubuntuでは標準パッケージでLet's Encryptのクライアントであるcertbotと、Redisサーバーが提供されています。
+
+CentOSの場合は(CentOS 7の場合)は、上記が提供されていません。Linux 用の拡張パッケージ(EPEL)リポジトリをインストールすることで利用可能になります。
+
+<pre>
+sudo yum -y install epel-release
+</pre>
+
+<h3>バージョン間の変化の大きさ</h3>
+
+Ubuntuは、変化はあれども、なるべく互換性が保たれ、大きな変更は少ない感じがします。
+
+CentOSの方が変化が大きく。バージョン間の差分は大きく感じる。CentOS 5, 6, 7, 8で、変化は多い。

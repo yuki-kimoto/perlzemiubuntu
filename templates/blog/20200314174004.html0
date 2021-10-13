@@ -1,0 +1,80 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200526151435.html">
+        <span itemprop="name">Apache</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Apacheのデフォルトのバーチャルホストの設定</h2>
+
+他のバーチャルホストで設定されていないドメイン名あるいは、直IPアドレス対して、デフォルトのバーチャルホストを記述する方法の解説です。
+
+この設定は、Apache上のCGIやPHPで運用されているWebアプリケーションがあり、さらにバーチャルホストの設定で、リバースプロキシを使って、別サイトを運用するために必要です。
+
+デフォルトのバーチャルホストの設定とは、一番最初に定義されたバーチャルホストが利用されるというApacheの動作を利用するものです。
+
+Ubuntuでは、最初から以下のファイルが配置され、有効になっています。
+
+<pre>
+sites-available/000-default.conf
+</pre>
+
+なぜ000という名前で始まっているのかというと、これが最初に読み込まれるようにする工夫のようです。Apacheは、ワイルドカードが指定された場合、辞書順で、設定ファイルを読み込むようです。
+
+中を見てみましょう。
+
+<pre>
+<VirtualHost *:80>
+        # The ServerName directive sets the request scheme, hostname and port that
+        # the server uses to identify itself. This is used when creating
+        # redirection URLs. In the context of virtual hosts, the ServerName
+        # specifies what hostname must appear in the request's Host: header to
+        # match this virtual host. For the default virtual host (this file) this
+        # value is not decisive as it is used as a last resort host regardless.
+        # However, you must set it for any further virtual host explicitly.
+        #ServerName www.example.com
+
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+
+        # Available loglevels: trace8, ..., trace1, debug, info, notice, warn,
+        # error, crit, alert, emerg.
+        # It is also possible to configure the loglevel for particular
+        # modules, e.g.
+        #LogLevel info ssl:warn
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        # For most configuration files from conf-available/, which are
+        # enabled or disabled at a global level, it is possible to
+        # include a line for only one particular virtual host. For example the
+        # following line enables the CGI configuration for this host only
+        # after it has been globally disabled with "a2disconf".
+        #Include conf-available/serve-cgi-bin.conf
+</VirtualHost>
+</pre>
+
+
+デフォルトのバーチャルホストの設定は、このファイルの中に記述しましょう。
+
+この設定は80番ポートの設定ですが、443のデフォルトのバーチャルホストの設定も行うことができます。
+
+<pre>
+<VirtualHost *:443>
+
+</VirtualHost>
+</pre>

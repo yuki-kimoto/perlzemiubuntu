@@ -1,0 +1,150 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>wkhtmltopdfのインストール - HTMLをPDFへ変換</h2>
+
+wkhtmltopdfのインストール方法を解説します。<a href="/blog/20200530085516.html">apt</a>コマンドを使って、wkhtmltopdfをインストールします。sudoを使って管理者権限で実行します。
+
+<pre>
+sudo apt install -y wkhtmltopdf
+</pre>
+
+<h3>wkhtmltopdfのインストールの確認</h3>
+
+wkhtmltopdfコマンドが利用できることを確認しましょう。
+
+<pre>
+wkhtmltopdf
+</pre>
+
+<h3>wkhtmltopdfとは</h3>
+
+wkhtmltopdfはHTMLをPDFに変換するためのツールです。レンダリングエンジンWebkitでレンダリングした結果をPDFに変換します。
+
+wkhtmltopdfは、PDF帳票作成に利用できます。Webで無料で公開されているHTMLで作られた帳票を、PDFに変換するのに便利です。
+
+生成されるPDFは、書籍の品質には届かないですが、専門学校のテキストや、同人誌などの製作に利用可能だと思います。
+
+<h3>wkhtmltopdfが実行できないバグの修正</h3>
+
+wkhtmltopdfのPDF生成には、X ServerあるいはQtが必要なようですが、古いQtにパッチが当たっていない場合に、実行できないバグが存在します。
+
+<a href="https://github.com/wkhtmltopdf/wkhtmltopdf/issues/2037">QXcbConnection: Could not connect to display</a>
+
+これを解決する一つの手段は、パッチの当たったQtを利用するwkhtmltopdfをインストールすることのようです。これは、正式な手段ではないかもしれない。
+
+<pre>
+cd ~
+wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
+tar vxf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz 
+
+mkdir -p /usr/local/bin
+sudo cp wkhtmltox/bin/wk* /usr/local/bin/
+</pre>
+
+<pre>
+$ /usr/local/bin/wkhtmltopdf --version
+</pre>
+
+<pre>
+wkhtmltopdf 0.12.3 (with patched qt)
+</pre>
+
+<h3>wkhtmltopdfでSSLエラーが表示される場合の解決策 Ubuntu 18で確認</h3>
+
+wkhtmltopdfでSSLエラーが表示される場合の解決策。
+
+<pre>
+Exit with code 1 due to network error: UnknownNetworkError
+QSslSocket: cannot call unresolved function CRYPTO_num_locks
+QSslSocket: cannot call unresolved function CRYPTO_set_id_callback
+QSslSocket: cannot call unresolved function CRYPTO_set_locking_callback
+</pre>
+
+以下のパッケージをインストールすると解決しました。
+
+<pre>
+sudo apt install libssl1.0-dev
+</pre>
+
+<h3>wkhtmltopdfで日本語が表示できない場合</h3>
+
+wkhtmltopdfで日本語が表示できない場合「□□□」のようになる場合は、日本語フォントをインストールしてください。
+
+<ul>
+  <li><a href="/blog/20200906132441.html">日本語フォント IPAフォントのインストール</a></li>
+</ul>
+
+<!--
+
+これを解決するために、最新版のwkhtmltopdfを、Ubuntu 18にインストールする手順が公開されているので、ここに書いておきます。
+
+<h4>Ubuntu 18へのwkhtmltopdf 0.12.6のインストール。</h4>
+
+Ubuntu 18への0.12.6のインストール。
+
+その後、0.12.6にアップグレードし、0.12.4および0.12.5で見つかった問題を修正しました。
+
+更新されたインストール手順は次のとおりです。
+
+現在使用しているバージョンがある場合は、それを確認します。
+
+<pre>
+$ wkhtmltopdf --version
+</pre>
+
+<pre>
+wkhtmltopdf 0.12.3 (with patched qt)
+</pre>
+
+「wkhtml」ですべてのファイルを見つけて削除することにより、既存のバージョンを削除します。
+
+<pre>
+sudo find / -name *wkhtml*
+</pre>
+
+「wkhtmltopdf」および「wkhtmltox」関連ファイルを削除します。
+
+バージョン0.12.6の.debパッケージをダウンロードします。
+
+<pre>
+wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.bionic_amd64.deb
+</pre>
+
+.debパッケージをインストールします。
+
+<pre>
+sudo dpkg -i wkhtmltox_0.12.6-1.bionic_amd64.deb
+</pre>
+
+
+依存関係が欠落しているエラーが発生した場合は「sudo apt install -f」を使用して依存関係をインストールします。
+
+正しいバージョンがインストールされ、アクセスできることを確認します。
+
+<pre>
+$ wkhtmltopdf --version
+</pre>
+
+<pre>
+wkhtmltopdf 0.12.6 (with patched qt)
+</pre>
+
+-->

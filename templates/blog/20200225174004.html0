@@ -1,0 +1,162 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200820081929.html">
+        <span itemprop="name">Redis</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+
+<h2>Redisサーバーの起動・停止・再起動・状態確認</h2>
+
+Redisサーバーの起動・停止・再起動・状態確認について解説します。
+
+<h4>Redisの状態確認</h4>
+
+Redisの状態確認は、<a href="/blog/20200605104005.html">systemctl</a>コマンドの「status」を使って行います。
+
+<pre>
+sudo systemctl status redis-server
+</pre>
+
+<h5>起動している場合</h5>
+
+起動している場合は、以下のように表示されます。
+
+<pre>
+● redis-server.service - Advanced key-value store
+   Loaded: loaded (/lib/systemd/system/redis-server.service; enabled; vendor preset: enabled)
+   Active: active (running) since Tue 2020-06-16 10:12:56 JST; 3h 57min ago
+     Docs: http://redis.io/documentation,
+           man:redis-server(1)
+ Main PID: 108380 (r.edis-server)
+    Tasks: 4 (limit: 9479)
+   CGroup: /system.slice/redis-server.service
+           mq108380 /usr/bin/redis-server 127.0.0.1:6379
+</pre>
+
+<h5>停止している場合</h5>
+
+停止している場合は、以下のように表示されます。
+
+<pre>
+● redis-server.service - Advanced key-value store
+   Loaded: loaded (/lib/systemd/system/redis-server.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Tue 2020-06-16 14:11:18 JST; 2s ago
+     Docs: http://redis.io/documentation,
+           man:redis-server(1)
+  Process: 27892 ExecStop=/bin/kill -s TERM $MAINPID (code=exited, status=0/SUCCESS)
+ Main PID: 108380 (code=exited, status=0/SUCCESS)
+</pre>
+
+<h4>Redisの起動</h4>
+
+Redisの起動は、systemctlコマンドの「start」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl start redis-server
+</pre>
+
+起動が成功しても、成功したというメッセージは返ってきません。状態確認を行ってください。
+
+<h4>Redisの停止</h4>
+
+Redisの停止は、systemctlコマンドの「stop」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl stop redis-server
+</pre>
+
+停止が成功しても、成功したというメッセージは何も返ってきません。状態確認を行ってください。
+
+<h4>Redisの再起動</h4>
+
+Redisの再起動は、systemctlコマンドの「restart」を使って行います。sudoコマンドを使って、root権限で実行します。
+
+<pre>
+sudo systemctl restart redis-server
+</pre>
+
+restartは単に、stopコマンドを実行して、startコマンドを実行します。
+
+<h3>Redisの起動・停止のログを見るには</h3>
+
+Redisなどのサーバーは、systemdというプログラムによって集中的に管理されています。
+
+systemdのログにRedisの起動・停止ログが出力されています。
+
+systemdのログを見るには<a href="/blog/20200602135100.html">journalctlコマンド</a>を使います。「-u」オプションでユニット「redis-server」を指定します。sudoで実行しないとRedisサーバーのログが見れないので注意してください。ログの最後の部分だけ見たい場合は「-r」オプションを組み合わせます。
+
+<pre>
+sudo journalctl -r -u redis-server
+</pre>
+
+ログのサンプルです。
+
+<pre>
+Jul 22 13:24:34 shinshina-development-app-00000001 systemd[1]: Started Advanced key-value store.
+Jul 22 13:24:34 shinshina-development-app-00000001 systemd[1]: redis-server.service: Can't open PID file /var/run/redis/redis-server.pid (yet?) after start: No such file or directory
+Jul 22 13:24:33 shinshina-development-app-00000001 systemd[1]: Starting Advanced key-value store...
+-- Reboot --
+Jul 22 13:13:48 shinshina-development-app-00000001 systemd[1]: Stopped Advanced key-value store.
+Jul 22 13:13:47 shinshina-development-app-00000001 systemd[1]: Stopping Advanced key-value store...
+</pre>
+
+<h3>Redisのsystemdの設定ファイルを見るには</h3>
+
+Redisのsystemdの設定ファイルは「systemctl status redis-server」で見れます。
+
+設定ファイルを<a href="https://linux.perlclub.net/blog/20200113083613.html">catコマンド</a>で見てみましょう。
+
+<pre>
+cat /lib/systemd/system/redis-server.service
+</pre>
+
+<h3>Redisトラブルシューティング</h3>
+
+以下のようなエラーでRedisサーバーが起動できない場合があります。
+
+<pre>
+redis-server.service: Can't open PID file /var/run/redis/redis-server.pid (yet?) after start: No such file or directory
+</pre>
+
+これは、サーバーのネットワーク設定でIPv6が有効になっておらず、Redisサーバーの設定ファイルで、IPv6が有効になっている場合に出るエラーです。
+
+Redis設定ファイルを編集して修正しましょう。間違った場合のためにバックアップもとっておきます。
+
+<pre>
+sudo cp /etc/redis/redis.conf /etc/redis/redis.conf.bak
+sudo vi /etc/redis/redis.conf
+</pre>
+
+以下を
+
+<pre>
+bind 127.0.0.1 ::1
+</pre>
+
+以下に変更
+
+<pre>
+bind 127.0.0.1
+</pre>
+
+<h4>Redisの起動と確認</h4>
+
+Redisの起動と確認を行います。
+
+<pre>
+sudo systemctl start redis-server
+sudo systemctl status redis-server
+</pre>

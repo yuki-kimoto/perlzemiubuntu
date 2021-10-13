@@ -1,0 +1,48 @@
+<h2>使用されているポート番号とサーバーの対応の一覧を表示 - lsof -i TCP -P</h2>
+
+使用されているポート番号とサーバーの対応の一覧を表示するにはlsofコマンドを使用して以下のオプションを指定します。
+
+<pre>
+lsof -i TCP -P
+</pre>
+
+「-i」オプションでTCPのみに絞っています。実用的にはTCPだけを見れれば重複もなく、見やすいです。「-P」オプションで、プロトコル表示(httpなど)をせず、ポートを表示するようにしています。
+
+lsofの出力結果のサンプルです。
+
+<pre>
+rpcbind      891            root    8u  IPv4    29717      0t0  TCP *:111 (LISTEN)
+rpcbind      891            root   11u  IPv6    29720      0t0  TCP *:111 (LISTEN)
+systemd-r   1022 systemd-resolve   13u  IPv4    31385      0t0  TCP localhost:53 (LISTEN)
+vsftpd      1439            root    3u  IPv6    36168      0t0  TCP *:21 (LISTEN)
+redis-ser   1466           redis    6u  IPv4    36518      0t0  TCP localhost:6379 (LISTEN)
+redis-ser   1466           redis    7u  IPv6    36520      0t0  TCP ip6-localhost:6379 (LISTEN)
+mysqld      1622           mysql   17u  IPv4    39040      0t0  TCP localhost:3306 (LISTEN)
+master      1806            root   13u  IPv4    38037      0t0  TCP localhost:25 (LISTEN)
+master      1806            root   14u  IPv6    38038      0t0  TCP ip6-localhost:25 (LISTEN)
+postgres    1869        postgres    7u  IPv4    38483      0t0  TCP localhost:5432 (LISTEN)
+rpc.mount  41471            root    9u  IPv4 16631878      0t0  TCP *:45357 (LISTEN)
+rpc.mount  41471            root   11u  IPv6 16631884      0t0  TCP *:34119 (LISTEN)
+rpc.mount  41471            root   13u  IPv4 16631890      0t0  TCP *:59105 (LISTEN)
+rpc.mount  41471            root   15u  IPv6 16631898      0t0  TCP *:43515 (LISTEN)
+rpc.mount  41471            root   17u  IPv4 16631904      0t0  TCP *:49259 (LISTEN)
+rpc.mount  41471            root   19u  IPv6 16631910      0t0  TCP *:56847 (LISTEN)
+apache2    52756            root    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2    52756            root    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+sshd       79341            root    3u  IPv4 58345111      0t0  TCP *:55555 (LISTEN)
+sshd       79341            root    4u  IPv6 58345113      0t0  TCP *:55555 (LISTEN)
+apache2   109162        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   109162        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   109163        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   109163        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   109164        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   109164        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   109165        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   109165        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   109166        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   109166        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   111526        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   111526        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+apache2   113400        www-data    4u  IPv6  5714981      0t0  TCP *:80 (LISTEN)
+apache2   113400        www-data    6u  IPv6  5714985      0t0  TCP *:443 (LISTEN)
+</pre>

@@ -1,0 +1,44 @@
+<div class="bread">
+  <ul itemscope itemtype="http://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/">
+        <span itemprop="name">Ubuntu</span>
+      </a>
+      <meta itemprop="position" content="1" />
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem">
+      <a itemprop="item" href="/blog/20200529085516.html">
+        <span itemprop="name">パッケージ管理</span>
+      </a>
+      <meta itemprop="position" content="2" />
+    </li>
+    <li>
+      here
+    </li>
+  </ul>
+</div>
+<h2>gccのインストール</h2>
+
+gccのインストール方法を解説します。<a href="/blog/20200530085516.html">apt</a>コマンドを使って、gccをインストールします。sudoを使って管理者権限で実行します。
+
+<pre>
+sudo apt install -y gcc
+</pre>
+
+<h3>gccの主な用途</h3>
+
+gccの主な用途は、C言語のコンパイルです。C言語のソースファイルをコンパイルして、オブジェクトファイルを作成できます。
+
+オブジェクトファイルというのは、一つまたは複数のC言語ファイルに対応する処理を含む機械語になったファイルです。
+
+gccはリンカも含んでいます。リンカ機能で、オブジェクトファイルを結合して、実行ファイル、静的ライブラリ、共有ライブラリを作成できます。
+
+gccは、<a href="https://perlzemi.com/blog/20100504127089.html">CPAN</a>からC言語ソースファイルを含んでいる<a href="https://perlzemi.com/blog/20100809127859.html">XSモジュール</a>をインストールするときに必要です。
+
+<h3>C++のコンパイラ g++</h3>
+
+PerlのXSモジュールでは、C++が使われていることもあるので、合わせてC++のコンパイラであるg++もインストールしておきましょう。
+
+<ul>
+  <li><a href="/blog/20200503174004.html">g++のインストール</a></li>
+</ul>

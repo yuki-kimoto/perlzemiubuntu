@@ -1,0 +1,13 @@
+<h2>Rubyのインストール</h2>
+
+Rubyをインストールしましょう。
+
+<pre>
+sudo apt install -y ruby
+</pre>
+
+Rubyのバージョンが表示されればインストールOKです。
+
+<pre>
+ruby --version
+</pre>
