@@ -1,9 +1,0 @@
-<h2>libmagickcore-devのインストール - ImageMagickのヘッダとライブラリ</h2>
-
-libmagickcore-devのインストール方法です。<a href="/blog/20200530085516.html">apt</a>コマンドを使ってインストールします。ImageMagickのヘッダとライブラリがインストールされます。
-
-<pre>
-sudo apt install -y libmagickcore-dev
-</pre>
-
-インストールされた、ImageMagickのヘッダファイルとライブラリの場所については、<a href="/blog/20200429174004.html">ヘッダーファイルの読み込みパス</a>と<a href="/blog/20200428174004.html">ライブラリの読み込みパス</a>を参考にしてください。

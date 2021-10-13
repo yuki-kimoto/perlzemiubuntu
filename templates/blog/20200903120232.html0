@@ -1,7 +1,0 @@
-<h2>OSを再起動する - reboot</h2>
-
-OSを再起動するにはrebootコマンドを使用します。
-
-<pre>
-sudo reboot
-</pre>

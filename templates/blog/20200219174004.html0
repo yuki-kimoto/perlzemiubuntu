@@ -1,7 +1,0 @@
-<h2>Ubuntuでgitのcommit時のエディタをviに変更する</h2>
-
-Ubuntuでgitでcommitするときに立ち上がるエディタを、viに変更するには、以下のようにします。デフォルトだと、異なるエディタになっている場合があります。
-
-<pre>
-git config --global core.editor "vi"
-</pre>
