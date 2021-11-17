@@ -1,0 +1,70 @@
+<h2>Google Chromeをインストールする</h2>
+
+Google Chromeをインストールします。Ubuntu 18で試しました。
+
+Google Chrome用のリポジトリを追加します。
+
+<pre>
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+</pre>
+
+事前に必要なライブラリを追加します。
+
+<pre>
+sudo apt install -y wget
+sudo apt install -y gnupg
+</pre>
+
+公開鍵を追加します。
+
+<pre>
+sudo wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+</pre>
+
+Google Chrome用のリポジトリをアップデート。
+
+<pre>
+sudo apt update
+</pre>
+
+Google Chromeをaptコマンドでインストール。
+
+<pre>
+sudo apt install -y google-chrome-stable
+</pre>
+
+バージョン確認してみましょう。
+
+<pre>
+google-chrome --version
+</pre>
+
+バージョンの出力結果です。
+
+<pre>
+Google Chrome 96.0.4664.45
+</pre>
+
+<h3>Google Chromeをヘッドレス実行する</h3>
+
+ヘッドレス実行とはGUI画面なしでWebサイトのアクセスすることです。Google Chromeをヘッドレス実行してスクリーンショットを取得します。
+
+<pre>
+google-chrome --disable-setuid-sandbox --no-sandbox --headless --disable-gpu --dump-dom https://www.chromestatus.com/
+</pre>
+
+画面にHTMLのツリーが表示されればOKです。
+
+<h3>JavaScript対応のWebスクレイピングをPerlで行うには?</h3>
+
+JavaScript対応のWebスクレイピングをPerlで行うにはGoogle Chromeに加えて、<a href="/blog/20211116083934.html">ChromeDriverのインストール</a>と<a href="https://perlzemi.com/blog/20091116124667.html">Perlモジュール</a>の<a href="https://perlzemi.com/blog/20210105145700.html">Selenium::Remote::Driver</a>が必要です。
+
+Google Chrome用のリポジトリを削除したい場合。
+
+<h3>Google Chrome用のリポジトリを削除したい場合</h3>
+
+間違ったりなどして、Google Chrome用のリポジトリを削除したい場合の手順です。
+
+<pre>
+sudo rm /etc/apt/sources.list.d/google-chrome.list
+</pre>

@@ -1,0 +1,47 @@
+<h2>ChromeDriverをインストールする</h2>
+
+Google ChromeブラウザをSeleniumを使ってプログラムから自動制御するためのChromeDriverをインストールしましょう。ChromeDriverのバイナリを直接配置します。64bit版のLinuxであることを想定します。Ubuntu 18で確認しています。
+
+<pre>
+google-chrome --version
+</pre>
+
+バージョン。
+
+<pre>
+Google Chrome 96.0.4664.45
+</pre>
+
+ChromeDriverを<a href="https://chromedriver.chromium.org/downloads">ChromeDriverのダウンロードページ</a>からダウンロードしましょう。不具合を起こさないために、上記のChromeのバージョンと同じものをダウンロードしましょう。
+
+<pre>
+cd /usr/local/src
+export CHROME_VERSION=96.0.4664.45
+sudo wget https://chromedriver.storage.googleapis.com/$CHROME_VERSION/chromedriver_linux64.zip
+sudo unzip chromedriver_linux64.zip
+sudo mv chromedriver /usr/local/bin/
+</pre>
+
+ChromeDriverのバージョン確認。
+
+<pre>
+chromedriver --version
+</pre>
+
+バージョンの出力結果。
+
+<pre>
+ChromeDriver 96.0.4664.45 (76e4c1bb2ab4671b8beba3444e61c0f17584b2fc-refs/branch-heads/4664@{#947})
+</pre>
+
+<h3>Google Chromeのインストール</h3>
+
+ChromeDriverはGoogle ChromeブラウザをSeleniumを使ってプログラムから自動制御するために必要になるものです。Google Chrome本体が別途必要です。
+
+<ul>
+  <li><a href="/blog/20211117083934.html">Google Chromeのインストール</a></li>
+</ul>
+
+<h3>JavaScript対応のWebスクレイピングをプログラムから行うには?</h3>
+
+JavaScript対応のWebスクレイピングをプログラムから行うには、プログラミング言語で提供されているSeleniumライブラリが必要です。Perl - <a href="https://perlzemi.com/blog/20210105145700.html">Selenium::Remote::Driver</a>、PHP、Pyhton、RubyなどのSeleniumライブラリがあります。
