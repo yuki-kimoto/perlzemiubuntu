@@ -62,13 +62,13 @@ time_zone
 
 <h3>データベースの作成</h3>
 
-ここでは、Webアプリケーション用の<a href="https://mariadb.perlclub.net/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。後でデータベース名の変更は可能です(少し工夫はいりますが)。
+ここでは、Webアプリケーション用の<a href="https://mariadb.perlzemi.com/blog/20200521082643.html">データベースを作成</a>します。データベース名は、myappdbにしておきます。後でデータベース名の変更は可能です(少し工夫はいりますが)。
 
 <pre>
 create database myappdb;
 </pre>
 
-作成したデータベースを確認するために、<a href="https://mariadb.perlclub.net/blog/20200518082643.html">データベースの一覧</a>を表示します。
+作成したデータベースを確認するために、<a href="https://mariadb.perlzemi.com/blog/20200518082643.html">データベースの一覧</a>を表示します。
 
 <pre>
 show databases;
@@ -92,13 +92,13 @@ mysql -h my-devel-db-001.mariadb.database.azure.com -ukanri@my-devel-db-001 -p
 
 データべースがリモートにあり、接続できない場合は、データベースサーバー側のファイアーウォールの確認も合わせておこなってください。
 
-<a href="https://mariadb.perlclub.net/blog/20200523082643.html">MariaDBでユーザーの作成</a>を行います。
+<a href="https://mariadb.perlzemi.com/blog/20200523082643.html">MariaDBでユーザーの作成</a>を行います。
 
 <pre>
 create user myapp;
 </pre>
 
-次に、<a href="https://mariadb.perlclub.net/blog/20200522082643.html">データベースへのアクセス権限の設定とパスワードを設定</a>します。
+次に、<a href="https://mariadb.perlzemi.com/blog/20200522082643.html">データベースへのアクセス権限の設定とパスワードを設定</a>します。
 
 以下の、localhostの部分は、データベースサーバーが、同じサーバーにある場合の設定です。クラウドサーバーの場合ですと、接続元のIPアドレス、または、ドメイン名を指定してください。
 
